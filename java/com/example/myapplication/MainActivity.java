@@ -12,6 +12,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.e("Mother", "FUCKER");
+        Log.e("Hello world!", "there is some text");
     }
 }
