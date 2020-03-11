@@ -125,7 +125,6 @@ public class ProfitActivity extends AppCompatActivity {
     private void removeItem(long id) {
         mDatabase.delete(FinancialContract.FinancialEntry.TABLE_NAME,
                 FinancialContract.FinancialEntry._ID + "=" + id, null);
-
         mAdapter.swapCursor(getAllItems());
     }
 
@@ -134,6 +133,9 @@ public class ProfitActivity extends AppCompatActivity {
         String selectionDay = FinancialContract.FinancialEntry.COLUMN_TIMESTAMP + " = " + dateLong;
         String selectionMonthAndYear = FinancialContract.FinancialEntry.COLUMN_MONTH + " = " + longMonth + " AND " + FinancialContract.FinancialEntry.COLUMN_YEAR + " = " + longYear;
         String selectionYear = FinancialContract.FinancialEntry.COLUMN_YEAR + " = " + longYear;
+
+        Log.e("selectionYear", "=- selectionYear -= " + longYear);
+
 
         if (checkNumber == 1) {
             return mDatabase.query(
@@ -146,8 +148,6 @@ public class ProfitActivity extends AppCompatActivity {
                     FinancialContract.FinancialEntry.COLUMN_TIMESTAMP + " DESC"
             );
         } else if (checkNumber == 2) {
-            Log.e("getAllItems", "=- 2 -=");
-
             return mDatabase.query(
                     FinancialContract.FinancialEntry.TABLE_NAME,
                     null,
@@ -180,22 +180,20 @@ public class ProfitActivity extends AppCompatActivity {
         }
     }
 
-    // Buttons Year, Month, Day, Show All
+    // Buttons Year, Month, Show All. The Day btn in showDatePickerDialog() method;
     public void filterClicked(View view) {
         switch (view.getId()) {
             case R.id.btnMonth:
                 checkNumber = 2;
-                Log.e("filterClicked", "=- 1 -=");
-                cursorDataBase(getAllItems());
                 showListView(mMonthInStringList, yearList);
                 break;
 
             case R.id.btnYear:
                 checkNumber = 3;
-                cursorDataBase(getAllItems());
                 showListView(mYearInStringList, yearForYearList);
                 break;
 
+                // Доработать кнопку ALL
             default:
                 checkNumber = 0;
                 mDisplayDate.setText("ALL");
@@ -211,7 +209,6 @@ public class ProfitActivity extends AppCompatActivity {
         linearLayout1.setVisibility(View.INVISIBLE);
         linearLayout2.setVisibility(View.INVISIBLE);
         relativeLayout.setVisibility(View.INVISIBLE);
-        Log.e("showListView", "=- 6 -=");
 
         listView = (ListView) findViewById(R.id.listView);
         // Сюда должен передаваться список с датой (Месяц + Год или просто Год в зависимости от нажатой кнопки)
@@ -226,12 +223,12 @@ public class ProfitActivity extends AppCompatActivity {
                 longYear = Long.parseLong(listForLongYear.get(position));
 
                 mDisplayDate.setText(listForListView.get(position));
-                Log.e("onItemClick", "=- 7 -=");
 
                 linearLayout.setVisibility(View.INVISIBLE);
                 linearLayout1.setVisibility(View.VISIBLE);
                 linearLayout2.setVisibility(View.VISIBLE);
                 relativeLayout.setVisibility(View.VISIBLE);
+                cursorDataBase(getAllItems());
                 doRecycleView();
             }
         });
@@ -290,8 +287,6 @@ public class ProfitActivity extends AppCompatActivity {
 
     // Показывает суммы на экране по выбранному дню
     public void cursorDataBase(Cursor cursor) {
-        Log.e("cursorDataBase", "=- 3 -=");
-
         int expenceIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_EXPENCE);
         int incomeIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_INCOME);
 
@@ -306,18 +301,16 @@ public class ProfitActivity extends AppCompatActivity {
         }
         cursor.close();
 
-        // Показывает на экране суммы за определенный день
+        // Показывает на экране суммы
         double income = 0.0;
         double expence = 0.0;
 
         for (int i = 0; i < amountCheckDB.size(); i++) {
             expence += Double.parseDouble(amountCheckDB.get(i));
-            Log.e("amountCheckDB", "=- 4 -= " + amountCheckDB);
         }
 
         for (int i = 0; i < incomeCheckDB.size(); i++) {
             income += Double.parseDouble(incomeCheckDB.get(i));
-            Log.e("incomeCheckDB", "=- 5 -= " + incomeCheckDB);
         }
 
         if (expence == 0.0) {
@@ -332,41 +325,6 @@ public class ProfitActivity extends AppCompatActivity {
             incomeTextView.setText(String.valueOf(income));
         }
     }
-
-//    public void cursorDataBase(long userDate) {
-//        Cursor c = mDatabase.rawQuery("SELECT * FROM " + FinancialContract.FinancialEntry.TABLE_NAME +
-//                " WHERE " + FinancialContract.FinancialEntry.COLUMN_TIMESTAMP + " = " + userDate, null);
-//
-//        int expenceIndex = c.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_EXPENCE);
-//        int incomeIndex = c.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_INCOME);
-//
-//        if (c.moveToFirst()) {
-//            amountCheckDB.clear();
-//            incomeCheckDB.clear();
-//
-//            do {
-//                amountCheckDB.add(c.getString(expenceIndex));
-//                incomeCheckDB.add(c.getString(incomeIndex));
-//            } while (c.moveToNext());
-//        }
-//        c.close();
-//
-//        // Показывает на экране суммы за определенный день
-//        double income = 0.0;
-//        double expence = 0.0;
-//
-//        for (int i = 0; i < amountCheckDB.size(); i++) {
-//            expence += Double.parseDouble(amountCheckDB.get(i));
-//        }
-//
-//        for (int i = 0; i < incomeCheckDB.size(); i++) {
-//            income += Double.parseDouble(incomeCheckDB.get(i));
-//        }
-//
-//        incomeTextView.setText(String.valueOf(income));
-//        expenceTextView.setText(String.valueOf(expence));
-//    }
-
 
     public void showTotalFromDB() {
         Cursor c = mDatabase.rawQuery("SELECT * FROM " + FinancialContract.FinancialEntry.TABLE_NAME, null);
@@ -387,8 +345,8 @@ public class ProfitActivity extends AppCompatActivity {
                 amountCheckDB.add(c.getString(expenceIndex));
                 incomeCheckDB.add(c.getString(incomeIndex));
                 monthList.add(c.getString(monthIndex));
-                yearList.add(c.getString(yearIndex));
-                yearForYearList.add(c.getString(yearIndex));
+                yearList.add(c.getString(yearIndex)); // contains date (Year column) in long type
+                yearForYearList.add(c.getString(yearIndex)); // contains date (Year column) in long type
             } while (c.moveToNext());
         }
         c.close();
@@ -435,6 +393,7 @@ public class ProfitActivity extends AppCompatActivity {
             }
         }
 
+        // removing all equals dates (Year)
         for (int i = 0; i < mYearInStringList.size() - 1; i++) {
             for (int k = mYearInStringList.size() - 1; k > i; k--) {
                 if (mYearInStringList.get(i).equals(mYearInStringList.get(k))) {
