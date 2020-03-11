@@ -9,8 +9,9 @@
 
     <LinearLayout
         android:id="@+id/showMonth"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="200dp"
+        android:layout_height="300dp"
+        android:elevation="10dp"
         android:orientation="vertical"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -23,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="CHOOSE THE MONTH"
-            android:textSize="24sp" />
+            android:textSize="14sp" />
 
         <ListView
             android:id="@+id/listView"
@@ -40,9 +41,9 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:orientation="horizontal"
         android:background="#ffffff"
         android:elevation="10dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -131,9 +132,9 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:orientation="horizontal"
         android:background="#ffffff"
         android:elevation="10dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
@@ -256,15 +257,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="filterClicked"
-            android:text="show all" />
-
-        <Button
-            android:id="@+id/btnMonth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="filterClicked"
-            android:text="month" />
+            android:text="all" />
 
         <Button
             android:id="@+id/btnYear"
@@ -273,6 +266,14 @@
             android:layout_weight="1"
             android:onClick="filterClicked"
             android:text="Year" />
+
+        <Button
+            android:id="@+id/btnMonth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="filterClicked"
+            android:text="month" />
 
         <Button
             android:id="@+id/btnDay"
