@@ -193,9 +193,10 @@
         android:id="@+id/showMonth"
         android:layout_width="250dp"
         android:layout_height="400dp"
-        android:elevation="10dp"
+        android:elevation="15dp"
         android:orientation="vertical"
         android:visibility="invisible"
+        android:background="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -206,6 +207,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_margin="8dp"
             android:gravity="center_horizontal"
             android:text="CHOOSE THE DATE"
             android:textSize="20sp"
@@ -261,7 +263,9 @@
             android:background="@color/colorAccent"
             android:onClick="filterClicked"
             android:text="all"
-            android:textSize="18sp" />
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnYear"

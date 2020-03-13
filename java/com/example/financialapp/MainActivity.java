@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -139,6 +140,12 @@ public class MainActivity extends AppCompatActivity {
                         mDatabase.delete(FinancialContract.FinancialEntry.TABLE_NAME, null, null);
                         mNumbers = "";
                         text.setText("");
+                        ProfitActivity.yearForYearList.clear();
+                        ProfitActivity.yearList.clear();
+                        ProfitActivity.mMonthInStringList.clear();
+                        ProfitActivity.mYearInStringList.clear();
+                        ProfitActivity.monthList.clear();
+
                         Toast.makeText(MainActivity.this, "Database has been cleaned!", Toast.LENGTH_SHORT).show();
                     }
                 })

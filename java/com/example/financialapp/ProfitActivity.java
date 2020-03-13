@@ -63,11 +63,11 @@ public class ProfitActivity extends AppCompatActivity {
     static int bgColorForSwipe;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
-    static private ArrayList<String> mMonthInStringList = new ArrayList<>();
-    static private ArrayList<String> mYearInStringList = new ArrayList<>();
-    static private ArrayList<String> monthList = new ArrayList<>();
-    static private ArrayList<String> yearList = new ArrayList<>();
-    static private ArrayList<String> yearForYearList = new ArrayList<>();
+    static ArrayList<String> mMonthInStringList = new ArrayList<>();
+    static ArrayList<String> mYearInStringList = new ArrayList<>();
+    static ArrayList<String> monthList = new ArrayList<>();
+    static ArrayList<String> yearList = new ArrayList<>();
+    static ArrayList<String> yearForYearList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,12 +191,16 @@ public class ProfitActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.btnMonth:
                 checkNumber = 2;
-                showListView(mMonthInStringList, yearList);
+                if (!mMonthInStringList.isEmpty()) {
+                    showListView(mMonthInStringList, yearList);
+                }
                 break;
 
             case R.id.btnYear:
                 checkNumber = 3;
-                showListView(mYearInStringList, yearForYearList);
+                if (!mYearInStringList.isEmpty()) {
+                    showListView(mYearInStringList, yearForYearList);
+                }
                 break;
 
                 // Доработать кнопку ALL
@@ -215,11 +219,11 @@ public class ProfitActivity extends AppCompatActivity {
         linearLayout = findViewById(R.id.showMonth);
 
         linearLayout.setVisibility(View.VISIBLE);
-        linearLayoutDate.setVisibility(View.INVISIBLE);
-        linearLayoutButtons.setVisibility(View.INVISIBLE);
-        linearLayout1.setVisibility(View.INVISIBLE);
-        linearLayout2.setVisibility(View.INVISIBLE);
-        relativeLayout.setVisibility(View.INVISIBLE);
+//        linearLayoutDate.setVisibility(View.INVISIBLE);
+//        linearLayoutButtons.setVisibility(View.INVISIBLE);
+//        linearLayout1.setVisibility(View.INVISIBLE);
+//        linearLayout2.setVisibility(View.INVISIBLE);
+//        relativeLayout.setVisibility(View.INVISIBLE);
 
         listView = (ListView) findViewById(R.id.listView);
         // Сюда должен передаваться список с датой (Месяц + Год или просто Год в зависимости от нажатой кнопки)
@@ -230,17 +234,23 @@ public class ProfitActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                longMonth = Long.parseLong(monthList.get(position));
-                longYear = Long.parseLong(listForLongYear.get(position));
+                try {
+                    longMonth = Long.parseLong(monthList.get(position));
+                    longYear = Long.parseLong(listForLongYear.get(position));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e("showListView", "After cleaning DB: " + longYear);
+                }
+
 
                 mDisplayDate.setText(listForListView.get(position));
 
                 linearLayout.setVisibility(View.INVISIBLE);
-                linearLayoutButtons.setVisibility(View.VISIBLE);
-                linearLayoutDate.setVisibility(View.VISIBLE);
-                linearLayout1.setVisibility(View.VISIBLE);
-                linearLayout2.setVisibility(View.VISIBLE);
-                relativeLayout.setVisibility(View.VISIBLE);
+//                linearLayoutButtons.setVisibility(View.VISIBLE);
+//                linearLayoutDate.setVisibility(View.VISIBLE);
+//                linearLayout1.setVisibility(View.VISIBLE);
+//                linearLayout2.setVisibility(View.VISIBLE);
+//                relativeLayout.setVisibility(View.VISIBLE);
                 cursorDataBase(getAllItems());
                 doRecycleView();
             }
@@ -405,8 +415,15 @@ public class ProfitActivity extends AppCompatActivity {
             SimpleDateFormat monthDateFormat = new SimpleDateFormat("MMMM");
             SimpleDateFormat yearDateFormat = new SimpleDateFormat("yyyy");
 
-            String pickMonth = monthDateFormat.format(Long.parseLong(monthList.get(i)));
-            String pickYear = yearDateFormat.format(Long.parseLong(yearList.get(i)));
+            String pickMonth = "";
+            String pickYear = "";
+            try {
+                pickMonth = monthDateFormat.format(Long.parseLong(monthList.get(i)));
+                pickYear = yearDateFormat.format(Long.parseLong(yearList.get(i)));
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.i("showTotalFromDB", "yearList is empty, maybe after cleaning DB." + yearList);
+            }
 
             //This lists goes to ListView which shows when press Month/Year button
             mYearInStringList.add(pickYear);
