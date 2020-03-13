@@ -1,12 +1,13 @@
 package com.example.financialapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -14,7 +15,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,16 +27,13 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+
+import static com.example.financialapp.MainActivity.customFormat;
 
 public class ProfitActivity extends AppCompatActivity {
 
     private ExpenceAdapter mAdapter;
     private SQLiteDatabase mDatabase;
-    private ArrayAdapter adapterForListView;
     private RecyclerView recyclerView;
 
     TextView mDisplayDate;
@@ -48,7 +45,9 @@ public class ProfitActivity extends AppCompatActivity {
     LinearLayout linearLayout;
     LinearLayout linearLayout1;
     LinearLayout linearLayout2;
-    RelativeLayout relativeLayout;
+    LinearLayout linearLayoutDate;
+    LinearLayout linearLayoutButtons;
+    LinearLayout relativeLayout;
     ListView listView;
     Button buttonDay;
 
@@ -57,12 +56,13 @@ public class ProfitActivity extends AppCompatActivity {
     static long longMonth;
     static long longYear;
     static long dateLong;
+    static double incomeTotalAllBtn;
+    static double expenceTotalAllBtn;
+    static int textColorExpence;
+    static int textColorIncome;
+    static int bgColorForSwipe;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-    private SimpleDateFormat monthDateFormat;
-    private SimpleDateFormat yearDateFormat;
 
-    static private ArrayList<String> amountCheckDB = new ArrayList<>();
-    static private ArrayList<String> incomeCheckDB = new ArrayList<>();
     static private ArrayList<String> mMonthInStringList = new ArrayList<>();
     static private ArrayList<String> mYearInStringList = new ArrayList<>();
     static private ArrayList<String> monthList = new ArrayList<>();
@@ -74,6 +74,11 @@ public class ProfitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profit);
 
+        // TextColor is selected in ExpenceAdapter class
+        textColorExpence = ContextCompat.getColor(this, R.color.colorExpence);
+        textColorIncome = ContextCompat.getColor(this, R.color.colorIncome);
+//        bgColorForSwipe = ContextCompat.getColor(this, R.color.colorAccent);
+
         incomeTextView = (TextView) findViewById(R.id.incomeTextView);
         expenceTextView = (TextView) findViewById(R.id.expenceTextView);
         balanceTextView = (TextView) findViewById(R.id.balanceTextView);
@@ -81,9 +86,11 @@ public class ProfitActivity extends AppCompatActivity {
         totalExpenceTextView = (TextView) findViewById(R.id.totalExpenceTextView);
         mDisplayDate = (TextView) findViewById(R.id.showDateTextView);
 
+        linearLayoutButtons = (LinearLayout) findViewById(R.id.linearLayoutButtons);
+        linearLayoutDate = (LinearLayout) findViewById(R.id.linearLayoutDate);
         linearLayout1 = (LinearLayout) findViewById(R.id.linearLayout3);
         linearLayout2 = (LinearLayout) findViewById(R.id.linearLayout4);
-        relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
+        relativeLayout = (LinearLayout) findViewById(R.id.recycleLayout);
 
         buttonDay = (Button) findViewById(R.id.btnDay);
 
@@ -100,7 +107,7 @@ public class ProfitActivity extends AppCompatActivity {
 
         //Swipe to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -125,6 +132,8 @@ public class ProfitActivity extends AppCompatActivity {
     private void removeItem(long id) {
         mDatabase.delete(FinancialContract.FinancialEntry.TABLE_NAME,
                 FinancialContract.FinancialEntry._ID + "=" + id, null);
+        cursorDataBase(getAllItems());
+        showTotalFromDB();
         mAdapter.swapCursor(getAllItems());
     }
 
@@ -133,9 +142,6 @@ public class ProfitActivity extends AppCompatActivity {
         String selectionDay = FinancialContract.FinancialEntry.COLUMN_TIMESTAMP + " = " + dateLong;
         String selectionMonthAndYear = FinancialContract.FinancialEntry.COLUMN_MONTH + " = " + longMonth + " AND " + FinancialContract.FinancialEntry.COLUMN_YEAR + " = " + longYear;
         String selectionYear = FinancialContract.FinancialEntry.COLUMN_YEAR + " = " + longYear;
-
-        Log.e("selectionYear", "=- selectionYear -= " + longYear);
-
 
         if (checkNumber == 1) {
             return mDatabase.query(
@@ -197,6 +203,8 @@ public class ProfitActivity extends AppCompatActivity {
             default:
                 checkNumber = 0;
                 mDisplayDate.setText("ALL");
+                incomeTextView.setText(customFormat("###,###.##", incomeTotalAllBtn));
+                expenceTextView.setText(customFormat("###,###.##", expenceTotalAllBtn));
                 doRecycleView();
                 break;
         }
@@ -205,14 +213,17 @@ public class ProfitActivity extends AppCompatActivity {
     // ListView + Adapter для
     public void showListView(final ArrayList<String> listForListView, final ArrayList<String> listForLongYear) {
         linearLayout = findViewById(R.id.showMonth);
+
         linearLayout.setVisibility(View.VISIBLE);
+        linearLayoutDate.setVisibility(View.INVISIBLE);
+        linearLayoutButtons.setVisibility(View.INVISIBLE);
         linearLayout1.setVisibility(View.INVISIBLE);
         linearLayout2.setVisibility(View.INVISIBLE);
         relativeLayout.setVisibility(View.INVISIBLE);
 
         listView = (ListView) findViewById(R.id.listView);
         // Сюда должен передаваться список с датой (Месяц + Год или просто Год в зависимости от нажатой кнопки)
-        adapterForListView = new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, listForListView);
+        ArrayAdapter adapterForListView = new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, listForListView);
         listView.setAdapter(adapterForListView);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -225,6 +236,8 @@ public class ProfitActivity extends AppCompatActivity {
                 mDisplayDate.setText(listForListView.get(position));
 
                 linearLayout.setVisibility(View.INVISIBLE);
+                linearLayoutButtons.setVisibility(View.VISIBLE);
+                linearLayoutDate.setVisibility(View.VISIBLE);
                 linearLayout1.setVisibility(View.VISIBLE);
                 linearLayout2.setVisibility(View.VISIBLE);
                 relativeLayout.setVisibility(View.VISIBLE);
@@ -237,7 +250,7 @@ public class ProfitActivity extends AppCompatActivity {
     // Calendar
     public void showDatePickerDialog() {
         //Showing the date that Uses have set in MainActivity
-        currentDate = MainActivity.formatedDate;
+        currentDate = MainActivity.mFormatedDate;
         mDisplayDate.setText(currentDate);
 
         buttonDay.setOnClickListener(new View.OnClickListener() {
@@ -261,7 +274,15 @@ public class ProfitActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
-                currentDate = dayOfMonth + "/" + month + "/" + year;
+                if (String.valueOf(month).length() == 1 && String.valueOf(dayOfMonth).length() == 1) {
+                    currentDate = "0" + dayOfMonth + "/" + "0" + month + "/" + year;
+                } else if (String.valueOf(month).length() == 1) {
+                    currentDate = dayOfMonth + "/" + "0" + month + "/" + year;
+                } else if (String.valueOf(dayOfMonth).length() == 1) {
+                    currentDate = "0" + dayOfMonth + "/" + month + "/" + year;
+                } else {
+                    currentDate = dayOfMonth + "/" + month + "/" + year;
+                }
                 mDisplayDate.setText(currentDate);
 
                 dateLong = convertStringToLongDate(currentDate);
@@ -287,6 +308,9 @@ public class ProfitActivity extends AppCompatActivity {
 
     // Показывает суммы на экране по выбранному дню
     public void cursorDataBase(Cursor cursor) {
+        ArrayList<String> amountCheckDB = new ArrayList<>();
+        ArrayList<String> incomeCheckDB = new ArrayList<>();
+
         int expenceIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_EXPENCE);
         int incomeIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_INCOME);
 
@@ -301,7 +325,7 @@ public class ProfitActivity extends AppCompatActivity {
         }
         cursor.close();
 
-        // Показывает на экране суммы
+        // Показывает на экране суммы за определенный период
         double income = 0.0;
         double expence = 0.0;
 
@@ -316,17 +340,20 @@ public class ProfitActivity extends AppCompatActivity {
         if (expence == 0.0) {
             expenceTextView.setText("0.0");
         } else {
-            expenceTextView.setText(String.valueOf(expence));
+            expenceTextView.setText(customFormat("###,###.##", expence));
         }
 
         if (income == 0.0) {
             incomeTextView.setText("0.0");
         } else {
-            incomeTextView.setText(String.valueOf(income));
+            incomeTextView.setText(customFormat("###,###.##", income));
         }
     }
 
     public void showTotalFromDB() {
+        ArrayList<String> amountCheckDB = new ArrayList<>();
+        ArrayList<String> incomeCheckDB = new ArrayList<>();
+
         Cursor c = mDatabase.rawQuery("SELECT * FROM " + FinancialContract.FinancialEntry.TABLE_NAME, null);
 
         int incomeIndex = c.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_INCOME);
@@ -363,17 +390,20 @@ public class ProfitActivity extends AppCompatActivity {
             income += Double.parseDouble(incomeCheckDB.get(i));
         }
 
-        totalIncomeTextView.setText(String.valueOf(income));
-        totalExpenceTextView.setText(String.valueOf(expence));
-        balanceTextView.setText(String.valueOf(income + expence));
+        incomeTotalAllBtn = income;
+        expenceTotalAllBtn = expence;
+
+        totalIncomeTextView.setText(customFormat("###,###.##", income));
+        totalExpenceTextView.setText(customFormat("###,###.##", expence));
+        balanceTextView.setText(customFormat("###,###.##", (income + expence)));
 
         //Information (Month and Year) for ListView in method filterClicked()
         mMonthInStringList.clear();
         mYearInStringList.clear();
 
         for (int i = 0; i < monthList.size(); i++) {
-            monthDateFormat = new SimpleDateFormat("MMMM");
-            yearDateFormat = new SimpleDateFormat("YYYY");
+            SimpleDateFormat monthDateFormat = new SimpleDateFormat("MMMM");
+            SimpleDateFormat yearDateFormat = new SimpleDateFormat("yyyy");
 
             String pickMonth = monthDateFormat.format(Long.parseLong(monthList.get(i)));
             String pickYear = yearDateFormat.format(Long.parseLong(yearList.get(i)));
@@ -383,6 +413,7 @@ public class ProfitActivity extends AppCompatActivity {
             mMonthInStringList.add(pickMonth + " " + pickYear);
         }
 
+        // removing all equals dates (Month)
         for (int i = 0; i < mMonthInStringList.size() - 1; i++) {
             for (int k = mMonthInStringList.size() - 1; k > i; k--) {
                 if (mMonthInStringList.get(i).equals(mMonthInStringList.get(k))) {

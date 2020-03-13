@@ -17,28 +17,27 @@
 
         <TextView
             android:id="@+id/txtView1"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:gravity="start|center_vertical"
+            android:minWidth="100dp"
             android:text="10 000"
             android:textColor="#6C6B6B"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txtView3"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="start|center_vertical"
+            android:minWidth="100dp"
             android:text=""
             android:textColor="#6C6B6B"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textViewDate"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txtView1"
             android:layout_alignParentBottom="false"
@@ -50,15 +49,15 @@
 
         <TextView
             android:id="@+id/txtView2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="40dp"
             android:layout_toEndOf="@id/txtView1"
             android:layout_toRightOf="@id/txtView1"
             android:gravity="start|center_vertical"
             android:text="Expences for Food"
             android:textColor="#6C6B6B"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/imageDelete"
@@ -67,7 +66,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="8dp"
             android:src="@drawable/ic_delete_sweep" />
 
     </RelativeLayout>

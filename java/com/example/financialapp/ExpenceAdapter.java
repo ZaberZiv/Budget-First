@@ -2,7 +2,6 @@ package com.example.financialapp;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 
-import static com.example.financialapp.MainActivity.expencesDB;
+import static com.example.financialapp.MainActivity.customFormat;
 
 public class ExpenceAdapter extends RecyclerView.Adapter<ExpenceAdapter.ExpenceViewHolder> {
 
@@ -66,15 +64,18 @@ public class ExpenceAdapter extends RecyclerView.Adapter<ExpenceAdapter.ExpenceV
         long id = mCursor.getLong(mCursor.getColumnIndex(FinancialContract.FinancialEntry._ID));
         long date = mCursor.getLong(mCursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_TIMESTAMP));
 
+        holder.mTextView1.setTextColor(ProfitActivity.textColorExpence);
+        holder.mTextView3.setTextColor(ProfitActivity.textColorIncome);
+
         if (expence == 0.0) {
             holder.mTextView1.setText("");
         } else {
-            holder.mTextView1.setText(String.valueOf(expence));
+            holder.mTextView1.setText(customFormat("###,###.##", expence));
         }
         if (income == 0.0) {
             holder.mTextView3.setText("");
         } else {
-            holder.mTextView3.setText(String.valueOf(income));
+            holder.mTextView3.setText(customFormat("###,###.##", income));
         }
 
         SimpleDateFormat formatLong = new SimpleDateFormat("dd/MM/yyyy");
