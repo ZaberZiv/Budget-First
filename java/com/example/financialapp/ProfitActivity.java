@@ -15,6 +15,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -51,6 +53,10 @@ public class ProfitActivity extends AppCompatActivity {
     ListView listView;
     Button buttonDay;
 
+    Animation slideDown;
+    Animation slideUp;
+    Animation animateNumbers;
+
     private String currentDate;
     static int checkNumber;
     static long longMonth;
@@ -60,7 +66,9 @@ public class ProfitActivity extends AppCompatActivity {
     static double expenceTotalAllBtn;
     static int textColorExpence;
     static int textColorIncome;
-    static int bgColorForSwipe;
+    boolean flagMonth;
+    boolean flagYear;
+
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     static ArrayList<String> mMonthInStringList = new ArrayList<>();
@@ -77,22 +85,28 @@ public class ProfitActivity extends AppCompatActivity {
         // TextColor is selected in ExpenceAdapter class
         textColorExpence = ContextCompat.getColor(this, R.color.colorExpence);
         textColorIncome = ContextCompat.getColor(this, R.color.colorIncome);
-//        bgColorForSwipe = ContextCompat.getColor(this, R.color.colorAccent);
 
-        incomeTextView = (TextView) findViewById(R.id.incomeTextView);
-        expenceTextView = (TextView) findViewById(R.id.expenceTextView);
-        balanceTextView = (TextView) findViewById(R.id.balanceTextView);
-        totalIncomeTextView = (TextView) findViewById(R.id.totalIncomeTextView);
-        totalExpenceTextView = (TextView) findViewById(R.id.totalExpenceTextView);
-        mDisplayDate = (TextView) findViewById(R.id.showDateTextView);
+        incomeTextView = findViewById(R.id.incomeTextView);
+        expenceTextView = findViewById(R.id.expenceTextView);
+        balanceTextView = findViewById(R.id.balanceTextView);
+        totalIncomeTextView = findViewById(R.id.totalIncomeTextView);
+        totalExpenceTextView = findViewById(R.id.totalExpenceTextView);
+        mDisplayDate = findViewById(R.id.showDateTextView);
 
-        linearLayoutButtons = (LinearLayout) findViewById(R.id.linearLayoutButtons);
-        linearLayoutDate = (LinearLayout) findViewById(R.id.linearLayoutDate);
-        linearLayout1 = (LinearLayout) findViewById(R.id.linearLayout3);
-        linearLayout2 = (LinearLayout) findViewById(R.id.linearLayout4);
-        relativeLayout = (LinearLayout) findViewById(R.id.recycleLayout);
+        linearLayoutButtons = findViewById(R.id.linearLayoutButtons);
+        linearLayoutDate = findViewById(R.id.linearLayoutDate);
+        linearLayout1 = findViewById(R.id.linearLayout3);
+        linearLayout2 = findViewById(R.id.linearLayout4);
+        relativeLayout = findViewById(R.id.recycleLayout);
+        linearLayout = findViewById(R.id.showMonth);
+        listView = findViewById(R.id.listView);
 
-        buttonDay = (Button) findViewById(R.id.btnDay);
+        buttonDay = findViewById(R.id.btnDay);
+
+        //Animation
+        slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down_listview);
+        slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up_listview);
+        animateNumbers = AnimationUtils.loadAnimation(this, R.anim.scale_numbers);
 
         //Show the Date
         showDatePickerDialog();
@@ -191,24 +205,49 @@ public class ProfitActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.btnMonth:
                 checkNumber = 2;
+
                 if (!mMonthInStringList.isEmpty()) {
-                    showListView(mMonthInStringList, yearList);
+                    if (!flagMonth) {
+                        linearLayout.setVisibility(View.VISIBLE);
+                        linearLayout.startAnimation(slideUp);
+                        showListView(mMonthInStringList, yearList);
+                        flagMonth = true;
+                    } else {
+                        linearLayout.startAnimation(slideDown);
+                        linearLayout.setVisibility(View.INVISIBLE);
+                        flagMonth = false;
+                    }
                 }
                 break;
 
             case R.id.btnYear:
                 checkNumber = 3;
                 if (!mYearInStringList.isEmpty()) {
-                    showListView(mYearInStringList, yearForYearList);
+                    if (!flagYear) {
+                        linearLayout.setVisibility(View.VISIBLE);
+                        linearLayout.startAnimation(slideUp);
+                        showListView(mYearInStringList, yearForYearList);
+                        flagYear = true;
+                    } else {
+                        linearLayout.startAnimation(slideDown);
+                        linearLayout.setVisibility(View.INVISIBLE);
+                        flagYear = false;
+                    }
                 }
                 break;
 
                 // Доработать кнопку ALL
             default:
                 checkNumber = 0;
-                mDisplayDate.setText("ALL");
+                mDisplayDate.setText(R.string.btn_total);
                 incomeTextView.setText(customFormat("###,###.##", incomeTotalAllBtn));
                 expenceTextView.setText(customFormat("###,###.##", expenceTotalAllBtn));
+                balanceTextView.setText(customFormat("###,###.##", (incomeTotalAllBtn + expenceTotalAllBtn)));
+
+                incomeTextView.startAnimation(animateNumbers);
+                expenceTextView.startAnimation(animateNumbers);
+                balanceTextView.startAnimation(animateNumbers);
+
                 doRecycleView();
                 break;
         }
@@ -216,16 +255,7 @@ public class ProfitActivity extends AppCompatActivity {
 
     // ListView + Adapter для
     public void showListView(final ArrayList<String> listForListView, final ArrayList<String> listForLongYear) {
-        linearLayout = findViewById(R.id.showMonth);
 
-        linearLayout.setVisibility(View.VISIBLE);
-//        linearLayoutDate.setVisibility(View.INVISIBLE);
-//        linearLayoutButtons.setVisibility(View.INVISIBLE);
-//        linearLayout1.setVisibility(View.INVISIBLE);
-//        linearLayout2.setVisibility(View.INVISIBLE);
-//        relativeLayout.setVisibility(View.INVISIBLE);
-
-        listView = (ListView) findViewById(R.id.listView);
         // Сюда должен передаваться список с датой (Месяц + Год или просто Год в зависимости от нажатой кнопки)
         ArrayAdapter adapterForListView = new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, listForListView);
         listView.setAdapter(adapterForListView);
@@ -242,17 +272,13 @@ public class ProfitActivity extends AppCompatActivity {
                     Log.e("showListView", "After cleaning DB: " + longYear);
                 }
 
-
+                linearLayout.startAnimation(slideDown);
                 mDisplayDate.setText(listForListView.get(position));
-
-                linearLayout.setVisibility(View.INVISIBLE);
-//                linearLayoutButtons.setVisibility(View.VISIBLE);
-//                linearLayoutDate.setVisibility(View.VISIBLE);
-//                linearLayout1.setVisibility(View.VISIBLE);
-//                linearLayout2.setVisibility(View.VISIBLE);
-//                relativeLayout.setVisibility(View.VISIBLE);
                 cursorDataBase(getAllItems());
                 doRecycleView();
+                linearLayout.setVisibility(View.INVISIBLE);
+                flagYear = false;
+                flagMonth = false;
             }
         });
     }
@@ -296,7 +322,7 @@ public class ProfitActivity extends AppCompatActivity {
                 mDisplayDate.setText(currentDate);
 
                 dateLong = convertStringToLongDate(currentDate);
-//                cursorDataBase(dateLong);
+
                 checkNumber = 1;
                 cursorDataBase(getAllItems());
 
@@ -351,13 +377,18 @@ public class ProfitActivity extends AppCompatActivity {
             expenceTextView.setText("0.0");
         } else {
             expenceTextView.setText(customFormat("###,###.##", expence));
+            expenceTextView.startAnimation(animateNumbers);
         }
 
         if (income == 0.0) {
             incomeTextView.setText("0.0");
         } else {
             incomeTextView.setText(customFormat("###,###.##", income));
+            incomeTextView.startAnimation(animateNumbers);
         }
+
+        balanceTextView.setText(customFormat("###,###.##", (income + expence)));
+        balanceTextView.startAnimation(animateNumbers);
     }
 
     public void showTotalFromDB() {
@@ -405,7 +436,7 @@ public class ProfitActivity extends AppCompatActivity {
 
         totalIncomeTextView.setText(customFormat("###,###.##", income));
         totalExpenceTextView.setText(customFormat("###,###.##", expence));
-        balanceTextView.setText(customFormat("###,###.##", (income + expence)));
+//        balanceTextView.setText(customFormat("###,###.##", (income + expence)));
 
         //Information (Month and Year) for ListView in method filterClicked()
         mMonthInStringList.clear();

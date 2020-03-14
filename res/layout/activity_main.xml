@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:gravity="center_horizontal"
@@ -193,7 +194,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:ems="10"
-                android:hint="Add the description"
+                android:hint="@string/edit_text"
                 android:inputType="textMultiLine|text" />
         </LinearLayout>
 
@@ -238,7 +239,7 @@
                 android:layout_toRightOf="@id/zero"
                 android:layout_weight="1"
                 android:background="@drawable/mybutton"
-                android:onClick="expenses"
+                android:onClick="expences"
                 android:text="-"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -279,4 +280,13 @@
             android:textColor="@android:color/black"
             android:textSize="18sp" />
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

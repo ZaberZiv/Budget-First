@@ -42,8 +42,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
-                    android:text="Total Income "
+                    android:text="@string/total_income"
                     android:textSize="12sp" />
 
                 <TextView
@@ -59,13 +58,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:minHeight="50dp"
+                android:minHeight="60dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="BALANCE"
+                    android:text="@string/balance"
                     android:textSize="18sp" />
 
                 <TextView
@@ -88,7 +87,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total Expence"
+                    android:text="@string/total_expence"
                     android:textSize="12sp" />
 
                 <TextView
@@ -120,13 +119,13 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_horizontal|center_vertical"
-                android:minHeight="50dp"
+                android:minHeight="60dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Income"
+                    android:text="@string/income"
                     android:textSize="18sp" />
 
                 <TextView
@@ -149,7 +148,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Expence"
+                    android:text="@string/expence"
                     android:textSize="18sp" />
 
                 <TextView
@@ -196,7 +195,7 @@
         android:elevation="15dp"
         android:orientation="vertical"
         android:visibility="invisible"
-        android:background="#ffffff"
+        android:background="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -208,8 +207,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="8dp"
+            android:textColor="#000000"
             android:gravity="center_horizontal"
-            android:text="CHOOSE THE DATE"
+            android:text="@string/title_pick_date"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -262,7 +262,7 @@
             android:layout_weight="1"
             android:background="@color/colorAccent"
             android:onClick="filterClicked"
-            android:text="all"
+            android:text="@string/btn_total"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -274,7 +274,7 @@
             android:layout_weight="1"
             android:background="@color/colorAccent"
             android:onClick="filterClicked"
-            android:text="Year"
+            android:text="@string/btn_year"
             android:textSize="18sp" />
 
         <Button
@@ -284,7 +284,7 @@
             android:layout_weight="1"
             android:background="@color/colorAccent"
             android:onClick="filterClicked"
-            android:text="month"
+            android:text="@string/btn_month"
             android:textSize="18sp" />
 
         <Button
@@ -294,7 +294,7 @@
             android:layout_weight="1"
             android:background="@color/colorAccent"
             android:onClick="filterClicked"
-            android:text="day"
+            android:text="@string/btn_day"
             android:textSize="18sp" />
     </LinearLayout>
 

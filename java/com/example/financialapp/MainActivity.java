@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -49,14 +48,15 @@ public class MainActivity extends AppCompatActivity {
         FinancialDBHelper dbHelper = new FinancialDBHelper(this);
         mDatabase = dbHelper.getWritableDatabase();
 
-        text = (TextView) findViewById(R.id.text);
-        editText = (EditText) findViewById(R.id.editText);
-        mDisplayDate = (TextView) findViewById(R.id.textView4);
-        showDatePickerDialog();
+        text = findViewById(R.id.text);
+        editText = findViewById(R.id.editText);
+        mDisplayDate = findViewById(R.id.textView4);
 
         mNumbers = "";
         mFirstIncome = 0.0;
         mFirstExpence = 0.0;
+
+        showDatePickerDialog();
     }
 
     // Set numbers
@@ -64,48 +64,66 @@ public class MainActivity extends AppCompatActivity {
         inputStr = new StringBuilder(mNumbers);
 
         if (mNumbers.length() < 10) {
-            switch (Integer.parseInt(view.getTag().toString())) {
-                case 0:
-                    if (!mNumbers.isEmpty()) {
-                        mNumbers = inputStr.append("0").toString();
-                    }
-                    break;
-                case 1:
-                    mNumbers = inputStr.append("1").toString();
-                    break;
-                case 2:
-                    mNumbers = inputStr.append("2").toString();
-                    break;
-                case 3:
-                    mNumbers = inputStr.append("3").toString();
-                    break;
-                case 4:
-                    mNumbers = inputStr.append("4").toString();
-                    break;
-                case 5:
-                    mNumbers = inputStr.append("5").toString();
-                    break;
-                case 6:
-                    mNumbers = inputStr.append("6").toString();
-                    break;
-                case 7:
-                    mNumbers = inputStr.append("7").toString();
-                    break;
-                case 8:
-                    mNumbers = inputStr.append("8").toString();
-                    break;
-                case 9:
-                    mNumbers = inputStr.append("9").toString();
-                    break;
+            if (!mNumbers.contains("0.") || mNumbers.contains("0.") && mNumbers.length() < 4) {
+                switch (Integer.parseInt(view.getTag().toString())) {
+                    case 0:
+                        if (mNumbers.isEmpty()) {
+                            mNumbers = inputStr.append("0").toString();
+                        } else if (mNumbers.contains("0.") && !mNumbers.equals("0.0")) {
+                            mNumbers = inputStr.append("0").toString();
+                        } else if (!mNumbers.equals("0") && mNumbers.length() > 0) {
+                            mNumbers = inputStr.append("0").toString();
+                        }
+                        break;
+                    case 1:
+                        mNumbers = inputStr.append("1").toString();
+                        break;
+                    case 2:
+                        mNumbers = inputStr.append("2").toString();
+                        break;
+                    case 3:
+                        mNumbers = inputStr.append("3").toString();
+                        break;
+                    case 4:
+                        mNumbers = inputStr.append("4").toString();
+                        break;
+                    case 5:
+                        mNumbers = inputStr.append("5").toString();
+                        break;
+                    case 6:
+                        mNumbers = inputStr.append("6").toString();
+                        break;
+                    case 7:
+                        mNumbers = inputStr.append("7").toString();
+                        break;
+                    case 8:
+                        mNumbers = inputStr.append("8").toString();
+                        break;
+                    case 9:
+                        mNumbers = inputStr.append("9").toString();
+                        break;
+                }
             }
             checkIfNumbersEmpty();
         } else {
-            Toast.makeText(getApplicationContext(), "It is maximum number!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.toast_max_number, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void putPeriod(View view) {
+        refresherStringBuilder();
+
+        if (!mNumbers.contains(".") && mNumbers.length() != 0) {
+            mNumbers = inputStr.append(".").toString();
+            text.setText(mNumbers);
+        } else if (!mNumbers.contains(".") && mNumbers.length() == 0) {
+            mNumbers = inputStr.append("0.").toString();
+            text.setText(mNumbers);
         }
     }
 
     public void checkIfNumbersEmpty() {
-        if (!mNumbers.equals("")) {
+        if (mNumbers.length() != 0) {
             text.setText(customFormat("###,###.##", Double.parseDouble(mNumbers)));
         }
     }
@@ -132,9 +150,9 @@ public class MainActivity extends AppCompatActivity {
     public void clearDB(View view) {
         new AlertDialog.Builder(this)
                 .setIcon(android.R.mipmap.sym_def_app_icon)
-                .setTitle("DELETE DATA BASE")
-                .setMessage("You are going to DELETE ALL DATA! Are you sure?")
-                .setPositiveButton("YES, DELETE ALL", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.title_delete_db)
+                .setMessage(R.string.title_delete_message)
+                .setPositiveButton(R.string.title_delete_positive_btn, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mDatabase.delete(FinancialContract.FinancialEntry.TABLE_NAME, null, null);
@@ -146,10 +164,10 @@ public class MainActivity extends AppCompatActivity {
                         ProfitActivity.mYearInStringList.clear();
                         ProfitActivity.monthList.clear();
 
-                        Toast.makeText(MainActivity.this, "Database has been cleaned!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this,R.string.toast_delete_confirmation, Toast.LENGTH_SHORT).show();
                     }
                 })
-                .setNegativeButton("NO, DO NOT DELETE!", null)
+                .setNegativeButton(R.string.toast_delete_rejection, null)
                 .show();
     }
 
@@ -159,53 +177,52 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void putPeriod(View view) {
-        refresherStringBuilder();
-
-        if (!mNumbers.contains(".") && mNumbers.length() != 0) {
-            mNumbers = inputStr.append(".").toString();
-            text.setText(mNumbers);
-        } else if (!mNumbers.contains(".") && mNumbers.length() == 0) {
-            mNumbers = inputStr.append("0,").toString();
-            text.setText(mNumbers);
-        }
-    }
-
     // Button +
     public void income(View view) {
         if (mNumbers.length() > 0 && editText.getText().toString().trim().length() > 0) {
-            mFirstIncome = Double.parseDouble(mNumbers);
 
-            mNumbers = "";
-            text.setText("");
-            mItemName = editText.getText().toString();
-            editText.getText().clear();
-            mFirstExpence = 0.0;
-            // ADD TO DATA BASE
-            addToDataBase();
+            if (mNumbers.equals("0.0") || mNumbers.equals("0.") || mNumbers.equals("0")) {
+                mNumbers = "";
+                text.setText("");
+                Toast.makeText(this, R.string.toast_not_equal_zero, Toast.LENGTH_SHORT).show();
+            } else {
+                mFirstIncome = Double.parseDouble(mNumbers);
+                mFirstExpence = 0.0;
 
+                mNumbers = "";
+                text.setText("");
+                mItemName = editText.getText().toString();
+                editText.getText().clear();
+
+                addToDataBase();
+            }
         } else {
-            Toast.makeText(this, "Please add numbers and description.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_add_numbers, Toast.LENGTH_SHORT).show();
         }
     }
 
-    // Button -
-    public void expenses(View view) {
+    // Button - expences
+    public void expences(View view) {
         if (mNumbers.length() > 0 && editText.getText().toString().trim().length() > 0) {
-            mFirstExpence = Double.parseDouble(mNumbers);
 
-            mNumbers = "";
-            text.setText("");
-            mFirstExpence = mFirstExpence * -1;
+            if (mNumbers.equals("0.0") || mNumbers.equals("0.") || mNumbers.equals("0")) {
+                mNumbers = "";
+                text.setText("");
+                Toast.makeText(this, R.string.toast_not_equal_zero, Toast.LENGTH_SHORT).show();
+            } else {
+                mFirstExpence = Double.parseDouble(mNumbers);
+                mFirstExpence = mFirstExpence * -1;
+                mFirstIncome = 0.0;
 
-            mItemName = editText.getText().toString();
-            editText.setText("");
-            mFirstIncome = 0.0;
-            // ADD TO DATA BASE
-            addToDataBase();
+                mNumbers = "";
+                text.setText("");
+                mItemName = editText.getText().toString();
+                editText.setText("");
 
+                addToDataBase();
+            }
         } else {
-            Toast.makeText(this, "Please add numbers and description.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_add_numbers, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -254,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    // DATA BASE
+    // DATA BASE - recording data
     public void addToDataBase() {
         long longDateDB = convertStringToLongDate(mFormatedDate);
         long longMonthDB = convertStringToLongMonth(mFormatedDate);
@@ -276,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             longDate = new SimpleDateFormat("dd/MM/yyyy").parse(dateInString).getTime();
         } catch (Exception e) {
-            Log.e("Data Error", "Check the convertion of Date from String to long");
+            Log.e("ConverterDate", "Check the convertion of Date from String to long");
             e.printStackTrace();
         }
         return longDate;
@@ -287,7 +304,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             longDate = new SimpleDateFormat("dd/MM/yyyy").parse(dateInString).getTime();
         } catch (Exception e) {
-            Log.e("Data Error", "Check the convertion of Date from String to long");
+            Log.e("ConverterMonth", "Check the convertion of Date from String to long");
             e.printStackTrace();
         }
 
@@ -296,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             longDate = new SimpleDateFormat("MMMM").parse(pickMonth).getTime();
         } catch (Exception e) {
-            Log.e("Data Error", "Check the convertion of Date from String to long");
+            Log.e("ConverterMonth", "Check the convertion of Date from String to long");
             e.printStackTrace();
         }
 
@@ -308,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             longDate = new SimpleDateFormat("dd/MM/yyyy").parse(dateInString).getTime();
         } catch (Exception e) {
-            Log.e("Data Error", "Check the convertion of Date from String to long");
+            Log.e("ConverterYear", "Check the convertion of Date from String to long");
             e.printStackTrace();
         }
 
@@ -317,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             longDate = new SimpleDateFormat("yyyy").parse(pickYear).getTime();
         } catch (Exception e) {
-            Log.e("Data Error", "Check the convertion of Date from String to long");
+            Log.e("ConverterYear", "Check the convertion of Date from String to long");
             e.printStackTrace();
         }
 
