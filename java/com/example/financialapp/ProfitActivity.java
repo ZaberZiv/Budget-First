@@ -38,15 +38,15 @@ public class ProfitActivity extends AppCompatActivity {
     private SQLiteDatabase mDatabase;
     private RecyclerView recyclerView;
 
-    TextView mDisplayDate;
+    TextView displayDateTextView;
     TextView incomeTextView;
     TextView expenceTextView;
     TextView balanceTextView;
     TextView totalIncomeTextView;
     TextView totalExpenceTextView;
     LinearLayout linearLayout;
-    LinearLayout linearLayout1;
-    LinearLayout linearLayout2;
+    LinearLayout linearLayoutBalance;
+    LinearLayout linearLayoutScore;
     LinearLayout linearLayoutDate;
     LinearLayout linearLayoutButtons;
     LinearLayout relativeLayout;
@@ -91,12 +91,12 @@ public class ProfitActivity extends AppCompatActivity {
         balanceTextView = findViewById(R.id.balanceTextView);
         totalIncomeTextView = findViewById(R.id.totalIncomeTextView);
         totalExpenceTextView = findViewById(R.id.totalExpenceTextView);
-        mDisplayDate = findViewById(R.id.showDateTextView);
+        displayDateTextView = findViewById(R.id.showDateTextView);
 
         linearLayoutButtons = findViewById(R.id.linearLayoutButtons);
         linearLayoutDate = findViewById(R.id.linearLayoutDate);
-        linearLayout1 = findViewById(R.id.linearLayout3);
-        linearLayout2 = findViewById(R.id.linearLayout4);
+        linearLayoutBalance = findViewById(R.id.linearLayoutBalance);
+        linearLayoutScore = findViewById(R.id.linearLayoutScore);
         relativeLayout = findViewById(R.id.recycleLayout);
         linearLayout = findViewById(R.id.showMonth);
         listView = findViewById(R.id.listView);
@@ -115,6 +115,7 @@ public class ProfitActivity extends AppCompatActivity {
         FinancialDBHelper dbHelper = new FinancialDBHelper(this);
         mDatabase = dbHelper.getWritableDatabase();
         showTotalFromDB();
+        cursorDataBase(getAllItems());
 
         //RecycleView
         doRecycleView();
@@ -239,7 +240,7 @@ public class ProfitActivity extends AppCompatActivity {
                 // Доработать кнопку ALL
             default:
                 checkNumber = 0;
-                mDisplayDate.setText(R.string.btn_total);
+                displayDateTextView.setText(R.string.btn_total);
                 incomeTextView.setText(customFormat("###,###.##", incomeTotalAllBtn));
                 expenceTextView.setText(customFormat("###,###.##", expenceTotalAllBtn));
                 balanceTextView.setText(customFormat("###,###.##", (incomeTotalAllBtn + expenceTotalAllBtn)));
@@ -273,7 +274,7 @@ public class ProfitActivity extends AppCompatActivity {
                 }
 
                 linearLayout.startAnimation(slideDown);
-                mDisplayDate.setText(listForListView.get(position));
+                displayDateTextView.setText(listForListView.get(position));
                 cursorDataBase(getAllItems());
                 doRecycleView();
                 linearLayout.setVisibility(View.INVISIBLE);
@@ -285,9 +286,7 @@ public class ProfitActivity extends AppCompatActivity {
 
     // Calendar
     public void showDatePickerDialog() {
-        //Showing the date that Uses have set in MainActivity
-        currentDate = MainActivity.mFormatedDate;
-        mDisplayDate.setText(currentDate);
+        displayDateTextView.setText(R.string.btn_total);
 
         buttonDay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -319,7 +318,7 @@ public class ProfitActivity extends AppCompatActivity {
                 } else {
                     currentDate = dayOfMonth + "/" + month + "/" + year;
                 }
-                mDisplayDate.setText(currentDate);
+                displayDateTextView.setText(currentDate);
 
                 dateLong = convertStringToLongDate(currentDate);
 

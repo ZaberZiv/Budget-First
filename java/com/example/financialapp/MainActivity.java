@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,12 +24,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-
 public class MainActivity extends AppCompatActivity {
 
     TextView text;
     TextView mDisplayDate;
     EditText editText;
+    ImageView imageViewTop;
     static StringBuilder inputStr;
     static double mFirstIncome;
     static double mFirstExpence;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         text = findViewById(R.id.text);
         editText = findViewById(R.id.editText);
         mDisplayDate = findViewById(R.id.textView4);
+        imageViewTop = findViewById(R.id.imageViewTop);
 
         mNumbers = "";
         mFirstIncome = 0.0;
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     // Set numbers
     public void buttonClicked(View view) {
         inputStr = new StringBuilder(mNumbers);
+        imageViewTop.setVisibility(View.INVISIBLE);
 
         if (mNumbers.length() < 10) {
             if (!mNumbers.contains("0.") || mNumbers.contains("0.") && mNumbers.length() < 4) {
@@ -180,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
     // Button +
     public void income(View view) {
         if (mNumbers.length() > 0 && editText.getText().toString().trim().length() > 0) {
-
             if (mNumbers.equals("0.0") || mNumbers.equals("0.") || mNumbers.equals("0")) {
                 mNumbers = "";
                 text.setText("");
@@ -198,6 +200,9 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             Toast.makeText(this, R.string.toast_add_numbers, Toast.LENGTH_SHORT).show();
+            if (mNumbers.isEmpty()) {
+                imageViewTop.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -223,6 +228,9 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             Toast.makeText(this, R.string.toast_add_numbers, Toast.LENGTH_SHORT).show();
+            if (mNumbers.isEmpty()) {
+                imageViewTop.setVisibility(View.VISIBLE);
+            }
         }
     }
 

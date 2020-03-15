@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:minWidth="100dp"
             android:text="10 000"
-            android:textColor="#6C6B6B"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -30,8 +29,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="100dp"
-            android:text=""
-            android:textColor="#6C6B6B"
             android:textSize="18sp"
             android:textStyle="bold" />
 

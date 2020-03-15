@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">FinancialApp</string>
-    <string name="title_activity_history">HistoryActivity</string>
+    <string name="app_name">Budget First</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -12,7 +11,7 @@
     <string name="expence">Expence</string>
     <string name="balance">BALANCE</string>
 
-    <string name="btn_total">All</string>
+    <string name="btn_total">ALL</string>
     <string name="btn_year">Year</string>
     <string name="btn_month">Month</string>
     <string name="btn_day">Day</string>
