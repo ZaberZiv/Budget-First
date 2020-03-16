@@ -1,4 +1,4 @@
-package com.example.financialapp;
+package com.budgetfirst.financialapp;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;

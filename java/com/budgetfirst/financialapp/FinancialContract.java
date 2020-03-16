@@ -1,4 +1,4 @@
-package com.example.financialapp;
+package com.budgetfirst.financialapp;
 
 import android.provider.BaseColumns;
 
