@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Budget First</string>
+
+    <string name="edit_text">Добавьте описание</string>
+    <string name="total_income">Общий Доход</string>
+    <string name="total_expence">Общий Расход</string>
+    <string name="income">Доход</string>
+    <string name="expence">Расход</string>
+    <string name="balance">БАЛАНС</string>
+
+    <string name="btn_total">ВСЁ</string>
+    <string name="btn_year">Год</string>
+    <string name="btn_month">Месяц</string>
+    <string name="btn_day">День</string>
+    <string name="title_pick_date">ВЫБЕРИ ДАТУ</string>
+
+    <string name="title_delete_db">УДАЛЕНИЕ ДАННЫХ</string>
+    <string name="title_delete_message">Вы собираетесь УДАЛИТЬ ВСЕ ДАННЫЕ! Вы уверены?</string>
+    <string name="title_delete_positive_btn">ДА, УДАЛИТЬ ВСЁ!</string>
+
+    <string name="toast_delete_confirmation">База данных очищена!</string>
+    <string name="toast_delete_rejection">НЕТ, НЕ УДАЛЯТЬ!</string>
+    <string name="toast_max_number">Это максимальное число!</string>
+    <string name="toast_not_equal_zero">Пожалуйста, введите сумму не равную: 0, 0.0</string>
+    <string name="toast_add_numbers">Пожалуйста введите сумму и/или описание.</string>
+
+</resources>

@@ -1,10 +1,7 @@
 <resources>
     <string name="app_name">Budget First</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
 
-    <string name="edit_text">Add the description</string>
+    <string name="edit_text">Insert the description</string>
     <string name="total_income">Total Income</string>
     <string name="total_expence">Total Expence</string>
     <string name="income">Income</string>
@@ -24,7 +21,7 @@
     <string name="toast_delete_confirmation">Database has been cleaned!</string>
     <string name="toast_delete_rejection">NO, DO NOT DELETE!</string>
     <string name="toast_max_number">It is maximum number!</string>
-    <string name="toast_not_equal_zero">Please add numbers not equal to: 0, 0.0</string>
-    <string name="toast_add_numbers">Please add numbers and description.</string>
+    <string name="toast_not_equal_zero">Please insert numbers not equal to: 0, 0.0</string>
+    <string name="toast_add_numbers">Please insert numbers and/or description.</string>
 
 </resources>
