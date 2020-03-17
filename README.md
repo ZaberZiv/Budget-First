@@ -12,7 +12,8 @@ On bottom menu: User can delete all data from database or check all the operatio
 ![Image alt](https://github.com/ZaberZiv/Home-project/raw/master/Screenshot_2.png)
 
 In the second menu, User can check what operations were added at a certain point in time. 
-He can choose the year, month, day or view all the data for all the time.
+User can choose the year, month, day or view all the data for all the time.
+To delete item - swipe left.
 
 ![Image alt](https://github.com/ZaberZiv/Home-project/raw/master/Screenshot_3.png)
 ![Image alt](https://github.com/ZaberZiv/Home-project/raw/master/Screenshot_4.png)
