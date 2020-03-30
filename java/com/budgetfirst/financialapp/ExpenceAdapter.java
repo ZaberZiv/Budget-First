@@ -1,4 +1,4 @@
-package com.example.financialapp;
+package com.budgetfirst.financialapp;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,12 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
 
-import static com.example.financialapp.MainActivity.customFormat;
+import static com.budgetfirst.financialapp.MainActivity.customFormat;
 
 public class ExpenceAdapter extends RecyclerView.Adapter<ExpenceAdapter.ExpenceViewHolder> {
 
