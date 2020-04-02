@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         showDatePickerDialog();
     }
 
-    // Set numbers
+    // Set numbers buttons
     public void buttonClicked(View view) {
         inputStr = new StringBuilder(mNumbers);
         imageViewTop.setVisibility(View.INVISIBLE);
@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Period button
     public void putPeriod(View view) {
         refresherStringBuilder();
 
@@ -135,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         inputStr = new StringBuilder(mNumbers);
     }
 
-    // Delete numbers
+    // Delete char button
     public void deleteChar(View view) {
         if (mNumbers.length() > 0) {
             mNumbers = mNumbers.substring(0, mNumbers.length() - 1);
@@ -149,10 +150,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // CLEAN DB
+    // CLEAN DB button
     public void clearDB(View view) {
         new AlertDialog.Builder(this)
-                .setIcon(android.R.mipmap.sym_def_app_icon)
+                .setIcon(android.R.drawable.ic_notification_clear_all)
                 .setTitle(R.string.title_delete_db)
                 .setMessage(R.string.title_delete_message)
                 .setPositiveButton(R.string.title_delete_positive_btn, new DialogInterface.OnClickListener() {
@@ -180,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // Button +
+    // Button PLUS (adding the income to database)
     public void income(View view) {
         if (mNumbers.length() > 0 && editText.getText().toString().trim().length() > 0) {
             if (mNumbers.equals("0.0") || mNumbers.equals("0.") || mNumbers.equals("0")) {
@@ -206,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Button - expences
+    // Button MINUS (adding the expence to database)
     public void expences(View view) {
         if (mNumbers.length() > 0 && editText.getText().toString().trim().length() > 0) {
 
@@ -235,6 +236,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Calendar
+    // Shows current date
     public void showDatePickerDialog() {
         // Show current date
         Date date = new Date();
@@ -349,8 +351,16 @@ public class MainActivity extends AppCompatActivity {
         return longDate;
     }
 
+    // Formats the numbers (doubles type) which displayed on the screen
     static public String customFormat(String pattern, double value) {
         DecimalFormat myFormatter = new DecimalFormat(pattern);
         return myFormatter.format(value);
+    }
+
+    // Closing DataBase when the app destroys
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mDatabase.close();
     }
 }

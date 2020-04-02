@@ -202,7 +202,7 @@
                 android:layout_marginRight="16dp"
                 android:ems="10"
                 android:hint="@string/edit_text"
-                android:inputType="textMultiLine|text" />
+                android:inputType="textMultiLine|text|textCapSentences" />
         </LinearLayout>
 
         <LinearLayout

@@ -145,7 +145,10 @@ public class ProfitActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
     }
 
-    // Removing items from RecycleView and Database
+    /**
+     * Removing items from RecycleView and Database.
+     * Method is implemented in Swipe to delete code -> onSwiped method (in onCreate()).
+     */
     private void removeItem(long id) {
         mDatabase.delete(FinancialContract.FinancialEntry.TABLE_NAME,
                 FinancialContract.FinancialEntry._ID + "=" + id, null);
@@ -154,7 +157,11 @@ public class ProfitActivity extends AppCompatActivity {
         mAdapter.swapCursor(getAllItems());
     }
 
-    // Adding Cursor to the RecycleView (doRecycleView() method)
+    /**
+     * Adding Cursor to the mAdapter (in doRecycleView() method)
+     * By default, the cursor displays data for all time.
+     * Depending on the button pressed in method filterClicked() will display data for the selected period.
+     */
     public Cursor getAllItems() {
         String selectionDay = FinancialContract.FinancialEntry.COLUMN_TIMESTAMP + " = " + dateLong;
         String selectionMonthAndYear = FinancialContract.FinancialEntry.COLUMN_MONTH + " = " + longMonth + " AND " + FinancialContract.FinancialEntry.COLUMN_YEAR + " = " + longYear;
@@ -203,12 +210,16 @@ public class ProfitActivity extends AppCompatActivity {
         }
     }
 
-    // Buttons Year, Month, Show All. The Day btn in showDatePickerDialog() method;
+    /**
+     * Buttons Year, Month, Show All. The Day btn in showDatePickerDialog() method;
+     * When you click on the button, the variable checkNumber is assigned a number.
+     * It determines which cursor gets into the adapter --> getAllItems() method.
+     */
     public void filterClicked(View view) {
         switch (view.getId()) {
+            // Month btn
             case R.id.btnMonth:
                 checkNumber = 2;
-
                 if (!mMonthInStringList.isEmpty()) {
                     if (!flagMonth) {
                         linearLayout.setVisibility(View.VISIBLE);
@@ -222,7 +233,7 @@ public class ProfitActivity extends AppCompatActivity {
                     }
                 }
                 break;
-
+            // Year btn
             case R.id.btnYear:
                 checkNumber = 3;
                 if (!mYearInStringList.isEmpty()) {
@@ -238,8 +249,7 @@ public class ProfitActivity extends AppCompatActivity {
                     }
                 }
                 break;
-
-                // Доработать кнопку ALL
+            // Show all btn
             default:
                 checkNumber = 0;
                 displayDateTextView.setText(R.string.btn_total);
@@ -256,10 +266,15 @@ public class ProfitActivity extends AppCompatActivity {
         }
     }
 
-    // ListView + Adapter для
+    /**
+     * This view is hidden by default.
+     * It is displayed by pressing the buttons in filterClicked().
+     * Shows a list of added dates (Month + Year or just Year).
+     * Hides when you select an item or press a button.
+     * Lists in params comes from showTotalFromDB();
+     */
     public void showListView(final ArrayList<String> listForListView, final ArrayList<String> listForLongYear) {
 
-        // Сюда должен передаваться список с датой (Месяц + Год или просто Год в зависимости от нажатой кнопки)
         ArrayAdapter adapterForListView = new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, listForListView);
         listView.setAdapter(adapterForListView);
 
@@ -286,7 +301,11 @@ public class ProfitActivity extends AppCompatActivity {
         });
     }
 
-    // Calendar
+    /**
+     * Calendar
+     * When the user selects a date, the variable checkNumber is assigned the number 1.
+     * It is passed to method getAllItems() to pass the cursor to the adapter.
+     */
     public void showDatePickerDialog() {
         displayDateTextView.setText(R.string.btn_total);
 
@@ -321,17 +340,18 @@ public class ProfitActivity extends AppCompatActivity {
                     currentDate = dayOfMonth + "/" + month + "/" + year;
                 }
                 displayDateTextView.setText(currentDate);
-
                 dateLong = convertStringToLongDate(currentDate);
 
                 checkNumber = 1;
                 cursorDataBase(getAllItems());
-
                 doRecycleView();
             }
         };
     }
 
+    /**
+     * from String to long type date converter
+     */
     static public long convertStringToLongDate(String dateInString) {
         long longDate = 0;
         try {
@@ -343,7 +363,10 @@ public class ProfitActivity extends AppCompatActivity {
         return longDate;
     }
 
-    // Показывает суммы на экране по выбранному дню
+    /**
+     * Shows the amount on the screen for the selected day/month/year.
+     * Income, Expence and Balance Views are changing
+     */
     public void cursorDataBase(Cursor cursor) {
         ArrayList<String> amountCheckDB = new ArrayList<>();
         ArrayList<String> incomeCheckDB = new ArrayList<>();
@@ -362,7 +385,6 @@ public class ProfitActivity extends AppCompatActivity {
         }
         cursor.close();
 
-        // Показывает на экране суммы за определенный период
         double income = 0.0;
         double expence = 0.0;
 
@@ -392,6 +414,10 @@ public class ProfitActivity extends AppCompatActivity {
         balanceTextView.startAnimation(animateNumbers);
     }
 
+    /**
+     * This method shows the results of income and expenses (Total Income and Total Expence Views).
+     * Lists with dates go to filterClicked() method.
+     */
     public void showTotalFromDB() {
         ArrayList<String> amountCheckDB = new ArrayList<>();
         ArrayList<String> incomeCheckDB = new ArrayList<>();
@@ -420,7 +446,6 @@ public class ProfitActivity extends AppCompatActivity {
         }
         c.close();
 
-        // Показывает на экране итоговые значения Total и Баланс
         double income = 0.0;
         double expence = 0.0;
 
@@ -437,7 +462,6 @@ public class ProfitActivity extends AppCompatActivity {
 
         totalIncomeTextView.setText(customFormat("###,###.##", income));
         totalExpenceTextView.setText(customFormat("###,###.##", expence));
-//        balanceTextView.setText(customFormat("###,###.##", (income + expence)));
 
         //Information (Month and Year) for ListView in method filterClicked()
         mMonthInStringList.clear();
@@ -482,5 +506,12 @@ public class ProfitActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    // Closing DataBase when the app destroys
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mDatabase.close();
     }
 }
