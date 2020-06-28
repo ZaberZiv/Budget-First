@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout5"
@@ -224,7 +224,6 @@
                 android:layout_toRightOf="@id/zero"
                 android:layout_weight="1"
                 android:background="@drawable/mybutton"
-                android:onClick="income"
                 android:text="+" />
 
             <TextView
@@ -246,7 +245,6 @@
                 android:layout_toRightOf="@id/zero"
                 android:layout_weight="1"
                 android:background="@drawable/mybutton"
-                android:onClick="expences"
                 android:text="-"
                 android:textStyle="bold" />
         </LinearLayout>

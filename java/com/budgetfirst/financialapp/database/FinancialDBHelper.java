@@ -1,4 +1,4 @@
-package com.budgetfirst.financialapp;
+package com.budgetfirst.financialapp.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

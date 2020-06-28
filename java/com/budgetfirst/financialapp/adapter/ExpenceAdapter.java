@@ -1,4 +1,4 @@
-package com.budgetfirst.financialapp;
+package com.budgetfirst.financialapp.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,20 +9,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.SimpleDateFormat;
+import com.budgetfirst.financialapp.R;
+import com.budgetfirst.financialapp.database.FinancialContract;
+import com.budgetfirst.financialapp.presenter.PanelPresenter;
 
-import static com.budgetfirst.financialapp.MainActivity.customFormat;
+import java.text.SimpleDateFormat;
 
 public class ExpenceAdapter extends RecyclerView.Adapter<ExpenceAdapter.ExpenceViewHolder> {
 
     private Context mContext;
     private Cursor mCursor;
+    private PanelPresenter mPanelPresenter;
 
     public ExpenceAdapter(Context context, Cursor cursor) {
         mContext = context;
         mCursor = cursor;
+        mPanelPresenter = new PanelPresenter();
     }
 
     public static class ExpenceViewHolder extends RecyclerView.ViewHolder {
@@ -63,18 +68,18 @@ public class ExpenceAdapter extends RecyclerView.Adapter<ExpenceAdapter.ExpenceV
         long id = mCursor.getLong(mCursor.getColumnIndex(FinancialContract.FinancialEntry._ID));
         long date = mCursor.getLong(mCursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_TIMESTAMP));
 
-        holder.mTextView1.setTextColor(ProfitActivity.textColorExpence);
-        holder.mTextView3.setTextColor(ProfitActivity.textColorIncome);
+        holder.mTextView1.setTextColor(ContextCompat.getColor(mContext, R.color.colorExpence));
+        holder.mTextView3.setTextColor(ContextCompat.getColor(mContext, R.color.colorIncome));
 
         if (expence == 0.0) {
             holder.mTextView1.setText("");
         } else {
-            holder.mTextView1.setText(customFormat("###,###.##", expence));
+            holder.mTextView1.setText(mPanelPresenter.customFormat("###,###.##", expence));
         }
         if (income == 0.0) {
             holder.mTextView3.setText("");
         } else {
-            holder.mTextView3.setText(customFormat("###,###.##", income));
+            holder.mTextView3.setText(mPanelPresenter.customFormat("###,###.##", income));
         }
 
         SimpleDateFormat formatLong = new SimpleDateFormat("dd/MM/yyyy");
