@@ -169,7 +169,6 @@ public class ProfitActivity extends AppCompatActivity {
         sYearInStringList = mDatabasePresenter.fillArrayPresenter(sYearInStringList, 0);
         sMonthInStringList = mDatabasePresenter.fillArrayPresenter(sMonthInStringList, 1);
 
-        Log.i("filterClicked", "sYearInStringList: " + sYearInStringList);
         switch (view.getId()) {
             // Month btn
             case R.id.btnMonth:
@@ -195,7 +194,6 @@ public class ProfitActivity extends AppCompatActivity {
                         linearLayout.setVisibility(View.VISIBLE);
                         linearLayout.startAnimation(slideUp);
                         showListView(sYearInStringList, mDatabasePresenter.getmYearForYearList());
-                        Log.i("sCheckNumber 3", "getmYearList(): " + mDatabasePresenter.getmYearForYearList());
                         flagYear = true;
                     } else {
                         linearLayout.startAnimation(slideDown);
@@ -253,7 +251,6 @@ public class ProfitActivity extends AppCompatActivity {
 
                 linearLayout.startAnimation(slideDown);
                 displayDateTextView.setText(listForListView.get(position));
-                Log.i("showListView", "listForListView List: " + listForListView);
 
                 showCurrentSum(getAllItems());
                 doRecyclerView();
