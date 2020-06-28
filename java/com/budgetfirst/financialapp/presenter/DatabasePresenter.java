@@ -119,31 +119,32 @@ public class DatabasePresenter {
             if (num == 0) dateInStringList.add(pickYear);
             if (num == 1) dateInStringList.add(pickMonth + " " + pickYear);
         }
+        removeDuplicates(dateInStringList, yearForYearList, null, num);
+        removeDuplicates(dateInStringList, monthList, yearList, num);
+        removeDuplicates(mYearForYearList, null, null, 2);
 
-        if (num == 0) {
-            // removing all equals dates (Year)
-            for (int i = 0; i < dateInStringList.size() - 1; i++) {
-                for (int k = dateInStringList.size() - 1; k > i; k--) {
-                    if (dateInStringList.get(i).equals(dateInStringList.get(k))) {
-                        dateInStringList.remove(k);
-                        yearForYearList.remove(k);
-                    }
-                }
-            }
-        }
-
-        if (num == 1) {
-            for (int i = 0; i < dateInStringList.size() - 1; i++) {
-                for (int k = dateInStringList.size() - 1; k > i; k--) {
-                    if (dateInStringList.get(i).equals(dateInStringList.get(k))) {
-                        dateInStringList.remove(k);
-                        monthList.remove(k);
-                        yearList.remove(k);
-                    }
-                }
-            }
-        }
         return dateInStringList;
+    }
+
+    private void removeDuplicates(ArrayList<String> arrayList,
+                                  ArrayList<String> arrayListTwo,
+                                  ArrayList<String> arrayListThree,
+                                  int num) {
+
+        for (int i = 0; i < arrayList.size() - 1; i++) {
+            for (int k = arrayList.size() - 1; k > i; k--) {
+                if (arrayList.get(i).equals(arrayList.get(k))) {
+                    arrayList.remove(k);
+                    if (num == 0) {
+                        arrayListTwo.remove(k);
+                    }
+                    if (num == 1) {
+                        arrayListTwo.remove(k);
+                        arrayListThree.remove(k);
+                    }
+                }
+            }
+        }
     }
 
     public double getIncome() {
