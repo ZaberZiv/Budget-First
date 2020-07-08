@@ -30,13 +30,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_error_24dp"
-                android:visibility="invisible" />
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical|end"
+                android:layout_gravity="center_vertical"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="36sp" />
 
@@ -62,7 +62,7 @@
                 <Button
                     android:id="@+id/seven"
                     style="@style/calc_button"
-                    android:layout_toLeftOf="@id/eight"
+                    android:layout_toStartOf="@id/eight"
                     android:background="@drawable/mybutton"
                     android:onClick="buttonClicked"
                     android:tag="7"
@@ -80,7 +80,7 @@
                 <Button
                     android:id="@+id/nine"
                     style="@style/calc_button"
-                    android:layout_toRightOf="@id/eight"
+                    android:layout_toEndOf="@id/eight"
                     android:background="@drawable/mybutton"
                     android:onClick="buttonClicked"
                     android:tag="9"
@@ -95,7 +95,7 @@
                 <Button
                     android:id="@+id/four"
                     style="@style/calc_button"
-                    android:layout_toLeftOf="@id/five"
+                    android:layout_toStartOf="@id/five"
                     android:background="@drawable/mybutton"
                     android:onClick="buttonClicked"
                     android:tag="4"
@@ -113,7 +113,7 @@
                 <Button
                     android:id="@+id/six"
                     style="@style/calc_button"
-                    android:layout_toRightOf="@id/five"
+                    android:layout_toEndOf="@id/five"
                     android:background="@drawable/mybutton"
                     android:onClick="buttonClicked"
                     android:tag="6"
@@ -128,7 +128,7 @@
                 <Button
                     android:id="@+id/one"
                     style="@style/calc_button"
-                    android:layout_toLeftOf="@id/two"
+                    android:layout_toStartOf="@id/two"
                     android:background="@drawable/mybutton"
                     android:onClick="buttonClicked"
                     android:tag="1"
@@ -146,7 +146,7 @@
                 <Button
                     android:id="@+id/three"
                     style="@style/calc_button"
-                    android:layout_toRightOf="@id/two"
+                    android:layout_toEndOf="@id/two"
                     android:background="@drawable/mybutton"
                     android:onClick="buttonClicked"
                     android:tag="3"
@@ -161,7 +161,7 @@
                 <Button
                     android:id="@+id/period"
                     style="@style/calc_button"
-                    android:layout_toLeftOf="@id/zero"
+                    android:layout_toStartOf="@id/zero"
                     android:background="@drawable/mybutton"
                     android:onClick="putPeriod"
                     android:text="." />
@@ -178,7 +178,7 @@
                 <Button
                     android:id="@+id/delete"
                     style="@style/calc_button"
-                    android:layout_toRightOf="@id/zero"
+                    android:layout_toEndOf="@id/zero"
                     android:background="@drawable/mybutton"
                     android:onClick="deleteChar"
                     android:text="C" />
@@ -221,7 +221,6 @@
                 style="@style/result_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/zero"
                 android:layout_weight="1"
                 android:background="@drawable/mybutton"
                 android:text="+" />
@@ -242,7 +241,6 @@
                 style="@style/result_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/zero"
                 android:layout_weight="1"
                 android:background="@drawable/mybutton"
                 android:text="-"
@@ -271,7 +269,8 @@
             android:onClick="clearDB"
             android:src="@drawable/ic_delete"
             android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:contentDescription="@string/image_bucket" />
 
         <ImageButton
             android:id="@+id/analizePage"
@@ -283,7 +282,8 @@
             android:onClick="onActionPressed"
             android:src="@drawable/ic_insert_chart_black_24dp"
             android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:contentDescription="@string/image_history" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Group

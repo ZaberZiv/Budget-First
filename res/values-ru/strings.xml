@@ -25,4 +25,7 @@
     <string name="toast_not_equal_zero">Пожалуйста, введите сумму не равную: 0, 0.0</string>
     <string name="toast_add_numbers">Пожалуйста введите сумму и/или описание.</string>
 
+    <string name="image_bucket">Удалить все данные</string>
+    <string name="image_history">Показать историю всех операций</string>
+
 </resources>

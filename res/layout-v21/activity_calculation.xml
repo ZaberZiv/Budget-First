@@ -34,7 +34,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
@@ -196,10 +196,7 @@
         android:id="@+id/linearLayoutDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_margin="8dp"
         android:elevation="10dp"
         android:gravity="center_horizontal|center_vertical"
         android:orientation="horizontal"
@@ -222,7 +219,6 @@
         android:id="@+id/linearLayoutButtons"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:background="@color/colorAccent"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -230,45 +226,26 @@
 
         <Button
             android:id="@+id/showAll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/colorAccent"
-            android:onClick="filterClicked"
+            style="@style/btn_style"
             android:text="@string/btn_total"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnYear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/colorAccent"
+            style="@style/btn_style"
             android:onClick="filterClicked"
-            android:text="@string/btn_year"
-            android:textSize="18sp" />
+            android:text="@string/btn_year" />
 
         <Button
             android:id="@+id/btnMonth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/colorAccent"
-            android:onClick="filterClicked"
-            android:text="@string/btn_month"
-            android:textSize="18sp" />
+            style="@style/btn_style"
+            android:text="@string/btn_month" />
 
         <Button
             android:id="@+id/btnDay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/colorAccent"
-            android:onClick="filterClicked"
-            android:text="@string/btn_day"
-            android:textSize="18sp" />
+            style="@style/btn_style"
+            android:text="@string/btn_day" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

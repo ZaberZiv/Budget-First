@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -41,7 +39,6 @@ public class CalculationActivity extends AppCompatActivity implements Calculatio
     private ExpenceAdapter mAdapter;
     private SQLiteDatabase mDatabase;
     private RecyclerView mRecyclerView;
-    private Dialog dialog;
 
     private TextView displayDateTextView;
     private TextView incomeTextView;
@@ -49,14 +46,7 @@ public class CalculationActivity extends AppCompatActivity implements Calculatio
     private TextView balanceTextView;
     private TextView totalIncomeTextView;
     private TextView totalExpenceTextView;
-    private LinearLayout linearLayout;
-    private ListView listView;
     private Button buttonDay;
-    private Button buttonMonth;
-
-
-    private Animation slideDown;
-    private Animation slideUp;
     private Animation animateNumbers;
 
     private static int sCheckNumber;
@@ -65,8 +55,6 @@ public class CalculationActivity extends AppCompatActivity implements Calculatio
     private static long sLongDate;
     private static double sIncomeTotalAllBtn;
     private static double sExpenceTotalAllBtn;
-    private boolean flagMonth;
-    private boolean flagYear;
 
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
@@ -119,12 +107,9 @@ public class CalculationActivity extends AppCompatActivity implements Calculatio
         totalIncomeTextView = binding.totalIncomeTextView;
         totalExpenceTextView = binding.totalExpenceTextView;
         buttonDay = binding.btnDay;
-        buttonMonth = binding.btnMonth;
     }
 
     public void doAnimation() {
-        slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down_listview);
-        slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up_listview);
         animateNumbers = AnimationUtils.loadAnimation(this, R.anim.scale_numbers);
     }
 
