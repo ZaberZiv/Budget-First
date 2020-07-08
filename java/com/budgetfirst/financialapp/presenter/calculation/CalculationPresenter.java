@@ -1,23 +1,22 @@
-package com.budgetfirst.financialapp.presenter;
+package com.budgetfirst.financialapp.presenter.calculation;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.budgetfirst.financialapp.activities.ProfitActivity;
-import com.budgetfirst.financialapp.modules.Data;
-import com.budgetfirst.financialapp.modules.ModuleDatabase;
+import com.budgetfirst.financialapp.model.ModelConverter;
+import com.budgetfirst.financialapp.model.database.ModelDatabase;
+import com.budgetfirst.financialapp.presenter.panel.PanelPresenter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class DatabasePresenter {
+public class CalculationPresenter implements CalculationContract.Presenter {
 
-    private static final String TAG = "DatabasePresenter";
+    private static final String TAG = "CalculationPresenter";
 
-    private ModuleDatabase moduleDatabase;
+    private ModelDatabase moduleDatabase;
     private PanelPresenter mPanelPresenter;
     private double income;
     private double expence;
@@ -25,103 +24,91 @@ public class DatabasePresenter {
     private ArrayList<String> mYearList = new ArrayList<>();
     private ArrayList<String> mYearForYearList = new ArrayList<>();
 
-    public DatabasePresenter(SQLiteDatabase database, Data data) {
-        moduleDatabase = new ModuleDatabase(database, data);
+    public CalculationPresenter(SQLiteDatabase database) {
+        moduleDatabase = new ModelDatabase(database);
     }
 
-    public DatabasePresenter(SQLiteDatabase database, Context context) {
-        moduleDatabase = new ModuleDatabase(database, context);
+    public long getLongDate(String date) {
+        return ModelConverter.convertStringToLongDate(date);
     }
 
-    public void saveToDatabase() {
-        moduleDatabase.addToDataBaseModule();
-    }
-
-    public void deleteFromDatabase(long id) {
-        moduleDatabase.deleteDatabaseModule(id);
-    }
-
-    public boolean clearDatabase() {
-        return moduleDatabase.clearDatabaseModule();
-    }
-
-    public Cursor getCursorPresenter(
-            int checkNumber, long dateLong, long monthLong, long yearLong) {
-        return moduleDatabase.getCursorModuleDatabase(checkNumber, dateLong, monthLong, yearLong);
-    }
-
+    @Override
     public void getDataToSetTextViewsPresenter(Cursor cursor) {
         mPanelPresenter = new PanelPresenter();
         moduleDatabase.getDataFromCursor(cursor);
 
         income = moduleDatabase.getIncome();
         expence = moduleDatabase.getExpence();
-        mMonthList = moduleDatabase.getmMonthList();
-        mYearList = moduleDatabase.getmYearList();
-        mYearForYearList = moduleDatabase.getmYearForYearList();
     }
 
+    @Override
     public Cursor getAllDataFromPresenter() {
-       return moduleDatabase.getCursorOfAllData();
+        return moduleDatabase.getCursorOfAllData();
     }
 
+    @Override
     public void setExpenceTextView(TextView expenceTextView) {
         if (expence == 0.0) {
             expenceTextView.setText("0.0");
         } else {
-            expenceTextView.setText(mPanelPresenter.customStringFormat("###,###.##", expence));
+            expenceTextView.setText(mPanelPresenter.customFormat("###,###.##", expence));
         }
     }
 
+    @Override
     public void setIncomeTextView(TextView incomeTextView) {
         if (income == 0.0) {
             incomeTextView.setText("0.0");
         } else {
-            incomeTextView.setText(mPanelPresenter.customStringFormat("###,###.##", income));
+            incomeTextView.setText(mPanelPresenter.customFormat("###,###.##", income));
         }
     }
 
+    @Override
     public void setBalanceTextView(TextView balanceTextView) {
-        balanceTextView.setText(mPanelPresenter.customStringFormat("###,###.##", (income + expence)));
+        balanceTextView.setText(mPanelPresenter.customFormat("###,###.##", (income + expence)));
     }
 
+    @Override
     public void setTotalExpenceTextView(TextView totalExpenceTextView) {
-        totalExpenceTextView.setText(mPanelPresenter.customStringFormat("###,###.##", expence));
+        totalExpenceTextView.setText(mPanelPresenter.customFormat("###,###.##", expence));
     }
 
+    @Override
     public void setTotalIncomeTextView(TextView totalIncomeTextView) {
-        totalIncomeTextView.setText(mPanelPresenter.customStringFormat("###,###.##", income));
+        totalIncomeTextView.setText(mPanelPresenter.customFormat("###,###.##", income));
     }
 
+    @Override
     public ArrayList<String> fillArrayPresenter(ArrayList<String> dateInStringList, int num) {
         dateInStringList.clear();
 
         moduleDatabase.getDataFromCursor(moduleDatabase.getCursorOfAllData());
-        ArrayList<String> monthList = moduleDatabase.getmMonthList();
-        ArrayList<String> yearList = moduleDatabase.getmYearList();
-        ArrayList<String> yearForYearList = moduleDatabase.getmYearForYearList();
+        mMonthList = moduleDatabase.getmMonthList();
+        mYearList = moduleDatabase.getmYearList();
+        mYearForYearList = moduleDatabase.getmYearForYearList();
 
-        for (int i = 0; i < monthList.size(); i++) {
+        for (int i = 0; i < mMonthList.size(); i++) {
             SimpleDateFormat monthDateFormat = new SimpleDateFormat("MMMM");
             SimpleDateFormat yearDateFormat = new SimpleDateFormat("yyyy");
 
             String pickMonth = "";
             String pickYear = "";
             try {
-                pickMonth = monthDateFormat.format(Long.parseLong(monthList.get(i)));
-                pickYear = yearDateFormat.format(Long.parseLong(yearList.get(i)));
+                pickMonth = monthDateFormat.format(Long.parseLong(mMonthList.get(i)));
+                pickYear = yearDateFormat.format(Long.parseLong(mYearList.get(i)));
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.i(TAG,"yearList is empty, maybe after cleaning DB." + yearList);
+                Log.i(TAG, "yearList is empty, maybe after cleaning DB." + mYearList);
             }
 
             //This lists goes to ListView which shows when press Month/Year button
             if (num == 0) dateInStringList.add(pickYear);
             if (num == 1) dateInStringList.add(pickMonth + " " + pickYear);
         }
-        removeDuplicates(dateInStringList, yearForYearList, null, num);
-        removeDuplicates(dateInStringList, monthList, yearList, num);
-        removeDuplicates(mYearForYearList, null, null, 2);
+
+        removeDuplicates(dateInStringList, mMonthList, mYearList, 1);
+        removeDuplicates(mYearForYearList, null, null, 0);
 
         return dateInStringList;
     }
@@ -135,9 +122,7 @@ public class DatabasePresenter {
             for (int k = arrayList.size() - 1; k > i; k--) {
                 if (arrayList.get(i).equals(arrayList.get(k))) {
                     arrayList.remove(k);
-                    if (num == 0) {
-                        arrayListTwo.remove(k);
-                    }
+
                     if (num == 1) {
                         arrayListTwo.remove(k);
                         arrayListThree.remove(k);
@@ -145,6 +130,11 @@ public class DatabasePresenter {
                 }
             }
         }
+    }
+
+    @Override
+    public String customFormat(String pattern, double value) {
+        return ModelConverter.customStringFormat(pattern, value);
     }
 
     public double getIncome() {

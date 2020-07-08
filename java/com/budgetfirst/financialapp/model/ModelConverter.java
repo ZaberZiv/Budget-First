@@ -1,10 +1,11 @@
-package com.budgetfirst.financialapp.modules;
+package com.budgetfirst.financialapp.model;
 
 import android.util.Log;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
-public class Converter {
+public class ModelConverter {
 
     private static final String TAG = "Converter";
 
@@ -12,7 +13,6 @@ public class Converter {
         long longDate = 0;
         try {
             longDate = new SimpleDateFormat("dd/MM/yyyy").parse(dateInString).getTime();
-            Log.i(TAG, "1: DD/MM/YYYY: " + longDate);
         } catch (Exception e) {
             Log.e(TAG, "Check the convertion of Date in convertStringToLongDate()");
             e.printStackTrace();
@@ -25,7 +25,6 @@ public class Converter {
         String pickMonth = simpleDateFormat.format(longDate);
         try {
             longDate = new SimpleDateFormat("MMMM").parse(pickMonth).getTime();
-            Log.i(TAG, "2: Month: " + longDate);
         } catch (Exception e) {
             Log.e(TAG, "Check the convertion of Date in convertStringToLongMonth()");
             e.printStackTrace();
@@ -38,11 +37,15 @@ public class Converter {
         String pickYear = simpleDateFormat.format(longDate);
         try {
             longDate = new SimpleDateFormat("yyyy").parse(pickYear).getTime();
-            Log.i(TAG, "3: YYYY: " + longDate);
         } catch (Exception e) {
             Log.e(TAG, "Check the conversion of Date in convertStringToLongYear()");
             e.printStackTrace();
         }
         return longDate;
+    }
+
+    public static String customStringFormat(String pattern, double value) {
+        DecimalFormat myFormatter = new DecimalFormat(pattern);
+        return myFormatter.format(value);
     }
 }

@@ -1,9 +1,6 @@
-package com.budgetfirst.financialapp.modules;
+package com.budgetfirst.financialapp.model;
 
-import android.util.Log;
-import android.widget.TextView;
-
-public class NumberPanel {
+public class ModelNumberPanel {
 
     private StringBuilder inputStr;
 
@@ -34,17 +31,14 @@ public class NumberPanel {
         return numbers;
     }
 
-    public String periodNP(String numbers, TextView text) {
+    public String periodNP(String numbers) {
         inputStr = new StringBuilder(numbers);
 
         if (!numbers.contains(".") && numbers.length() != 0) {
             numbers = inputStr.append(".").toString();
-            text.setText(numbers);
         } else if (!numbers.contains(".") && numbers.length() == 0) {
             numbers = inputStr.append("0.").toString();
-            text.setText(numbers);
         }
-
         return numbers;
     }
 

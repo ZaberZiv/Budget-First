@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".activities.ProfitActivity">
+    tools:context=".presenter.calculation.CalculationActivity">
 
     <LinearLayout
         android:id="@+id/linearLayoutMain"
@@ -71,8 +71,8 @@
                     android:id="@+id/balanceTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorBalance"
                     android:text="0.0"
+                    android:textColor="@color/colorBalance"
                     android:textSize="24sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -132,8 +132,8 @@
                     android:id="@+id/incomeTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorIncome"
                     android:text="0.0"
+                    android:textColor="@color/colorIncome"
                     android:textSize="24sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -155,8 +155,8 @@
                     android:id="@+id/expenceTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorExpence"
                     android:text="0.0"
+                    android:textColor="@color/colorExpence"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -188,36 +188,9 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/showMonth"
-        android:layout_width="250dp"
-        android:layout_height="400dp"
-        android:elevation="15dp"
-        android:orientation="vertical"
-        android:visibility="invisible"
-        android:background="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="8dp"
-            android:textColor="#000000"
-            android:gravity="center_horizontal"
-            android:text="@string/title_pick_date"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
+    <include
+        layout="@layout/layout_filter"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/linearLayoutDate"
@@ -249,10 +222,10 @@
         android:id="@+id/linearLayoutButtons"
         android:layout_width="0dp"
         android:layout_height="50dp"
+        android:background="@color/colorAccent"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/colorAccent"
         app:layout_constraintStart_toStartOf="parent">
 
         <Button

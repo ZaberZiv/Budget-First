@@ -1,4 +1,4 @@
-package com.budgetfirst.financialapp.modules;
+package com.budgetfirst.financialapp.model.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,11 +10,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 
 import com.budgetfirst.financialapp.R;
-import com.budgetfirst.financialapp.database.FinancialContract;
+import com.budgetfirst.financialapp.model.Data;
+import com.budgetfirst.financialapp.model.ModelConverter;
 
 import java.util.ArrayList;
 
-public class ModuleDatabase {
+public class ModelDatabase {
 
     private static final String TAG = "ModuleDatabase";
     private SQLiteDatabase database;
@@ -28,36 +29,24 @@ public class ModuleDatabase {
     private ArrayList<String> mYearList = new ArrayList<>();
     private ArrayList<String> mYearForYearList = new ArrayList<>();
 
-    public double getIncome() {
-        return income;
+    public ModelDatabase(SQLiteDatabase database) {
+        this.database = database;
     }
 
-    public void setIncome(double income) {
-        this.income = income;
-    }
-
-    public double getExpence() {
-        return expence;
-    }
-
-    public void setExpence(double expence) {
-        this.expence = expence;
-    }
-
-    public ModuleDatabase(SQLiteDatabase database, Data data) {
+    public ModelDatabase(SQLiteDatabase database, Data data) {
         this.database = database;
         this.data = data;
     }
 
-    public ModuleDatabase(SQLiteDatabase database, Context context) {
+    public ModelDatabase(SQLiteDatabase database, Context context) {
         this.database = database;
         this.context = context;
     }
 
-    public void addToDataBaseModule() {
-        long longDateDB = Converter.convertStringToLongDate(data.getFormatedDate());
-        long longMonthDB = Converter.convertStringToLongMonth(longDateDB);
-        long longYearDB = Converter.convertStringToLongYear(longDateDB);
+    public void addToDatabaseModule() {
+        long longDateDB = ModelConverter.convertStringToLongDate(data.getFormatedDate());
+        long longMonthDB = ModelConverter.convertStringToLongMonth(longDateDB);
+        long longYearDB = ModelConverter.convertStringToLongYear(longDateDB);
 
         ContentValues cv = new ContentValues();
         cv.put(FinancialContract.FinancialEntry.COLUMN_TITLE, data.getItemName());
@@ -98,8 +87,7 @@ public class ModuleDatabase {
                 + " = " + dateLong;
 
         String selectionMonthAndYear = FinancialContract.FinancialEntry.COLUMN_MONTH
-                + " = "
-                + monthLong
+                + " = " + monthLong
                 + " AND " + FinancialContract.FinancialEntry.COLUMN_YEAR
                 + " = " + yearLong;
 
@@ -150,7 +138,8 @@ public class ModuleDatabase {
     }
 
     public Cursor getCursorOfAllData() {
-        return database.rawQuery("SELECT * FROM " + FinancialContract.FinancialEntry.TABLE_NAME, null);
+        return database.rawQuery("SELECT * FROM "
+                + FinancialContract.FinancialEntry.TABLE_NAME, null);
     }
 
     public void getDataFromCursor(Cursor cursor) {
@@ -172,8 +161,8 @@ public class ModuleDatabase {
                 amountCheckDB.add(cursor.getString(expenceIndex));
                 incomeCheckDB.add(cursor.getString(incomeIndex));
                 mMonthList.add(cursor.getString(monthIndex));
-                mYearList.add(cursor.getString(yearIndex)); // contains date (Year column) in long type
-                mYearForYearList.add(cursor.getString(yearIndex)); // contains date (Year column) in long type
+                mYearList.add(cursor.getString(yearIndex)); // Year data for month listView
+                mYearForYearList.add(cursor.getString(yearIndex)); // Year data for year listView
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -212,5 +201,21 @@ public class ModuleDatabase {
 
     public void setmYearForYearList(ArrayList<String> mYearForYearList) {
         this.mYearForYearList = mYearForYearList;
+    }
+
+    public double getIncome() {
+        return income;
+    }
+
+    public void setIncome(double income) {
+        this.income = income;
+    }
+
+    public double getExpence() {
+        return expence;
+    }
+
+    public void setExpence(double expence) {
+        this.expence = expence;
     }
 }

@@ -1,4 +1,4 @@
-package com.budgetfirst.financialapp.modules;
+package com.budgetfirst.financialapp.model;
 
 public class Data {
 

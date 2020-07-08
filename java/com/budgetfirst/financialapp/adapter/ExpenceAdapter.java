@@ -13,8 +13,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.budgetfirst.financialapp.R;
-import com.budgetfirst.financialapp.database.FinancialContract;
-import com.budgetfirst.financialapp.presenter.PanelPresenter;
+import com.budgetfirst.financialapp.model.database.FinancialContract;
+import com.budgetfirst.financialapp.presenter.panel.PanelPresenter;
 
 import java.text.SimpleDateFormat;
 

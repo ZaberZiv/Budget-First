@@ -1,18 +1,16 @@
-package com.budgetfirst.financialapp.activities;
+package com.budgetfirst.financialapp.presenter.calculation;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -26,25 +24,24 @@ import android.widget.TextView;
 
 import com.budgetfirst.financialapp.adapter.ExpenceAdapter;
 import com.budgetfirst.financialapp.R;
-import com.budgetfirst.financialapp.database.FinancialDBHelper;
-import com.budgetfirst.financialapp.presenter.DatabasePresenter;
-import com.budgetfirst.financialapp.presenter.PanelPresenter;
-import com.budgetfirst.financialapp.presenter.ProfitPresenter;
+import com.budgetfirst.financialapp.model.database.FinancialDBHelper;
+import com.budgetfirst.financialapp.databinding.ActivityCalculationBinding;
+import com.budgetfirst.financialapp.model.ModelCalendar;
+import com.budgetfirst.financialapp.presenter.database.DatabasePresenter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
-public class ProfitActivity extends AppCompatActivity {
+public class CalculationActivity extends AppCompatActivity implements CalculationContract.View {
 
-    private static final String TAG = "ProfitActivity";
+    private static final String TAG = "CalculationActivity";
 
-    private ProfitPresenter mProfitPresenter;
-    private PanelPresenter mPanelPresenter;
+    private CalculationPresenter mCalculationPresenter;
     private DatabasePresenter mDatabasePresenter;
 
     private ExpenceAdapter mAdapter;
     private SQLiteDatabase mDatabase;
-    private RecyclerView recyclerView;
+    private RecyclerView mRecyclerView;
+    private Dialog dialog;
 
     private TextView displayDateTextView;
     private TextView incomeTextView;
@@ -55,17 +52,19 @@ public class ProfitActivity extends AppCompatActivity {
     private LinearLayout linearLayout;
     private ListView listView;
     private Button buttonDay;
+    private Button buttonMonth;
+
 
     private Animation slideDown;
     private Animation slideUp;
     private Animation animateNumbers;
 
-    static int sCheckNumber;
-    static long sLongMonth;
-    static long sLongYear;
-    static long sLongDate;
-    static double sIncomeTotalAllBtn;
-    static double sExpenceTotalAllBtn;
+    private static int sCheckNumber;
+    private static long sLongMonth;
+    private static long sLongYear;
+    private static long sLongDate;
+    private static double sIncomeTotalAllBtn;
+    private static double sExpenceTotalAllBtn;
     private boolean flagMonth;
     private boolean flagYear;
 
@@ -77,24 +76,20 @@ public class ProfitActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profit);
-
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        setContentView(R.layout.activity_calculation);
 
         mDatabase = new FinancialDBHelper(this).getWritableDatabase();
         mDatabasePresenter = new DatabasePresenter(mDatabase, this);
-        mPanelPresenter = new PanelPresenter();
-        mProfitPresenter = new ProfitPresenter();
+        mCalculationPresenter = new CalculationPresenter(mDatabase);
 
-        setViews();
+        setViewsByBinding();
         doAnimation();
         showDatePickerDialog();
         showTotalSum();
         showCurrentSum(getAllItems());
         doRecyclerView();
 
-        //Swipe to delete
+        //Swipe left to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT) {
             @Override
@@ -108,19 +103,23 @@ public class ProfitActivity extends AppCompatActivity {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 removeItem((long) viewHolder.itemView.getTag());
             }
-        }).attachToRecyclerView(recyclerView);
+        }).attachToRecyclerView(mRecyclerView);
     }
 
-    public void setViews() {
-        incomeTextView = findViewById(R.id.incomeTextView);
-        expenceTextView = findViewById(R.id.expenceTextView);
-        balanceTextView = findViewById(R.id.balanceTextView);
-        displayDateTextView = findViewById(R.id.showDateTextView);
-        totalIncomeTextView = findViewById(R.id.totalIncomeTextView);
-        totalExpenceTextView = findViewById(R.id.totalExpenceTextView);
-        linearLayout = findViewById(R.id.showMonth);
-        listView = findViewById(R.id.listView);
-        buttonDay = findViewById(R.id.btnDay);
+    @Override
+    public void setViewsByBinding() {
+        ActivityCalculationBinding binding = ActivityCalculationBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
+        incomeTextView = binding.incomeTextView;
+        expenceTextView = binding.expenceTextView;
+        balanceTextView = binding.balanceTextView;
+        displayDateTextView = binding.showDateTextView;
+        totalIncomeTextView = binding.totalIncomeTextView;
+        totalExpenceTextView = binding.totalExpenceTextView;
+        buttonDay = binding.btnDay;
+        buttonMonth = binding.btnMonth;
     }
 
     public void doAnimation() {
@@ -129,12 +128,11 @@ public class ProfitActivity extends AppCompatActivity {
         animateNumbers = AnimationUtils.loadAnimation(this, R.anim.scale_numbers);
     }
 
-    // RecycleView
     public void doRecyclerView() {
-        recyclerView = findViewById(R.id.recycleView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView = findViewById(R.id.recycleView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new ExpenceAdapter(this, getAllItems());
-        recyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     /**
@@ -160,58 +158,70 @@ public class ProfitActivity extends AppCompatActivity {
     }
 
     /**
+     * Shows the amount on the screen for the selected day/month/year.
+     * Income, Expence and Balance Views are changing
+     */
+    public void showCurrentSum(Cursor cursor) {
+        mCalculationPresenter.getDataToSetTextViewsPresenter(cursor);
+        mCalculationPresenter.setExpenceTextView(expenceTextView);
+        mCalculationPresenter.setIncomeTextView(incomeTextView);
+        mCalculationPresenter.setBalanceTextView(balanceTextView);
+
+        expenceTextView.startAnimation(animateNumbers);
+        incomeTextView.startAnimation(animateNumbers);
+        balanceTextView.startAnimation(animateNumbers);
+    }
+
+    /**
+     * This method shows the results of income and expenses (Total Income and Total Expence Views).
+     * Lists with dates go to filterClicked() method.
+     */
+    public void showTotalSum() {
+        mCalculationPresenter.getDataToSetTextViewsPresenter(
+                mCalculationPresenter.getAllDataFromPresenter());
+
+        sIncomeTotalAllBtn = mCalculationPresenter.getIncome();
+        sExpenceTotalAllBtn = mCalculationPresenter.getExpence();
+
+        mCalculationPresenter.setTotalExpenceTextView(totalExpenceTextView);
+        mCalculationPresenter.setTotalIncomeTextView(totalIncomeTextView);
+    }
+
+    /**
      * Buttons Year, Month, Show All. The Day btn in showDatePickerDialog() method;
      * When you click on the button, the variable checkNumber is assigned a number.
      * It determines which cursor gets into the adapter --> getAllItems() method.
      */
     public void filterClicked(View view) {
         //This lists goes to ListView which shows when Month/Year button is pressed.
-        sYearInStringList = mDatabasePresenter.fillArrayPresenter(sYearInStringList, 0);
-        sMonthInStringList = mDatabasePresenter.fillArrayPresenter(sMonthInStringList, 1);
+        sYearInStringList = mCalculationPresenter.fillArrayPresenter(sYearInStringList, 0);
+        sMonthInStringList = mCalculationPresenter.fillArrayPresenter(sMonthInStringList, 1);
 
         switch (view.getId()) {
             // Month btn
             case R.id.btnMonth:
                 sCheckNumber = 2;
                 if (!sMonthInStringList.isEmpty()) {
-                    if (!flagMonth) {
-                        linearLayout.setVisibility(View.VISIBLE);
-                        linearLayout.startAnimation(slideUp);
-                        showListView(sMonthInStringList, mDatabasePresenter.getmYearList());
-                        flagMonth = true;
-                    } else {
-                        linearLayout.startAnimation(slideDown);
-                        linearLayout.setVisibility(View.INVISIBLE);
-                        flagMonth = false;
-                    }
+                    showListView(sMonthInStringList, mCalculationPresenter.getmYearList());
                 }
                 break;
             // Year btn
             case R.id.btnYear:
                 sCheckNumber = 3;
                 if (!sYearInStringList.isEmpty()) {
-                    if (!flagYear) {
-                        linearLayout.setVisibility(View.VISIBLE);
-                        linearLayout.startAnimation(slideUp);
-                        showListView(sYearInStringList, mDatabasePresenter.getmYearForYearList());
-                        flagYear = true;
-                    } else {
-                        linearLayout.startAnimation(slideDown);
-                        linearLayout.setVisibility(View.INVISIBLE);
-                        flagYear = false;
-                    }
+                    showListView(sYearInStringList, mCalculationPresenter.getmYearForYearList());
                 }
                 break;
             // Show all btn
             default:
                 sCheckNumber = 0;
                 displayDateTextView.setText(R.string.btn_total);
-                incomeTextView.setText(mPanelPresenter.customStringFormat("###,###.##"
-                                , sIncomeTotalAllBtn));
-                expenceTextView.setText(mPanelPresenter.customStringFormat("###,###.##"
-                                , sExpenceTotalAllBtn));
-                balanceTextView.setText(mPanelPresenter.customStringFormat("###,###.##"
-                                , (sIncomeTotalAllBtn + sExpenceTotalAllBtn)));
+                incomeTextView.setText(mCalculationPresenter.customFormat("###,###.##"
+                        , sIncomeTotalAllBtn));
+                expenceTextView.setText(mCalculationPresenter.customFormat("###,###.##"
+                        , sExpenceTotalAllBtn));
+                balanceTextView.setText(mCalculationPresenter.customFormat("###,###.##"
+                        , (sIncomeTotalAllBtn + sExpenceTotalAllBtn)));
 
                 incomeTextView.startAnimation(animateNumbers);
                 expenceTextView.startAnimation(animateNumbers);
@@ -232,31 +242,34 @@ public class ProfitActivity extends AppCompatActivity {
     public void showListView(final ArrayList<String> listForListView,
                              final ArrayList<String> listLongYear) {
 
-        ArrayAdapter adapterForListView = new ArrayAdapter(this,
-                android.R.layout.simple_expandable_list_item_1, listForListView);
-        listView.setAdapter(adapterForListView);
+        ListView listView = new ListView(this);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listForListView);
+        listView.setAdapter(adapter);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(CalculationActivity.this);
+        builder.setCancelable(true);
+        builder.setView(listView);
+        final AlertDialog dialogAlert = builder.create();
+
+        dialogAlert.show();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mDatabasePresenter.getAllDataFromPresenter();
+                mCalculationPresenter.getAllDataFromPresenter();
 
                 try {
-                    sLongMonth = Long.parseLong(mDatabasePresenter.getmMonthList().get(position));
+                    sLongMonth = Long.parseLong(mCalculationPresenter.getmMonthList().get(position));
                     sLongYear = Long.parseLong(listLongYear.get(position));
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-                linearLayout.startAnimation(slideDown);
                 displayDateTextView.setText(listForListView.get(position));
 
                 showCurrentSum(getAllItems());
                 doRecyclerView();
-                linearLayout.setVisibility(View.INVISIBLE);
-                flagYear = false;
-                flagMonth = false;
+                dialogAlert.dismiss();
             }
         });
     }
@@ -266,24 +279,15 @@ public class ProfitActivity extends AppCompatActivity {
      * When the user selects a date, the variable checkNumber is assigned the number 1.
      * It is passed to method getAllItems() to pass the cursor to the adapter.
      */
+    @Override
     public void showDatePickerDialog() {
         displayDateTextView.setText(R.string.btn_total);
 
         buttonDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar c = Calendar.getInstance();
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH);
-                int day = c.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog dialog = new DatePickerDialog(
-                        ProfitActivity.this,
-                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                        mDateSetListener,
-                        year, month, day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
+                ModelCalendar.getCalendarModule(mDateSetListener,
+                        CalculationActivity.this);
             }
         });
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -291,53 +295,14 @@ public class ProfitActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
 
-                String currentDate;
-                if (String.valueOf(month).length() == 1 && String.valueOf(dayOfMonth).length() == 1) {
-                    currentDate = "0" + dayOfMonth + "/" + "0" + month + "/" + year;
-                } else if (String.valueOf(month).length() == 1) {
-                    currentDate = dayOfMonth + "/" + "0" + month + "/" + year;
-                } else if (String.valueOf(dayOfMonth).length() == 1) {
-                    currentDate = "0" + dayOfMonth + "/" + month + "/" + year;
-                } else {
-                    currentDate = dayOfMonth + "/" + month + "/" + year;
-                }
+                String currentDate = ModelCalendar.dateFormatModule(dayOfMonth, month, year);
                 displayDateTextView.setText(currentDate);
-                sLongDate = mProfitPresenter.getLongDate(currentDate);
+                sLongDate = mCalculationPresenter.getLongDate(currentDate);
                 sCheckNumber = 1;
                 showCurrentSum(getAllItems());
                 doRecyclerView();
             }
         };
-    }
-
-    /**
-     * Shows the amount on the screen for the selected day/month/year.
-     * Income, Expence and Balance Views are changing
-     */
-    public void showCurrentSum(Cursor cursor) {
-        mDatabasePresenter.getDataToSetTextViewsPresenter(cursor);
-        mDatabasePresenter.setExpenceTextView(expenceTextView);
-        mDatabasePresenter.setIncomeTextView(incomeTextView);
-        mDatabasePresenter.setBalanceTextView(balanceTextView);
-
-        expenceTextView.startAnimation(animateNumbers);
-        incomeTextView.startAnimation(animateNumbers);
-        balanceTextView.startAnimation(animateNumbers);
-    }
-
-    /**
-     * This method shows the results of income and expenses (Total Income and Total Expence Views).
-     * Lists with dates go to filterClicked() method.
-     */
-    public void showTotalSum() {
-        mDatabasePresenter.getDataToSetTextViewsPresenter(
-                mDatabasePresenter.getAllDataFromPresenter());
-
-        sIncomeTotalAllBtn = mDatabasePresenter.getIncome();
-        sExpenceTotalAllBtn = mDatabasePresenter.getExpence();
-
-        mDatabasePresenter.setTotalExpenceTextView(totalExpenceTextView);
-        mDatabasePresenter.setTotalIncomeTextView(totalIncomeTextView);
     }
 
     // Closing DataBase

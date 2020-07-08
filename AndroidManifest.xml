@@ -10,14 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.ProfitActivity"
+            android:name=".presenter.calculation.CalculationActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".presenter.panel.PanelActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
+                android:value=".presenter.panel.PanelActivity" />
         </activity>
-        <activity android:name=".activities.MainActivity">
+        <activity android:name=".presenter.panel.PanelActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
