@@ -6,4 +6,5 @@
     <color name="colorExpence">#D85182</color>
     <color name="colorIncome">#18CC93</color>
     <color name="colorBalance">#BAB702</color>
+    <color name="colorWhite">#FFFFFF</color>
 </resources>

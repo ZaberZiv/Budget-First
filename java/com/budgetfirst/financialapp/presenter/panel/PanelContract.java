@@ -2,8 +2,6 @@ package com.budgetfirst.financialapp.presenter.panel;
 
 import android.widget.TextView;
 
-import com.budgetfirst.financialapp.model.Data;
-
 public interface PanelContract {
 
     interface View {

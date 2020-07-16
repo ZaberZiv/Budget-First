@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context=".presenter.locker.LockerActivity">
+
+    <TextView
+        android:id="@+id/main_text"
+        style="@style/locker_headers_style"
+        android:layout_marginTop="100dp"
+        android:text="@string/locker_enter_pin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/repeat_text"
+        style="@style/locker_headers_style"
+        android:layout_marginTop="150dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="200dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/first_text_view"
+            style="@style/locker_text_view" />
+
+        <TextView
+            android:id="@+id/second_text_view"
+            style="@style/locker_text_view" />
+
+        <TextView
+            android:id="@+id/third_text_view"
+            style="@style/locker_text_view" />
+
+        <TextView
+            android:id="@+id/fourth_text_view"
+            style="@style/locker_text_view" />
+
+        <EditText
+            android:id="@+id/first_letter_pass"
+            style="@style/locker_edit_text" />
+
+        <EditText
+            android:id="@+id/second_letter_pass"
+            style="@style/locker_edit_text" />
+
+        <EditText
+            android:id="@+id/third_letter_pass"
+            style="@style/locker_edit_text" />
+
+        <EditText
+            android:id="@+id/fourth_letter_pass"
+            style="@style/locker_edit_text" />
+
+    </LinearLayout>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switcher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/locker_delete_pin"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+        app:useMaterialThemeColors="false" />
+
+    <TextView
+        android:id="@+id/skip_button"
+        style="@style/locker_headers_style"
+        android:layout_marginTop="100dp"
+        android:text="@string/locker_skip_step"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

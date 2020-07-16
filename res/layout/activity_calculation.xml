@@ -188,10 +188,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <include
-        layout="@layout/layout_filter"
-        android:visibility="gone" />
-
     <LinearLayout
         android:id="@+id/linearLayoutDate"
         android:layout_width="match_parent"

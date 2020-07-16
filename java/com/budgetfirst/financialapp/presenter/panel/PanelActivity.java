@@ -3,10 +3,14 @@ package com.budgetfirst.financialapp.presenter.panel;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -19,20 +23,28 @@ import com.budgetfirst.financialapp.presenter.calculation.CalculationActivity;
 import com.budgetfirst.financialapp.presenter.database.DatabasePresenter;
 import com.budgetfirst.financialapp.R;
 import com.budgetfirst.financialapp.model.database.FinancialDBHelper;
+import com.budgetfirst.financialapp.presenter.locker.LockerActivity;
+import com.budgetfirst.financialapp.presenter.locker.LockerPresenter;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
 public class PanelActivity extends AppCompatActivity implements PanelContract.View {
 
     private SQLiteDatabase mDatabase;
     private PanelPresenter mPanelPresenter;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
+    private LockerPresenter lockerPresenter;
 
     private TextView mText;
     private TextView mDisplayDate;
     private EditText mEditText;
     private ImageView mImageViewAlert;
+    private ImageView mLockerImageView;
+    private ImageView mLockerLockedImageView;
     private Button mIncomeButton;
     private Button mExpenceButton;
 
@@ -49,15 +61,25 @@ public class PanelActivity extends AppCompatActivity implements PanelContract.Vi
 
         mDatabase = new FinancialDBHelper(this).getWritableDatabase();
         mPanelPresenter = new PanelPresenter();
+        lockerPresenter = new LockerPresenter(mDatabase);
 
         setViewsByBinding();
+
+        if (lockerPresenter.checkIfCodeForLockerInDatabase()) {
+            mLockerImageView.setVisibility(View.INVISIBLE);
+            mLockerLockedImageView.setVisibility(View.VISIBLE);
+            getExtraData();
+        }
+
         showDatePickerDialog();
         incomeButtonListener();
         expenceButtonListener();
+        lockerOpenedButtonListener();
+        lockerLockedButtonListener();
     }
 
     @Override
-     public void setViewsByBinding() {
+    public void setViewsByBinding() {
         ActivityPanelBinding binding = ActivityPanelBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
@@ -68,6 +90,24 @@ public class PanelActivity extends AppCompatActivity implements PanelContract.Vi
         mImageViewAlert = binding.imageViewTop;
         mIncomeButton = binding.plus;
         mExpenceButton = binding.minus;
+        mLockerImageView = binding.locker;
+        mLockerLockedImageView = binding.lockerLocked;
+    }
+
+    private void getExtraData() {
+        Bundle arguments = getIntent().getExtras();
+        int code = 0;
+
+        if (arguments != null) {
+            code = arguments.getInt("code");
+            Log.i("PanelActivity", "code: " + code);
+        }
+
+        if (code != lockerPresenter.getCodeForLocker()) {
+            Intent intent = new Intent(getApplicationContext(), LockerActivity.class);
+            intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
     }
 
     // BUTTONS set numbers
@@ -137,6 +177,25 @@ public class PanelActivity extends AppCompatActivity implements PanelContract.Vi
                 if (mFirstExpence != 0.0) {
                     saveToDatabase();
                 }
+            }
+        });
+    }
+
+    // BUTTON Locker
+    public void lockerOpenedButtonListener() {
+        mLockerImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), LockerActivity.class));
+            }
+        });
+    }
+
+    public void lockerLockedButtonListener() {
+        mLockerLockedImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), LockerActivity.class));
             }
         });
     }

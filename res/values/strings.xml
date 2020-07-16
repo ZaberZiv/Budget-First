@@ -27,4 +27,13 @@
     <string name="image_bucket">Delete all data</string>
     <string name="image_history">Show history of operations</string>
 
+    <string name="locker_enter_pin">Enter 4 digits PIN:</string>
+    <string name="locker_delete_pin">Delete PIN  </string>
+    <string name="locker_skip_step">Skip it ></string>
+    <string name="locker_save_pin">Save 4 digits PIN:</string>
+    <string name="locker_deleted_success">PIN saved successfully!</string>
+    <string name="locker_repeat_pin">Great! Confirm PIN!</string>
+    <string name="locker_wrong_pin_start_again">Wrong PIN! Start over!</string>
+    <string name="locker_wrong_pin_try_again">Wrong PIN Try again!</string>
+
 </resources>

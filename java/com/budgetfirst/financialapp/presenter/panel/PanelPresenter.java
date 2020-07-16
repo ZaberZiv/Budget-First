@@ -8,8 +8,6 @@ import com.budgetfirst.financialapp.model.ModelCalendar;
 import com.budgetfirst.financialapp.model.ModelConverter;
 import com.budgetfirst.financialapp.model.ModelNumberPanel;
 
-import java.text.DecimalFormat;
-
 public class PanelPresenter implements PanelContract.Presenter {
 
     private ModelNumberPanel mNumberPanel;

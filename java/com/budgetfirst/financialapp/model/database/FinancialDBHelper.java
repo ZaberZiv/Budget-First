@@ -3,6 +3,7 @@ package com.budgetfirst.financialapp.model.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import androidx.annotation.Nullable;
 
 public class FinancialDBHelper extends SQLiteOpenHelper {
@@ -26,12 +27,21 @@ public class FinancialDBHelper extends SQLiteOpenHelper {
                 FinancialContract.FinancialEntry.COLUMN_YEAR + " INTEGER NOT NULL" +
                 ");";
 
+        final String SQL_CREATE_LOCKER_TABLE = "CREATE TABLE " +
+                FinancialContract.FinancialEntry.TABLE_LOCKER + " (" +
+                FinancialContract.FinancialEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                FinancialContract.FinancialEntry.COLUMN_CODE + " INTEGER NOT NULL " +
+                ");";
+
         db.execSQL(SQL_CREATE_FINANCIALLIST_TABLE);
+        db.execSQL(SQL_CREATE_LOCKER_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + FinancialContract.FinancialEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + FinancialContract.FinancialEntry.TABLE_LOCKER);
+
         onCreate(db);
     }
 }

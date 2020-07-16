@@ -179,6 +179,22 @@ public class ModelDatabase {
         }
     }
 
+    public int getCodeForLocker() {
+        Cursor cursor = database.rawQuery("SELECT * FROM "
+                + FinancialContract.FinancialEntry.TABLE_LOCKER, null);
+        int codeIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_CODE);
+        int code = 0;
+
+        if (cursor.moveToFirst()) {
+            do {
+                code = cursor.getInt(codeIndex);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return code;
+    }
+
     public ArrayList<String> getmMonthList() {
         return mMonthList;
     }
@@ -217,5 +233,16 @@ public class ModelDatabase {
 
     public void setExpence(double expence) {
         this.expence = expence;
+    }
+
+    public void saveCodeForLockerInDatabase(int code) {
+        ContentValues cv = new ContentValues();
+        cv.put(FinancialContract.FinancialEntry.COLUMN_CODE, code);
+        database.insert(FinancialContract.FinancialEntry.TABLE_LOCKER, null, cv);
+    }
+
+    public void deleteCodeForLockerFromDatabase(int code) {
+        database.delete(FinancialContract.FinancialEntry.TABLE_LOCKER,
+                FinancialContract.FinancialEntry.COLUMN_CODE + "=" + code, null);
     }
 }

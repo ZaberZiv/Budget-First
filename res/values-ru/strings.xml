@@ -28,4 +28,13 @@
     <string name="image_bucket">Удалить все данные</string>
     <string name="image_history">Показать историю всех операций</string>
 
+    <string name="locker_enter_pin">Введите PIN код из 4-х цифр:</string>
+    <string name="locker_delete_pin">Удалить PIN  </string>
+    <string name="locker_skip_step">Пропустить</string>
+    <string name="locker_save_pin">Сохраните PIN код из 4-х цифр:</string>
+    <string name="locker_deleted_success">PIN успешно удалён!</string>
+    <string name="locker_repeat_pin">Отлично! Подтвердите введённый PIN!</string>
+    <string name="locker_wrong_pin_start_again">Неверный PIN! Начните сначала!</string>
+    <string name="locker_wrong_pin_try_again">Неверный PIN! Попробуйте снова!</string>
+
 </resources>

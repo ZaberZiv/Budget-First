@@ -14,5 +14,8 @@ public class FinancialContract {
         public static final String COLUMN_TIMESTAMP = "timestamp";
         public static final String COLUMN_MONTH = "month";
         public static final String COLUMN_YEAR = "year";
+
+        public static final String TABLE_LOCKER = "locker";
+        public static final String COLUMN_CODE = "code";
     }
 }
