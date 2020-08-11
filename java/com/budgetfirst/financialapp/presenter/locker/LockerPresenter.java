@@ -18,7 +18,7 @@ public class LockerPresenter implements LockerContract.Presenter {
     }
 
     @Override
-    public boolean checkIfCodeForLockerInDatabase() {
+    public boolean isCodeForLockerInDatabase() {
         return modelDatabase.getCodeForLocker() != 0;
     }
 

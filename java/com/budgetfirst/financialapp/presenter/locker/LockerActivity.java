@@ -7,13 +7,11 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +19,7 @@ import android.widget.Toast;
 import com.budgetfirst.financialapp.R;
 import com.budgetfirst.financialapp.databinding.ActivityLockerBinding;
 import com.budgetfirst.financialapp.model.database.FinancialDBHelper;
-import com.budgetfirst.financialapp.presenter.panel.PanelActivity;
+import com.budgetfirst.financialapp.presenter.base.FragmentActivity;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
@@ -35,22 +33,12 @@ public class LockerActivity extends AppCompatActivity implements LockerContract.
 
     private static String sPinCode = "";
     private static String sSavedPinCode = "";
-    private boolean mFlag;
-    private boolean mCorrectPIN;
+    private boolean mFlag, mCorrectPIN;
 
-    private EditText mFirstEnteredNumber;
-    private EditText mSecondEnteredNumber;
-    private EditText mThirdEnteredNumber;
-    private EditText mFourthEnteredNumber;
-    private TextView mHiddenTextView;
-    private TextView mMainTextView;
-    private TextView mSkipButton;
+    private EditText mFirstEnteredNumber, mSecondEnteredNumber, mThirdEnteredNumber, mFourthEnteredNumber;
+    private TextView mHiddenTextView, mMainTextView, mSkipButton;
+    private TextView mFirstTextView, mSecondTextView, mThirdTextView, mFourthTextView;
     private SwitchMaterial mSwitchMaterial;
-
-    private TextView mFirstTextView;
-    private TextView mSecondTextView;
-    private TextView mThirdTextView;
-    private TextView mFourthTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +51,7 @@ public class LockerActivity extends AppCompatActivity implements LockerContract.
         setViewsByBinding();
         setListenersForEditText();
         showKeyBoard();
-        checkIfPinIsAlreadyExist();
+        isPinIsAlreadyExist();
         skipButtonListener(mSkipButton);
     }
 
@@ -115,8 +103,8 @@ public class LockerActivity extends AppCompatActivity implements LockerContract.
     }
 
     @Override
-    public void checkIfPinIsAlreadyExist() {
-        if (!mLockerPresenter.checkIfCodeForLockerInDatabase()) {
+    public void isPinIsAlreadyExist() {
+        if (!mLockerPresenter.isCodeForLockerInDatabase()) {
             mMainTextView.setText(R.string.locker_save_pin);
         } else {
             mSwitchMaterial.setVisibility(View.VISIBLE);
@@ -158,7 +146,7 @@ public class LockerActivity extends AppCompatActivity implements LockerContract.
                     Log.i(TAG, "onTextChanged: All 4 EditText are FULL!");
                     Log.i(TAG, "onTextChanged: Checking if PIN right or not!");
 
-                    if (mLockerPresenter.checkIfCodeForLockerInDatabase()
+                    if (mLockerPresenter.isCodeForLockerInDatabase()
                             && sPinCode.equals(String.valueOf(mLockerPresenter.getCodeForLocker()))
                             && !mSwitchMaterial.isChecked()) {
 
@@ -167,7 +155,7 @@ public class LockerActivity extends AppCompatActivity implements LockerContract.
                         mCorrectPIN = true;
                         startActivityWithExtra(true);
 
-                    } else if (mLockerPresenter.checkIfCodeForLockerInDatabase()
+                    } else if (mLockerPresenter.isCodeForLockerInDatabase()
                             && sPinCode.equals(String.valueOf(mLockerPresenter.getCodeForLocker()))
                             && mSwitchMaterial.isChecked()) {
 
@@ -187,7 +175,7 @@ public class LockerActivity extends AppCompatActivity implements LockerContract.
                 if (s.length() == 0) return;
 
                 if (secondEditText == null
-                        && !mLockerPresenter.checkIfCodeForLockerInDatabase()
+                        && !mLockerPresenter.isCodeForLockerInDatabase()
                         && !mCorrectPIN) {
 
                     if (!mFlag) {
@@ -206,6 +194,9 @@ public class LockerActivity extends AppCompatActivity implements LockerContract.
                         mLockerPresenter.saveCodeForLockerInDatabase(Integer.parseInt(sPinCode));
                         startActivityWithExtra(true);
                         mFlag = false;
+                        Toast.makeText(LockerActivity.this,
+                                R.string.locker_saved_success, Toast.LENGTH_SHORT).show();
+                        startActivityWithExtra(false);
 
                     } else {
                         Log.i(TAG, "afterTextChanged: Second code is INCORRECT!");
@@ -218,7 +209,7 @@ public class LockerActivity extends AppCompatActivity implements LockerContract.
                     }
 
                 } else if (secondEditText == null
-                        && mLockerPresenter.checkIfCodeForLockerInDatabase()
+                        && mLockerPresenter.isCodeForLockerInDatabase()
                         && !mCorrectPIN) {
                     Log.i(TAG, "afterTextChanged: Second code is INCORRECT TRY AGAIN!");
 
@@ -235,8 +226,6 @@ public class LockerActivity extends AppCompatActivity implements LockerContract.
     }
 
     void disableInput(EditText editText) {
-//        editText.setInputType(InputType.TYPE_NULL);
-//        editText.setTextIsSelectable(false);
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -246,8 +235,6 @@ public class LockerActivity extends AppCompatActivity implements LockerContract.
     }
 
     void unableInput(EditText editText) {
-//        editText.setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-//        editText.setTextIsSelectable(true);
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -288,7 +275,7 @@ public class LockerActivity extends AppCompatActivity implements LockerContract.
     }
 
     private void startActivityWithExtra(boolean extraFlag) {
-        Intent intent = new Intent(getApplicationContext(), PanelActivity.class);
+        Intent intent = new Intent(getApplicationContext(), FragmentActivity.class);
         if (extraFlag) intent.putExtra("code", Integer.parseInt(sPinCode));
         intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

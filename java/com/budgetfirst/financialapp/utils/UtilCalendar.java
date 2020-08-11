@@ -1,13 +1,15 @@
-package com.budgetfirst.financialapp.model;
+package com.budgetfirst.financialapp.utils;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
-public class ModelCalendar {
+public class UtilCalendar {
 
     public static void getCalendarModule(DatePickerDialog.OnDateSetListener dateSetListener, Context context) {
         Calendar c = Calendar.getInstance();
@@ -37,5 +39,9 @@ public class ModelCalendar {
             formatedDate = dayOfMonth + "/" + month + "/" + year;
         }
         return formatedDate;
+    }
+
+    public static String showCurrentDate () {
+        return new SimpleDateFormat("dd/MM/yyyy").format(new Date());
     }
 }

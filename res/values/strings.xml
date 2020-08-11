@@ -1,18 +1,21 @@
 <resources>
     <string name="app_name">Budget First</string>
+    <string name="splash_screen">Budget First made by Zaberman</string>
+    <string name="logo">Logo</string>
 
     <string name="edit_text">Insert the description</string>
     <string name="total_income">Total Income</string>
-    <string name="total_expence">Total Expence</string>
+    <string name="total_expense">Total Expense</string>
     <string name="income">Income</string>
-    <string name="expence">Expence</string>
+    <string name="expense">Expense</string>
     <string name="balance">BALANCE</string>
 
     <string name="btn_total">ALL</string>
-    <string name="btn_year">Year</string>
-    <string name="btn_month">Month</string>
-    <string name="btn_day">Day</string>
+    <string name="btn_year">Y</string>
+    <string name="btn_month">M</string>
+    <string name="btn_day">D</string>
     <string name="title_pick_date">PICK THE DATE</string>
+    <string name="date_period">For the period: </string>
 
     <string name="title_delete_db">DELETE DATA BASE</string>
     <string name="title_delete_message">You are going to DELETE ALL DATA! Are you sure?</string>
@@ -28,12 +31,16 @@
     <string name="image_history">Show history of operations</string>
 
     <string name="locker_enter_pin">Enter 4 digits PIN:</string>
-    <string name="locker_delete_pin">Delete PIN  </string>
+    <string name="locker_delete_pin">Delete PIN </string>
     <string name="locker_skip_step">Skip it ></string>
     <string name="locker_save_pin">Save 4 digits PIN:</string>
-    <string name="locker_deleted_success">PIN saved successfully!</string>
+    <string name="locker_deleted_success">PIN deleted successfully!</string>
+    <string name="locker_saved_success">PIN saved successfully!</string>
     <string name="locker_repeat_pin">Great! Confirm PIN!</string>
     <string name="locker_wrong_pin_start_again">Wrong PIN! Start over!</string>
     <string name="locker_wrong_pin_try_again">Wrong PIN Try again!</string>
 
+    <string name="cost_breakdown">Expense breakdown</string>
+    <string name="comparison">Comparison of income and expenses</string>
+    <string name="add_some_data">Please add some data to see charts</string>
 </resources>

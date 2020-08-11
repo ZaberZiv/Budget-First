@@ -6,12 +6,12 @@ public interface LockerContract {
         void setViewsByBinding();
         void setListenersForEditText();
         void showKeyBoard();
-        void checkIfPinIsAlreadyExist();
+        void isPinIsAlreadyExist();
     }
 
     interface Presenter {
         int getCodeForLocker();
-        boolean checkIfCodeForLockerInDatabase();
+        boolean isCodeForLockerInDatabase();
         void saveCodeForLockerInDatabase(int code);
         void deleteCodeForLockerFromDatabase(int code);
     }

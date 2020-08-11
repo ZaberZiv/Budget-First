@@ -9,18 +9,16 @@ public interface CalculationContract {
 
     interface View {
         void setViewsByBinding();
-        void showDatePickerDialog();
     }
 
     interface Presenter {
         void getDataToSetTextViewsPresenter(Cursor cursor);
         Cursor getAllDataFromPresenter();
-        void setExpenceTextView(TextView expenceTextView);
+        void setExpenseTextView(TextView expenseTextView);
         void setIncomeTextView(TextView incomeTextView);
         void setBalanceTextView(TextView balanceTextView);
-        void setTotalExpenceTextView(TextView totalExpenceTextView);
+        void setTotalExpenseTextView(TextView totalExpenseTextView);
         void setTotalIncomeTextView(TextView totalIncomeTextView);
-        ArrayList<String> fillArrayPresenter(ArrayList<String> dateInStringList, int num);
-        String customFormat(String pattern, double value);
+        String customFormat(double value);
     }
 }

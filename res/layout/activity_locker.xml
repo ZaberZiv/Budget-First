@@ -85,7 +85,7 @@
     <TextView
         android:id="@+id/skip_button"
         style="@style/locker_headers_style"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="24dp"
         android:text="@string/locker_skip_step"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

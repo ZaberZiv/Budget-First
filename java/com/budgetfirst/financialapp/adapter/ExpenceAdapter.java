@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.budgetfirst.financialapp.R;
 import com.budgetfirst.financialapp.model.database.FinancialContract;
 import com.budgetfirst.financialapp.presenter.panel.PanelPresenter;
+import com.budgetfirst.financialapp.utils.UtilConverter;
 
 import java.text.SimpleDateFormat;
 
@@ -74,19 +75,16 @@ public class ExpenceAdapter extends RecyclerView.Adapter<ExpenceAdapter.ExpenceV
         if (expence == 0.0) {
             holder.mTextView1.setText("");
         } else {
-            holder.mTextView1.setText(mPanelPresenter.customFormat("###,###.##", expence));
+            holder.mTextView1.setText(mPanelPresenter.customFormat(expence));
         }
         if (income == 0.0) {
             holder.mTextView3.setText("");
         } else {
-            holder.mTextView3.setText(mPanelPresenter.customFormat("###,###.##", income));
+            holder.mTextView3.setText(mPanelPresenter.customFormat( income));
         }
 
-        SimpleDateFormat formatLong = new SimpleDateFormat("dd/MM/yyyy");
-        String dateString = formatLong.format(date);
-
         holder.mTextView2.setText(title);
-        holder.mTextViewDate.setText(dateString);
+        holder.mTextViewDate.setText(UtilConverter.dateFormatDayMonthYear(date));
         holder.itemView.setTag(id);
     }
 

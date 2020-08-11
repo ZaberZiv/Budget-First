@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Budget First</string>
+    <string name="splash_screen">Budget First создал Zaberman</string>
+    <string name="logo">Лого</string>
 
     <string name="edit_text">Добавьте описание</string>
     <string name="total_income">Общий Доход</string>
-    <string name="total_expence">Общий Расход</string>
+    <string name="total_expense">Общий Расход</string>
     <string name="income">Доход</string>
-    <string name="expence">Расход</string>
+    <string name="expense">Расход</string>
     <string name="balance">БАЛАНС</string>
 
     <string name="btn_total">ВСЁ</string>
-    <string name="btn_year">Год</string>
-    <string name="btn_month">Месяц</string>
-    <string name="btn_day">День</string>
+    <string name="btn_year">Г</string>
+    <string name="btn_month">М</string>
+    <string name="btn_day">Д</string>
     <string name="title_pick_date">ВЫБЕРИ ДАТУ</string>
+    <string name="date_period">За период: </string>
 
     <string name="title_delete_db">УДАЛЕНИЕ ДАННЫХ</string>
     <string name="title_delete_message">Вы собираетесь УДАЛИТЬ ВСЕ ДАННЫЕ! Вы уверены?</string>
@@ -33,8 +36,13 @@
     <string name="locker_skip_step">Пропустить</string>
     <string name="locker_save_pin">Сохраните PIN код из 4-х цифр:</string>
     <string name="locker_deleted_success">PIN успешно удалён!</string>
+    <string name="locker_saved_success">>PIN успешно сохранён!</string>
     <string name="locker_repeat_pin">Отлично! Подтвердите введённый PIN!</string>
     <string name="locker_wrong_pin_start_again">Неверный PIN! Начните сначала!</string>
     <string name="locker_wrong_pin_try_again">Неверный PIN! Попробуйте снова!</string>
+
+    <string name="cost_breakdown">Разбивка по расходам</string>
+    <string name="comparison">Сравнение доходов к расходам</string>
+    <string name="add_some_data">Чтобы увидеть график, введите сначала данные</string>
 
 </resources>

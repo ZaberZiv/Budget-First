@@ -1,16 +1,18 @@
-package com.budgetfirst.financialapp.presenter.database;
+package com.budgetfirst.financialapp.presenter.data;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.budgetfirst.financialapp.model.Data;
+import com.budgetfirst.financialapp.model.ModelFilter;
 import com.budgetfirst.financialapp.model.database.ModelDatabase;
 
-public class DatabasePresenter implements DatabaseContract.Presenter{
+import java.util.ArrayList;
+
+public class DatabasePresenter implements DatabaseContract.Presenter {
 
     private static final String TAG = "DatabasePresenter";
-
     private ModelDatabase moduleDatabase;
     SQLiteDatabase database;
 
@@ -44,9 +46,16 @@ public class DatabasePresenter implements DatabaseContract.Presenter{
     }
 
     @Override
-    public Cursor getCursorPresenter(
+    public Cursor getCursorForSelectedDate(
             int checkNumber, long dateLong, long monthLong, long yearLong) {
-        return moduleDatabase.getCursorModuleDatabase(checkNumber, dateLong, monthLong, yearLong);
+        return moduleDatabase.getCursorForSelectedDate(checkNumber, dateLong, monthLong, yearLong);
     }
 
+    public ArrayList<Data> getDataForMultiBarChart(int checkNumber, long dateLong, long monthLong, long yearLong) {
+        return moduleDatabase.getDataForMultiBarChart(checkNumber, dateLong, monthLong, yearLong);
+    }
+
+    public ArrayList<Data> getDataForPieChart(int checkNumber, long dateLong, long monthLong, long yearLong) {
+        return moduleDatabase.getDataForPieChart(checkNumber, dateLong, monthLong, yearLong);
+    }
 }

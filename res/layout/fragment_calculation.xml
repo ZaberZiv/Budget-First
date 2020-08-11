@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".presenter.calculation.CalculationActivity">
+    tools:context=".presenter.calculation.CalculationFragment">
 
     <LinearLayout
         android:id="@+id/linearLayoutMain"
@@ -34,7 +34,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
@@ -49,7 +49,7 @@
                     android:id="@+id/totalIncomeTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0.0"
+                    android:text="0"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -71,8 +71,8 @@
                     android:id="@+id/balanceTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="0"
                     android:textColor="@color/colorBalance"
-                    android:text="0.0"
                     android:textSize="24sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -87,14 +87,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/total_expence"
+                    android:text="@string/total_expense"
                     android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/totalExpenceTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0.0"
+                    android:text="0"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -132,8 +132,8 @@
                     android:id="@+id/incomeTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="0"
                     android:textColor="@color/colorIncome"
-                    android:text="0.0"
                     android:textSize="24sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -148,15 +148,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/expence"
+                    android:text="@string/expense"
                     android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/expenceTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="0"
                     android:textColor="@color/colorExpence"
-                    android:text="0.0"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -192,79 +192,69 @@
         android:id="@+id/linearLayoutDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:elevation="10dp"
         android:gravity="center_horizontal|center_vertical"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayoutButtons"
+        app:layout_constraintBottom_toBottomOf="@+id/relativeLayout2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayoutMain">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/showDateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal|center_vertical"
-            android:text="00/00/0000"
             android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayoutButtons"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
+    <RelativeLayout
+        android:id="@+id/relativeLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/colorAccent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:visibility="visible"
+            app:srcCompat="@android:drawable/ic_menu_sort_by_size" />
 
         <Button
-            android:id="@+id/showAll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/colorAccent"
-            android:onClick="filterClicked"
-            android:text="@string/btn_total"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:id="@+id/year_btn_filter"
+            style="@style/floating_btn_style"
+            android:layout_toStartOf="@+id/fab"
+            android:text="Y" />
 
         <Button
-            android:id="@+id/btnYear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/colorAccent"
-            android:onClick="filterClicked"
-            android:text="@string/btn_year"
-            android:textSize="18sp" />
+            android:id="@+id/month_btn_filter"
+            style="@style/floating_btn_style"
+            android:layout_toStartOf="@+id/year_btn_filter"
+            android:text="M" />
 
         <Button
-            android:id="@+id/btnMonth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/colorAccent"
-            android:onClick="filterClicked"
-            android:text="@string/btn_month"
-            android:textSize="18sp" />
+            android:id="@+id/day_btn_filter"
+            style="@style/floating_btn_style"
+            android:layout_toStartOf="@+id/month_btn_filter"
+            android:text="D" />
 
         <Button
-            android:id="@+id/btnDay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/colorAccent"
-            android:onClick="filterClicked"
-            android:text="@string/btn_day"
-            android:textSize="18sp" />
-    </LinearLayout>
+            android:id="@+id/show_all_btn_filter"
+            style="@style/floating_btn_style"
+            android:layout_above="@+id/fab"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="false"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="16dp"
+            android:text="ALL" />
 
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

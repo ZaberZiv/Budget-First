@@ -1,11 +1,11 @@
-package com.budgetfirst.financialapp.model;
+package com.budgetfirst.financialapp.utils;
 
 import android.util.Log;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
-public class ModelConverter {
+public class UtilConverter {
 
     private static final String TAG = "Converter";
 
@@ -44,8 +44,47 @@ public class ModelConverter {
         return longDate;
     }
 
-    public static String customStringFormat(String pattern, double value) {
-        DecimalFormat myFormatter = new DecimalFormat(pattern);
+    public static long convertStringToLongMMYY(String dateInString) {
+        long longDate = 0;
+        try {
+            longDate = new SimpleDateFormat("MMMM yyyy").parse(dateInString).getTime();
+        } catch (Exception e) {
+            Log.e(TAG, "Check the convertion of Date in convertStringToLongDate()");
+            e.printStackTrace();
+        }
+        return longDate;
+    }
+
+    public static String convertStringToStringMMYY(String dateInString) {
+        long longDate = 0;
+        try {
+            longDate = new SimpleDateFormat("MMMM yyyy").parse(dateInString).getTime();
+        } catch (Exception e) {
+            Log.e(TAG, "Check the convertion of Date in convertStringToLongMMYY()");
+            e.printStackTrace();
+        }
+
+        return String.valueOf(longDate);
+    }
+
+    public static String customStringFormat(double value) {
+        DecimalFormat myFormatter = new DecimalFormat("###,###.##");
         return myFormatter.format(value);
+    }
+
+    public static String dateFormatYear(long l) {
+        return new SimpleDateFormat("yyyy").format(l);
+    }
+
+    public static String dateFormatMonth(long l) {
+        return new SimpleDateFormat("MMMM").format(l);
+    }
+
+    public static String dateFormatMonthAndYear(long l) {
+        return new SimpleDateFormat("MMMM yyyy").format(l);
+    }
+
+    public static String dateFormatDayMonthYear(long l) {
+        return new SimpleDateFormat("dd/MM/yyyy").format(l);
     }
 }

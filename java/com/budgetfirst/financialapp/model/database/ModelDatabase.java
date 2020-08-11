@@ -11,7 +11,8 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.budgetfirst.financialapp.R;
 import com.budgetfirst.financialapp.model.Data;
-import com.budgetfirst.financialapp.model.ModelConverter;
+import com.budgetfirst.financialapp.model.ModelFilter;
+import com.budgetfirst.financialapp.utils.UtilConverter;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,7 @@ public class ModelDatabase {
     private ArrayList<String> mMonthList = new ArrayList<>();
     private ArrayList<String> mYearList = new ArrayList<>();
     private ArrayList<String> mYearForYearList = new ArrayList<>();
+    private ArrayList<String> mDateList = new ArrayList<>();
 
     public ModelDatabase(SQLiteDatabase database) {
         this.database = database;
@@ -44,9 +46,9 @@ public class ModelDatabase {
     }
 
     public void addToDatabaseModule() {
-        long longDateDB = ModelConverter.convertStringToLongDate(data.getFormatedDate());
-        long longMonthDB = ModelConverter.convertStringToLongMonth(longDateDB);
-        long longYearDB = ModelConverter.convertStringToLongYear(longDateDB);
+        long longDateDB = UtilConverter.convertStringToLongDate(data.getFormatedDate());
+        long longMonthDB = UtilConverter.convertStringToLongMonth(longDateDB);
+        long longYearDB = UtilConverter.convertStringToLongYear(longDateDB);
 
         ContentValues cv = new ContentValues();
         cv.put(FinancialContract.FinancialEntry.COLUMN_TITLE, data.getItemName());
@@ -81,7 +83,7 @@ public class ModelDatabase {
         return flag;
     }
 
-    public Cursor getCursorModuleDatabase(
+    public Cursor getCursorForSelectedDate(
             int checkNumber, long dateLong, long monthLong, long yearLong) {
         String selectionDay = FinancialContract.FinancialEntry.COLUMN_TIMESTAMP
                 + " = " + dateLong;
@@ -150,6 +152,7 @@ public class ModelDatabase {
         int incomeIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_INCOME);
         int monthIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_MONTH);
         int yearIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_YEAR);
+        int dateIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_TIMESTAMP);
 
         if (cursor.moveToFirst()) {
             amountCheckDB.clear();
@@ -157,12 +160,15 @@ public class ModelDatabase {
             mMonthList.clear();
             mYearList.clear();
             mYearForYearList.clear();
+            mDateList.clear();
             do {
                 amountCheckDB.add(cursor.getString(expenceIndex));
                 incomeCheckDB.add(cursor.getString(incomeIndex));
                 mMonthList.add(cursor.getString(monthIndex));
                 mYearList.add(cursor.getString(yearIndex)); // Year data for month listView
                 mYearForYearList.add(cursor.getString(yearIndex)); // Year data for year listView
+                mDateList.add(cursor.getString(dateIndex));
+
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -179,6 +185,56 @@ public class ModelDatabase {
         }
     }
 
+    public ArrayList<Data> getDataForPieChart(int checkNumber, long dateLong, long monthLong, long yearLong) {
+        Cursor cursor = getCursorForSelectedDate(checkNumber, dateLong, monthLong, yearLong);
+        ArrayList<Data> dataList = new ArrayList<>();
+
+        int titleIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_TITLE);
+        int expenseIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_EXPENCE);
+        int yearIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_YEAR);
+
+        if (cursor.moveToFirst()) {
+            dataList.clear();
+            do {
+                if (cursor.getDouble(expenseIndex) < 0.0) {
+                    dataList.add(new Data(
+                            cursor.getString(titleIndex),
+                            cursor.getDouble(expenseIndex),
+                            cursor.getString(yearIndex)
+                    ));
+                }
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return dataList;
+    }
+
+    public ArrayList<Data> getDataForMultiBarChart(int checkNumber, long dateLong, long monthLong, long yearLong) {
+        Cursor cursor = getCursorForSelectedDate(checkNumber, dateLong, monthLong, yearLong);
+        ArrayList<Data> dataList = new ArrayList<>();
+
+        int titleIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_TITLE);
+        int incomeIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_INCOME);
+        int expenseIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_EXPENCE);
+        int yearIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_YEAR);
+
+        if (cursor.moveToFirst()) {
+            dataList.clear();
+            do {
+                dataList.add(new Data(
+                        cursor.getString(titleIndex),
+                        cursor.getDouble(incomeIndex),
+                        cursor.getDouble(expenseIndex),
+                        cursor.getString(yearIndex)
+                ));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return dataList;
+    }
+
     public int getCodeForLocker() {
         Cursor cursor = database.rawQuery("SELECT * FROM "
                 + FinancialContract.FinancialEntry.TABLE_LOCKER, null);
@@ -193,6 +249,17 @@ public class ModelDatabase {
         cursor.close();
 
         return code;
+    }
+
+    public void saveCodeForLockerInDatabase(int code) {
+        ContentValues cv = new ContentValues();
+        cv.put(FinancialContract.FinancialEntry.COLUMN_CODE, code);
+        database.insert(FinancialContract.FinancialEntry.TABLE_LOCKER, null, cv);
+    }
+
+    public void deleteCodeForLockerFromDatabase(int code) {
+        database.delete(FinancialContract.FinancialEntry.TABLE_LOCKER,
+                FinancialContract.FinancialEntry.COLUMN_CODE + "=" + code, null);
     }
 
     public ArrayList<String> getmMonthList() {
@@ -235,14 +302,11 @@ public class ModelDatabase {
         this.expence = expence;
     }
 
-    public void saveCodeForLockerInDatabase(int code) {
-        ContentValues cv = new ContentValues();
-        cv.put(FinancialContract.FinancialEntry.COLUMN_CODE, code);
-        database.insert(FinancialContract.FinancialEntry.TABLE_LOCKER, null, cv);
+    public ArrayList<String> getmDateList() {
+        return mDateList;
     }
 
-    public void deleteCodeForLockerFromDatabase(int code) {
-        database.delete(FinancialContract.FinancialEntry.TABLE_LOCKER,
-                FinancialContract.FinancialEntry.COLUMN_CODE + "=" + code, null);
+    public void setmDateList(ArrayList<String> mDateList) {
+        this.mDateList = mDateList;
     }
 }

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#EF5350</color>
     <color name="colorPrimaryDark">#B71B1C</color>
-    <color name="colorAccent">#E5AC73</color>
+    <color name="colorAccent">#FFEB3B</color>
     <color name="colorExpence">#D85182</color>
     <color name="colorIncome">#18CC93</color>
     <color name="colorBalance">#BAB702</color>

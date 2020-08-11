@@ -6,16 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
     </style>
-
-    <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
-        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
-        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
-        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
-    </style>
-
 
     <style name="calc_button">
         <item name="android:layout_width">60dp</item>
@@ -39,13 +30,14 @@
         <item name="android:layout_marginBottom">5dp</item>
     </style>
 
-    <style name="btn_style">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:background">@color/colorAccent</item>
-        <item name="android:onClick">filterClicked</item>
-        <item name="android:textSize">18sp</item>
+    <style name="floating_btn_style">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginBottom">24dp</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:background">@drawable/floating_buttons</item>
     </style>
 
     <style name="locker_edit_text">
@@ -77,6 +69,5 @@
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
-
     </style>
 </resources>

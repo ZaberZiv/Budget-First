@@ -14,6 +14,6 @@ public interface PanelContract {
         String addNumbersToThePanel(String numbers, int tag);
         String putPeriod(String numbers, TextView text);
         String deleteCharFromPanel(String numbers, TextView text);
-        String customFormat(String pattern, double value);
+        String customFormat(double value);
     }
 }

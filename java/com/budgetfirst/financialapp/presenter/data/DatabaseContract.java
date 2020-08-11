@@ -1,4 +1,4 @@
-package com.budgetfirst.financialapp.presenter.database;
+package com.budgetfirst.financialapp.presenter.data;
 
 import android.database.Cursor;
 
@@ -12,7 +12,7 @@ public interface DatabaseContract {
         void saveToDatabase(double income, double expence, String date, String name);
         void deleteFromDatabase(long id);
         boolean clearDatabase();
-        Cursor getCursorPresenter(
+        Cursor getCursorForSelectedDate(
                 int checkNumber, long dateLong, long monthLong, long yearLong);
     }
 }

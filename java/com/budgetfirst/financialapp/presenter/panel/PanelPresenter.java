@@ -4,8 +4,8 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.widget.TextView;
 
-import com.budgetfirst.financialapp.model.ModelCalendar;
-import com.budgetfirst.financialapp.model.ModelConverter;
+import com.budgetfirst.financialapp.utils.UtilCalendar;
+import com.budgetfirst.financialapp.utils.UtilConverter;
 import com.budgetfirst.financialapp.model.ModelNumberPanel;
 
 public class PanelPresenter implements PanelContract.Presenter {
@@ -39,21 +39,21 @@ public class PanelPresenter implements PanelContract.Presenter {
         if (numbers.length() == 0) {
             text.setText("");
         } else {
-            text.setText(customFormat("###,###.##", Double.parseDouble(numbers)));
+            text.setText(customFormat(Double.parseDouble(numbers)));
         }
     }
 
     // Formats the numbers (double type) which displayed on the screen
     @Override
-    public String customFormat(String pattern, double value) {
-        return ModelConverter.customStringFormat(pattern, value);
+    public String customFormat(double value) {
+        return UtilConverter.customStringFormat(value);
     }
 
     public void getCalendarModule(DatePickerDialog.OnDateSetListener dateSetListener, Context context) {
-        ModelCalendar.getCalendarModule(dateSetListener, context);
+        UtilCalendar.getCalendarModule(dateSetListener, context);
     }
 
     public String dateFormatModule(int dayOfMonth, int month, int year) {
-        return ModelCalendar.dateFormatModule(dayOfMonth, month, year);
+        return UtilCalendar.dateFormatModule(dayOfMonth, month, year);
     }
 }
