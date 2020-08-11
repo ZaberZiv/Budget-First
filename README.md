@@ -11,7 +11,8 @@ At main menu (main activity) User add some numbers, description of it and than c
 On bottom menu: User can delete all data from database or check all the operations in second menu (second activity).
 You can secure your app setting a 4 digits PIN.
 
-https://github.com/ZaberZiv/Budget-First/blob/master/screenshots/Screenshot_11.png
+
+![Image alt](https://github.com/ZaberZiv/Budget-First/blob/master/screenshots/Screenshot_11.png)
 ![Image alt](https://github.com/ZaberZiv/Home-project/raw/master/Screenshot_22.png)
 
 In the second menu, User can check what operations were added at a certain point in time. 
