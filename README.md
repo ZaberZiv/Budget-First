@@ -11,14 +11,19 @@ At main menu (main activity) User add some numbers, description of it and than c
 On bottom menu: User can delete all data from database or check all the operations in second menu (second activity).
 You can secure your app setting a 4 digits PIN.
 
-![Image alt](https://github.com/ZaberZiv/Home-project/raw/master/Screenshot_1.png)
-![Image alt](https://github.com/ZaberZiv/Home-project/raw/master/Screenshot_2.png)
+
+![Image alt](https://github.com/ZaberZiv/Budget-First/blob/master/screenshots/Screenshot_11.png)
+![Image alt](https://github.com/ZaberZiv/Home-project/raw/master/Screenshot_22.png)
 
 In the second menu, User can check what operations were added at a certain point in time. 
 <b>User can choose the year, month, day or view all the data for all the time.</b>
 To delete item - swipe left.
 
-![Image alt](https://github.com/ZaberZiv/Home-project/raw/master/Screenshot_33.png)
-![Image alt](https://github.com/ZaberZiv/Home-project/raw/master/Screenshot_4.png)
-![Image alt](https://github.com/ZaberZiv/Home-project/raw/master/Screenshot_5.png)
-![Image alt](https://github.com/ZaberZiv/Home-project/raw/master/Screenshot_6.png)
+![Image alt](https://github.com/ZaberZiv/Home-project/raw/master/Screenshot_32.png)
+![Image alt](https://github.com/ZaberZiv/Home-project/raw/master/Screenshot_44.png)
+![Image alt](https://github.com/ZaberZiv/Home-project/raw/master/Screenshot_55.png)
+![Image alt](https://github.com/ZaberZiv/Home-project/raw/master/Screenshot_66.png)
+![Image alt](https://github.com/ZaberZiv/Home-project/raw/master/Screenshot_77.png)
+![Image alt](https://github.com/ZaberZiv/Home-project/raw/master/Screenshot_88.png)
+![Image alt](https://github.com/ZaberZiv/Home-project/raw/master/Screenshot_99.png)
+![Image alt](https://github.com/ZaberZiv/Home-project/raw/master/Screenshot_100.png)
