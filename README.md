@@ -34,5 +34,6 @@ MPAndroidChart library was used.
 ![Image alt](https://github.com/ZaberZiv/Budget-First/blob/master/screenshots/Screenshot_8.png)
 
 Also User can secure an app setting a 4 digits PIN.
+
 ![Image alt](https://github.com/ZaberZiv/Budget-First/blob/master/screenshots/Screenshot_9.png)
 ![Image alt](https://github.com/ZaberZiv/Budget-First/blob/master/screenshots/Screenshot_10.png)
