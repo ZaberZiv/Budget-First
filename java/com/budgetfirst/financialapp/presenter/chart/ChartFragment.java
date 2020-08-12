@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,13 +23,15 @@ import com.budgetfirst.financialapp.R;
 import com.budgetfirst.financialapp.databinding.FragmentChartBinding;
 import com.budgetfirst.financialapp.model.database.FinancialDBHelper;
 import com.budgetfirst.financialapp.presenter.data.DatabasePresenter;
+import com.budgetfirst.financialapp.presenter.floatingbutton.FloatingButtonContract;
+import com.budgetfirst.financialapp.presenter.floatingbutton.FloatingButtonSettings;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class ChartFragment extends Fragment implements ChartContract.View, View.OnClickListener {
+public class ChartFragment extends Fragment implements ChartContract.View, View.OnClickListener, FloatingButtonContract.View {
 
     private static final String TAG = "ChartFragment";
 
@@ -49,6 +50,7 @@ public class ChartFragment extends Fragment implements ChartContract.View, View.
 
     private FragmentChartBinding binding;
     private FloatingActionButton fab;
+    private FloatingButtonSettings fbs;
     private Button mDayBtn, mShowAllBtn, mYearBtn, mMonthBtn;
 
     private ScrollView mScrollView;
@@ -65,6 +67,7 @@ public class ChartFragment extends Fragment implements ChartContract.View, View.
         mDatabase = new FinancialDBHelper(getContext()).getWritableDatabase();
         mChartPresenter = new ChartPresenter(mDatabase);
         mDatabasePresenter = new DatabasePresenter(mDatabase, getContext());
+        fbs = new FloatingButtonSettings(this);
 
         setViewsByBinding();
 
@@ -75,12 +78,12 @@ public class ChartFragment extends Fragment implements ChartContract.View, View.
         getDataWithChosenDate();
         floatingButtonPressed();
         showCurrentSum(getAllItems());
+        fbs.floatingButtonPressed(fab);
 
         return view;
     }
 
     public void setViewsByBinding() {
-        fab = binding.fab;
         mChart = binding.pieChart;
         mMultiBarChart = binding.chart1;
         mScrollView = binding.scrollView;
@@ -91,10 +94,11 @@ public class ChartFragment extends Fragment implements ChartContract.View, View.
         mExpenseTextView = binding.expenceTextView;
         mBalanceTextView = binding.balanceTextView;
 
-        mDayBtn = binding.dayBtnFilter;
-        mYearBtn = binding.yearBtnFilter;
-        mMonthBtn = binding.monthBtnFilter;
-        mShowAllBtn = binding.showAllBtnFilter;
+        fab = binding.includedRelativeLayout.fab;
+        mDayBtn = binding.includedRelativeLayout.dayBtnFilter;
+        mYearBtn = binding.includedRelativeLayout.yearBtnFilter;
+        mMonthBtn = binding.includedRelativeLayout.monthBtnFilter;
+        mShowAllBtn = binding.includedRelativeLayout.showAllBtnFilter;
 
         listenerForButtons(mDayBtn);
         listenerForButtons(mYearBtn);
@@ -172,8 +176,7 @@ public class ChartFragment extends Fragment implements ChartContract.View, View.
                 break;
         }
 
-        flag_float_btn = false;
-        hideFloatButtons();
+        fbs.hideFloatButtons();
     }
 
     public void showListView(final ArrayList<String> listForListView) {
@@ -261,5 +264,25 @@ public class ChartFragment extends Fragment implements ChartContract.View, View.
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public Button getmYearBtn() {
+        return mYearBtn;
+    }
+
+    @Override
+    public Button getmMonthBtn() {
+        return mMonthBtn;
+    }
+
+    @Override
+    public Button getmDayBtn() {
+        return mDayBtn;
+    }
+
+    @Override
+    public Button getmShowAllBtn() {
+        return mShowAllBtn;
     }
 }

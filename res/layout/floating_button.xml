@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:visibility="visible"
+        app:srcCompat="@android:drawable/ic_menu_sort_by_size" />
+
+    <Button
+        android:id="@+id/year_btn_filter"
+        style="@style/floating_btn_style"
+        android:text="@string/btn_year" />
+
+    <Button
+        android:id="@+id/month_btn_filter"
+        style="@style/floating_btn_style"
+        android:text="@string/btn_month" />
+
+    <Button
+        android:id="@+id/day_btn_filter"
+        style="@style/floating_btn_style"
+        android:text="@string/btn_day" />
+
+    <Button
+        android:id="@+id/show_all_btn_filter"
+        style="@style/floating_btn_style"
+        android:text="@string/btn_total" />
+</RelativeLayout>

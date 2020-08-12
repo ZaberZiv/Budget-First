@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,12 +26,14 @@ import com.budgetfirst.financialapp.R;
 import com.budgetfirst.financialapp.adapter.ExpenceAdapter;
 import com.budgetfirst.financialapp.databinding.FragmentCalculationBinding;
 import com.budgetfirst.financialapp.model.database.FinancialDBHelper;
+import com.budgetfirst.financialapp.presenter.floatingbutton.FloatingButtonContract;
+import com.budgetfirst.financialapp.presenter.floatingbutton.FloatingButtonSettings;
 import com.budgetfirst.financialapp.presenter.data.DatabasePresenter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class CalculationFragment extends Fragment implements CalculationContract.View, View.OnClickListener {
+public class CalculationFragment extends Fragment implements CalculationContract.View, View.OnClickListener, FloatingButtonContract.View {
 
     private static final String TAG = "CalculationFragment";
 
@@ -53,8 +54,8 @@ public class CalculationFragment extends Fragment implements CalculationContract
 
     private FragmentCalculationBinding binding;
     private FloatingActionButton fab;
+    private FloatingButtonSettings fbs;
     private Button mYearBtn, mMonthBtn, mDayBtn, mShowAllBtn;
-    private boolean flag_float_btn;
 
     @Nullable
     @Override
@@ -65,13 +66,14 @@ public class CalculationFragment extends Fragment implements CalculationContract
         mDatabase = new FinancialDBHelper(getContext()).getWritableDatabase();
         mDatabasePresenter = new DatabasePresenter(mDatabase, getContext());
         mCalculationPresenter = new CalculationPresenter(mDatabase);
+        fbs = new FloatingButtonSettings(this);
 
         setViewsByBinding();
         doAnimation();
         showTotalSum();
         showCurrentSum(getAllItems());
         doRecyclerView();
-        floatingButtonPressed();
+        fbs.floatingButtonPressed(fab);
 
         //Swipe left to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
@@ -102,53 +104,24 @@ public class CalculationFragment extends Fragment implements CalculationContract
         mTotalIncomeTextView = binding.totalIncomeTextView;
         mTotalExpenseTextView = binding.totalExpenceTextView;
 
-        fab = binding.fab;
-        mDayBtn = binding.dayBtnFilter;
-        mYearBtn = binding.yearBtnFilter;
-        mMonthBtn = binding.monthBtnFilter;
-        mShowAllBtn = binding.showAllBtnFilter;
+        fab = binding.includedRelativeLayout.fab;
+        mDayBtn = binding.includedRelativeLayout.dayBtnFilter;
+        mYearBtn = binding.includedRelativeLayout.yearBtnFilter;
+        mMonthBtn = binding.includedRelativeLayout.monthBtnFilter;
+        mShowAllBtn = binding.includedRelativeLayout.showAllBtnFilter;
 
-        listenerForButtons(mShowAllBtn);
+        listenerForButtons(mDayBtn);
         listenerForButtons(mYearBtn);
         listenerForButtons(mMonthBtn);
-        listenerForButtons(mDayBtn);
+        listenerForButtons(mShowAllBtn);
     }
 
     void listenerForButtons(Button button) {
         button.setOnClickListener(CalculationFragment.this);
     }
 
-    void floatingButtonPressed() {
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!flag_float_btn) {
-                    flag_float_btn = true;
-                    showFloatButtons();
-                } else {
-                    flag_float_btn = false;
-                    hideFloatButtons();
-                }
-            }
-        });
-    }
-
     public void doAnimation() {
         mAnimateNumbers = AnimationUtils.loadAnimation(getContext(), R.anim.scale_numbers);
-    }
-
-    private void showFloatButtons() {
-        mYearBtn.setVisibility(View.VISIBLE);
-        mMonthBtn.setVisibility(View.VISIBLE);
-        mDayBtn.setVisibility(View.VISIBLE);
-        mShowAllBtn.setVisibility(View.VISIBLE);
-    }
-
-    private void hideFloatButtons() {
-        mYearBtn.setVisibility(View.GONE);
-        mMonthBtn.setVisibility(View.GONE);
-        mDayBtn.setVisibility(View.GONE);
-        mShowAllBtn.setVisibility(View.GONE);
     }
 
     public void doRecyclerView() {
@@ -257,8 +230,7 @@ public class CalculationFragment extends Fragment implements CalculationContract
                 break;
         }
 
-        flag_float_btn = false;
-        hideFloatButtons();
+        fbs.hideFloatButtons();
     }
 
     private void animateNumbers(TextView textView) {
@@ -307,6 +279,23 @@ public class CalculationFragment extends Fragment implements CalculationContract
                 dialogAlert.dismiss();
             }
         });
+    }
+
+    @Override
+    public Button getmYearBtn() {
+        return mYearBtn;
+    }
+    @Override
+    public Button getmMonthBtn() {
+        return mMonthBtn;
+    }
+    @Override
+    public Button getmDayBtn() {
+        return mDayBtn;
+    }
+    @Override
+    public Button getmShowAllBtn() {
+        return mShowAllBtn;
     }
 
     // Closing DataBase
