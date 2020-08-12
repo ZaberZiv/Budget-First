@@ -56,7 +56,6 @@ public class ChartFragment extends Fragment implements ChartContract.View, View.
     private ScrollView mScrollView;
     private RelativeLayout mRelativeLayout;
     private TextView mDateBreakdownTextView, mIncomeTextView, mExpenseTextView, mBalanceTextView;
-    private boolean flag_float_btn;
 
     @Nullable
     @Override
@@ -76,7 +75,6 @@ public class ChartFragment extends Fragment implements ChartContract.View, View.
         mMultiBarChartPresenter = new MultiBarChartPresenter(this, getContext(), mMultiBarChart, mDatabase);
 
         getDataWithChosenDate();
-        floatingButtonPressed();
         showCurrentSum(getAllItems());
         fbs.floatingButtonPressed(fab);
 
@@ -108,36 +106,6 @@ public class ChartFragment extends Fragment implements ChartContract.View, View.
 
     void listenerForButtons(Button button) {
         button.setOnClickListener(ChartFragment.this);
-    }
-
-    void floatingButtonPressed() {
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!flag_float_btn) {
-                    flag_float_btn = true;
-                    showFloatButtons();
-
-                } else {
-                    flag_float_btn = false;
-                    hideFloatButtons();
-                }
-            }
-        });
-    }
-
-    private void showFloatButtons() {
-        mYearBtn.setVisibility(View.VISIBLE);
-        mMonthBtn.setVisibility(View.VISIBLE);
-        mDayBtn.setVisibility(View.VISIBLE);
-        mShowAllBtn.setVisibility(View.VISIBLE);
-    }
-
-    private void hideFloatButtons() {
-        mYearBtn.setVisibility(View.GONE);
-        mMonthBtn.setVisibility(View.GONE);
-        mDayBtn.setVisibility(View.GONE);
-        mShowAllBtn.setVisibility(View.GONE);
     }
 
     @Override
