@@ -1,11 +1,9 @@
-package com.budgetfirst.financialapp.presenter.calculation;
+package com.budgetfirst.financialapp.presenter.history;
 
 import android.database.Cursor;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
-public interface CalculationContract {
+public interface HistoryContract {
 
     interface View {
         void setViewsByBinding();

@@ -1,8 +1,7 @@
-package com.budgetfirst.financialapp.presenter.calculation;
+package com.budgetfirst.financialapp.presenter.history;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.budgetfirst.financialapp.model.ModelFilter;
@@ -11,7 +10,7 @@ import com.budgetfirst.financialapp.model.database.ModelDatabase;
 
 import java.util.ArrayList;
 
-public class CalculationPresenter implements CalculationContract.Presenter {
+public class HistoryPresenter implements HistoryContract.Presenter {
 
     private static final String TAG = "CalculationPresenter";
 
@@ -20,7 +19,7 @@ public class CalculationPresenter implements CalculationContract.Presenter {
 
     private ModelFilter modelFilter;
 
-    public CalculationPresenter(SQLiteDatabase database) {
+    public HistoryPresenter(SQLiteDatabase database) {
         modelDatabase = new ModelDatabase(database);
         modelFilter = new ModelFilter(database);
     }

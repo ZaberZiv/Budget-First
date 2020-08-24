@@ -92,6 +92,7 @@ public class ChartFragment extends Fragment implements ChartContract.View, View.
         mExpenseTextView = binding.expenceTextView;
         mBalanceTextView = binding.balanceTextView;
 
+        // Floating buttons
         fab = binding.includedRelativeLayout.fab;
         mDayBtn = binding.includedRelativeLayout.dayBtnFilter;
         mYearBtn = binding.includedRelativeLayout.yearBtnFilter;
@@ -210,6 +211,10 @@ public class ChartFragment extends Fragment implements ChartContract.View, View.
     @Override
     public void hideViews() {
         fab.setVisibility(View.INVISIBLE);
+        mDayBtn.setVisibility(View.INVISIBLE);
+        mMonthBtn.setVisibility(View.INVISIBLE);
+        mYearBtn.setVisibility(View.INVISIBLE);
+        mShowAllBtn.setVisibility(View.INVISIBLE);
         mScrollView.setVisibility(View.INVISIBLE);
         mRelativeLayout.setVisibility(View.VISIBLE);
     }
@@ -218,6 +223,10 @@ public class ChartFragment extends Fragment implements ChartContract.View, View.
     public void showViews() {
         mRelativeLayout.setVisibility(View.INVISIBLE);
         fab.setVisibility(View.VISIBLE);
+        mDayBtn.setVisibility(View.VISIBLE);
+        mMonthBtn.setVisibility(View.VISIBLE);
+        mYearBtn.setVisibility(View.VISIBLE);
+        mShowAllBtn.setVisibility(View.VISIBLE);
         mScrollView.setVisibility(View.VISIBLE);
     }
 

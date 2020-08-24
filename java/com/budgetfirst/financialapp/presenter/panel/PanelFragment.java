@@ -33,7 +33,6 @@ public class PanelFragment extends Fragment implements View.OnClickListener {
     private SQLiteDatabase mDatabase;
     private PanelPresenter mPanelPresenter;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-    private LockerPresenter mLockerPresenter;
 
     private TextView mText, mDisplayDate;
     private EditText mEditText;
@@ -53,7 +52,7 @@ public class PanelFragment extends Fragment implements View.OnClickListener {
 
         mDatabase = new FinancialDBHelper(getContext()).getWritableDatabase();
         mPanelPresenter = new PanelPresenter();
-        mLockerPresenter = new LockerPresenter(mDatabase);
+        LockerPresenter mLockerPresenter = new LockerPresenter(mDatabase);
 
         setViewsByBinding();
 
@@ -64,7 +63,7 @@ public class PanelFragment extends Fragment implements View.OnClickListener {
 
         showDatePickerDialog();
         incomeButtonListener();
-        expenceButtonListener();
+        expenseButtonListener();
         lockerOpenedButtonListener();
         lockerLockedButtonListener();
 
@@ -165,8 +164,8 @@ public class PanelFragment extends Fragment implements View.OnClickListener {
         });
     }
 
-    // BUTTON MINUS (adding the expence to database)
-    public void expenceButtonListener() {
+    // BUTTON MINUS (adding the expense to database)
+    public void expenseButtonListener() {
         mExpenseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

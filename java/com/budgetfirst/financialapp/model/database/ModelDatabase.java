@@ -11,7 +11,6 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.budgetfirst.financialapp.R;
 import com.budgetfirst.financialapp.model.Data;
-import com.budgetfirst.financialapp.model.ModelFilter;
 import com.budgetfirst.financialapp.utils.UtilConverter;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class ModelDatabase {
 
     private boolean flag;
     private double income;
-    private double expence;
+    private double expense;
     private ArrayList<String> mMonthList = new ArrayList<>();
     private ArrayList<String> mYearList = new ArrayList<>();
     private ArrayList<String> mYearForYearList = new ArrayList<>();
@@ -148,7 +147,7 @@ public class ModelDatabase {
         ArrayList<String> amountCheckDB = new ArrayList<>();
         ArrayList<String> incomeCheckDB = new ArrayList<>();
 
-        int expenceIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_EXPENCE);
+        int expenseIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_EXPENCE);
         int incomeIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_INCOME);
         int monthIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_MONTH);
         int yearIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_YEAR);
@@ -162,7 +161,7 @@ public class ModelDatabase {
             mYearForYearList.clear();
             mDateList.clear();
             do {
-                amountCheckDB.add(cursor.getString(expenceIndex));
+                amountCheckDB.add(cursor.getString(expenseIndex));
                 incomeCheckDB.add(cursor.getString(incomeIndex));
                 mMonthList.add(cursor.getString(monthIndex));
                 mYearList.add(cursor.getString(yearIndex)); // Year data for month listView
@@ -173,11 +172,11 @@ public class ModelDatabase {
         }
         cursor.close();
 
-        expence = 0.0;
+        expense = 0.0;
         income = 0.0;
 
         for (int i = 0; i < amountCheckDB.size(); i++) {
-            expence += Double.parseDouble(amountCheckDB.get(i));
+            expense += Double.parseDouble(amountCheckDB.get(i));
         }
 
         for (int i = 0; i < incomeCheckDB.size(); i++) {
@@ -295,11 +294,11 @@ public class ModelDatabase {
     }
 
     public double getExpence() {
-        return expence;
+        return expense;
     }
 
-    public void setExpence(double expence) {
-        this.expence = expence;
+    public void setExpense(double expense) {
+        this.expense = expense;
     }
 
     public ArrayList<String> getmDateList() {

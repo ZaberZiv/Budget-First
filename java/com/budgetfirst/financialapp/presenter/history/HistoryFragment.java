@@ -1,4 +1,4 @@
-package com.budgetfirst.financialapp.presenter.calculation;
+package com.budgetfirst.financialapp.presenter.history;
 
 import android.app.AlertDialog;
 import android.database.Cursor;
@@ -33,11 +33,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class CalculationFragment extends Fragment implements CalculationContract.View, View.OnClickListener, FloatingButtonContract.View {
+public class HistoryFragment extends Fragment implements HistoryContract.View, View.OnClickListener, FloatingButtonContract.View {
 
     private static final String TAG = "CalculationFragment";
 
-    private CalculationPresenter mCalculationPresenter;
+    private HistoryPresenter mHistoryPresenter;
     private DatabasePresenter mDatabasePresenter;
 
     private ExpenceAdapter mAdapter;
@@ -65,7 +65,7 @@ public class CalculationFragment extends Fragment implements CalculationContract
 
         mDatabase = new FinancialDBHelper(getContext()).getWritableDatabase();
         mDatabasePresenter = new DatabasePresenter(mDatabase, getContext());
-        mCalculationPresenter = new CalculationPresenter(mDatabase);
+        mHistoryPresenter = new HistoryPresenter(mDatabase);
         fbs = new FloatingButtonSettings(this);
 
         setViewsByBinding();
@@ -117,7 +117,7 @@ public class CalculationFragment extends Fragment implements CalculationContract
     }
 
     void listenerForButtons(Button button) {
-        button.setOnClickListener(CalculationFragment.this);
+        button.setOnClickListener(HistoryFragment.this);
     }
 
     public void doAnimation() {
@@ -157,10 +157,10 @@ public class CalculationFragment extends Fragment implements CalculationContract
      * Income, Expense and Balance Views are changing
      */
     public void showCurrentSum(Cursor cursor) {
-        mCalculationPresenter.getDataToSetTextViewsPresenter(cursor);
-        mCalculationPresenter.setExpenseTextView(mExpenseTextView);
-        mCalculationPresenter.setIncomeTextView(mIncomeTextView);
-        mCalculationPresenter.setBalanceTextView(mBalanceTextView);
+        mHistoryPresenter.getDataToSetTextViewsPresenter(cursor);
+        mHistoryPresenter.setExpenseTextView(mExpenseTextView);
+        mHistoryPresenter.setIncomeTextView(mIncomeTextView);
+        mHistoryPresenter.setBalanceTextView(mBalanceTextView);
 
         animateNumbers(mIncomeTextView);
         animateNumbers(mExpenseTextView);
@@ -171,14 +171,14 @@ public class CalculationFragment extends Fragment implements CalculationContract
      * This method shows the results of income and expenses (Total Income and Total Expense Views).
      */
     public void showTotalSum() {
-        mCalculationPresenter.getDataToSetTextViewsPresenter(
-                mCalculationPresenter.getAllDataFromPresenter());
+        mHistoryPresenter.getDataToSetTextViewsPresenter(
+                mHistoryPresenter.getAllDataFromPresenter());
 
-        sIncomeTotalAllBtn = mCalculationPresenter.getIncome();
-        sExpenseTotalAllBtn = mCalculationPresenter.getExpence();
+        sIncomeTotalAllBtn = mHistoryPresenter.getIncome();
+        sExpenseTotalAllBtn = mHistoryPresenter.getExpence();
 
-        mCalculationPresenter.setTotalExpenseTextView(mTotalExpenseTextView);
-        mCalculationPresenter.setTotalIncomeTextView(mTotalIncomeTextView);
+        mHistoryPresenter.setTotalExpenseTextView(mTotalExpenseTextView);
+        mHistoryPresenter.setTotalIncomeTextView(mTotalIncomeTextView);
     }
 
     /**
@@ -188,9 +188,9 @@ public class CalculationFragment extends Fragment implements CalculationContract
      */
     @Override
     public void onClick(View v) {
-        ArrayList<String> yearInStringList = mCalculationPresenter.fillArrayYear();
-        ArrayList<String> monthInStringList = mCalculationPresenter.fillArrayMonth();
-        ArrayList<String> dayInStringList = mCalculationPresenter.fillArrayDay();
+        ArrayList<String> yearInStringList = mHistoryPresenter.fillArrayYear();
+        ArrayList<String> monthInStringList = mHistoryPresenter.fillArrayMonth();
+        ArrayList<String> dayInStringList = mHistoryPresenter.fillArrayDay();
 
         switch (v.getId()) {
             // Day btn
@@ -218,9 +218,9 @@ public class CalculationFragment extends Fragment implements CalculationContract
             default:
                 sCheckNumber = 0;
                 mDisplayDateTextView.setText(R.string.btn_total);
-                mIncomeTextView.setText(mCalculationPresenter.customFormat(sIncomeTotalAllBtn));
-                mExpenseTextView.setText(mCalculationPresenter.customFormat(sExpenseTotalAllBtn));
-                mBalanceTextView.setText(mCalculationPresenter.customFormat((sIncomeTotalAllBtn + sExpenseTotalAllBtn)));
+                mIncomeTextView.setText(mHistoryPresenter.customFormat(sIncomeTotalAllBtn));
+                mExpenseTextView.setText(mHistoryPresenter.customFormat(sExpenseTotalAllBtn));
+                mBalanceTextView.setText(mHistoryPresenter.customFormat((sIncomeTotalAllBtn + sExpenseTotalAllBtn)));
 
                 animateNumbers(mIncomeTextView);
                 animateNumbers(mExpenseTextView);
@@ -255,19 +255,19 @@ public class CalculationFragment extends Fragment implements CalculationContract
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try {
-                    sLongMonth = Long.parseLong(mCalculationPresenter.getmMonthList().get(position));
+                    sLongMonth = Long.parseLong(mHistoryPresenter.getmMonthList().get(position));
 
-                    if (mCalculationPresenter.getmYearForYearList().size() > position) {
-                        sLongYear = Long.parseLong(mCalculationPresenter.getmYearForYearList().get(position));
+                    if (mHistoryPresenter.getmYearForYearList().size() > position) {
+                        sLongYear = Long.parseLong(mHistoryPresenter.getmYearForYearList().get(position));
                     } else {
-                        sLongYear = Long.parseLong(mCalculationPresenter.getmYearList().get(position));
+                        sLongYear = Long.parseLong(mHistoryPresenter.getmYearList().get(position));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
                 try {
-                    sLongDate = Long.parseLong(mCalculationPresenter.getmDateList().get(position));
+                    sLongDate = Long.parseLong(mHistoryPresenter.getmDateList().get(position));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

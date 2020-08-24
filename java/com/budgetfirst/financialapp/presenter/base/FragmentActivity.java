@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.budgetfirst.financialapp.databinding.ActivityFragmentBinding;
-import com.budgetfirst.financialapp.presenter.calculation.CalculationFragment;
+import com.budgetfirst.financialapp.presenter.history.HistoryFragment;
 import com.budgetfirst.financialapp.presenter.panel.PanelFragment;
 import com.budgetfirst.financialapp.R;
 import com.budgetfirst.financialapp.presenter.chart.ChartFragment;
@@ -67,7 +67,7 @@ public class FragmentActivity extends AppCompatActivity {
                                 flag_panel = true;
                                 flag_charts = true;
                                 flag_history = false;
-                                selectedFragment = new CalculationFragment();
+                                selectedFragment = new HistoryFragment();
                             }
                             break;
                         case R.id.nav_chart_pie:
