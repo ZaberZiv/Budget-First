@@ -19,15 +19,14 @@ public class SplashScreenActivity extends Activity {
     private final int SPLASH_DISPLAY_LENGTH = 1000;
 
     private LockerPresenter lockerPresenter;
-    private SQLiteDatabase mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        mDatabase = new FinancialDBHelper(this).getWritableDatabase();
-        lockerPresenter = new LockerPresenter(mDatabase);
+        SQLiteDatabase database = new FinancialDBHelper(this).getWritableDatabase();
+        lockerPresenter = new LockerPresenter(database);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -54,7 +53,7 @@ public class SplashScreenActivity extends Activity {
     }
 
     void startNewActivity(Class clazz) {
-        Intent intent = new Intent(getApplicationContext(), clazz);
+        Intent intent = new Intent(this, clazz);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         SplashScreenActivity.this.startActivity(intent);
         SplashScreenActivity.this.finish();

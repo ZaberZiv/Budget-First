@@ -24,12 +24,11 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
-public class LockerActivity extends AppCompatActivity implements LockerContract.View {
+public class LockerActivity extends AppCompatActivity {
 
     public static final String TAG = "LockerActivity";
 
     private LockerPresenter mLockerPresenter;
-    private SQLiteDatabase mDatabase;
 
     private static String sPinCode = "";
     private static String sSavedPinCode = "";
@@ -45,8 +44,8 @@ public class LockerActivity extends AppCompatActivity implements LockerContract.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_locker);
 
-        mDatabase = new FinancialDBHelper(this).getWritableDatabase();
-        mLockerPresenter = new LockerPresenter(mDatabase);
+        SQLiteDatabase database = new FinancialDBHelper(this).getWritableDatabase();
+        mLockerPresenter = new LockerPresenter(database);
 
         setViewsByBinding();
         setListenersForEditText();
@@ -60,7 +59,6 @@ public class LockerActivity extends AppCompatActivity implements LockerContract.
 
     }
 
-    @Override
     public void setViewsByBinding() {
         ActivityLockerBinding binding = ActivityLockerBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
@@ -83,7 +81,6 @@ public class LockerActivity extends AppCompatActivity implements LockerContract.
         mFourthTextView = binding.fourthTextView;
     }
 
-    @Override
     public void setListenersForEditText() {
         disableInput(mSecondEnteredNumber);
         disableInput(mThirdEnteredNumber);
@@ -95,14 +92,17 @@ public class LockerActivity extends AppCompatActivity implements LockerContract.
         editTextChangedListener(mFourthEnteredNumber, null, mFourthTextView);
     }
 
-    @Override
     public void showKeyBoard() {
         mFirstEnteredNumber.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
-    @Override
+    public void hideKeyBoard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+    }
+
     public void isPinIsAlreadyExist() {
         if (!mLockerPresenter.isCodeForLockerInDatabase()) {
             mMainTextView.setText(R.string.locker_save_pin);
@@ -163,8 +163,7 @@ public class LockerActivity extends AppCompatActivity implements LockerContract.
 
                         mLockerPresenter.deleteCodeForLockerFromDatabase(Integer.parseInt(sPinCode));
                         mCorrectPIN = true;
-                        Toast.makeText(LockerActivity.this,
-                                R.string.locker_deleted_success, Toast.LENGTH_SHORT).show();
+                        showToast(R.string.locker_deleted_success);
                         startActivityWithExtra(false);
                     }
                 }
@@ -194,8 +193,7 @@ public class LockerActivity extends AppCompatActivity implements LockerContract.
                         mLockerPresenter.saveCodeForLockerInDatabase(Integer.parseInt(sPinCode));
                         startActivityWithExtra(true);
                         mFlag = false;
-                        Toast.makeText(LockerActivity.this,
-                                R.string.locker_saved_success, Toast.LENGTH_SHORT).show();
+                        showToast(R.string.locker_saved_success);
                         startActivityWithExtra(false);
 
                     } else {
@@ -243,6 +241,11 @@ public class LockerActivity extends AppCompatActivity implements LockerContract.
         });
     }
 
+    private void showToast(int textID) {
+        Toast.makeText(LockerActivity.this,
+                textID, Toast.LENGTH_SHORT).show();
+    }
+
     private void setVisibilityOfPinViews() {
         mFirstTextView.setVisibility(View.GONE);
         mSecondTextView.setVisibility(View.GONE);
@@ -275,10 +278,11 @@ public class LockerActivity extends AppCompatActivity implements LockerContract.
     }
 
     private void startActivityWithExtra(boolean extraFlag) {
-        Intent intent = new Intent(getApplicationContext(), FragmentActivity.class);
+        Intent intent = new Intent(this, FragmentActivity.class);
         if (extraFlag) intent.putExtra("code", Integer.parseInt(sPinCode));
         intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        hideKeyBoard();
     }
 
     public void clearTextInEditText() {
