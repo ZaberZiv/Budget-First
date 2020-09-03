@@ -109,7 +109,7 @@ public class PieChartPresenter implements OnChartValueSelectedListener {
         HashMap<String, Double> map = new HashMap<>();
 
         for (Data data : list) {
-            map.merge(data.getItemName(), data.getExpence(), Double::sum);
+            map.merge(data.getItemName(), data.getExpense(), Double::sum);
         }
 
         for (Map.Entry<String, Double> entry : map.entrySet()) {
@@ -187,7 +187,7 @@ public class PieChartPresenter implements OnChartValueSelectedListener {
 
     public SpannableString generateCenterSpannableText(Highlight h) {
         return new SpannableString( highlightList.get((int) h.getX()).getItemName()
-                + ": " + highlightList.get((int) h.getX()).getExpence());
+                + ": " + highlightList.get((int) h.getX()).getExpense());
     }
 
     @Override

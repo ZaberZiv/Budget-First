@@ -65,7 +65,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.View, V
 
         mDatabase = new FinancialDBHelper(getContext()).getWritableDatabase();
         mDatabasePresenter = new DatabasePresenter(mDatabase, getContext());
-        mHistoryPresenter = new HistoryPresenter(mDatabase);
+        mHistoryPresenter = new HistoryPresenter(mDatabase, this);
         fbs = new FloatingButtonSettings(this);
 
         setViewsByBinding();
@@ -116,6 +116,31 @@ public class HistoryFragment extends Fragment implements HistoryContract.View, V
         listenerForButtons(mShowAllBtn);
     }
 
+    @Override
+    public void setTextInExpenseView(String text) {
+        mExpenseTextView.setText(text);
+    }
+
+    @Override
+    public void setTextInIncomeView(String text) {
+        mIncomeTextView.setText(text);
+    }
+
+    @Override
+    public void setTextInBalanceView(String text) {
+        mBalanceTextView.setText(text);
+    }
+
+    @Override
+    public void setTextInTotalExpenseView(String text) {
+        mTotalExpenseTextView.setText(text);
+    }
+
+    @Override
+    public void setTextInTotalIncomeView(String text) {
+        mTotalIncomeTextView.setText(text);
+    }
+
     void listenerForButtons(Button button) {
         button.setOnClickListener(HistoryFragment.this);
     }
@@ -158,9 +183,9 @@ public class HistoryFragment extends Fragment implements HistoryContract.View, V
      */
     public void showCurrentSum(Cursor cursor) {
         mHistoryPresenter.getDataToSetTextViewsPresenter(cursor);
-        mHistoryPresenter.setExpenseTextView(mExpenseTextView);
-        mHistoryPresenter.setIncomeTextView(mIncomeTextView);
-        mHistoryPresenter.setBalanceTextView(mBalanceTextView);
+        mHistoryPresenter.setExpenseTextView();
+        mHistoryPresenter.setIncomeTextView();
+        mHistoryPresenter.setBalanceTextView();
 
         animateNumbers(mIncomeTextView);
         animateNumbers(mExpenseTextView);
@@ -177,8 +202,8 @@ public class HistoryFragment extends Fragment implements HistoryContract.View, V
         sIncomeTotalAllBtn = mHistoryPresenter.getIncome();
         sExpenseTotalAllBtn = mHistoryPresenter.getExpence();
 
-        mHistoryPresenter.setTotalExpenseTextView(mTotalExpenseTextView);
-        mHistoryPresenter.setTotalIncomeTextView(mTotalIncomeTextView);
+        mHistoryPresenter.setTotalExpenseTextView();
+        mHistoryPresenter.setTotalIncomeTextView();
     }
 
     /**

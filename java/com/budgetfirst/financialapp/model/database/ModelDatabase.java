@@ -19,7 +19,6 @@ public class ModelDatabase {
 
     private static final String TAG = "ModuleDatabase";
     private SQLiteDatabase database;
-    private Data data;
     private Context context;
 
     private boolean flag;
@@ -34,24 +33,19 @@ public class ModelDatabase {
         this.database = database;
     }
 
-    public ModelDatabase(SQLiteDatabase database, Data data) {
-        this.database = database;
-        this.data = data;
-    }
-
     public ModelDatabase(SQLiteDatabase database, Context context) {
         this.database = database;
         this.context = context;
     }
 
-    public void addToDatabaseModule() {
+    public void addToDatabaseModule(Data data) {
         long longDateDB = UtilConverter.convertStringToLongDate(data.getFormatedDate());
         long longMonthDB = UtilConverter.convertStringToLongMonth(longDateDB);
         long longYearDB = UtilConverter.convertStringToLongYear(longDateDB);
 
         ContentValues cv = new ContentValues();
         cv.put(FinancialContract.FinancialEntry.COLUMN_TITLE, data.getItemName());
-        cv.put(FinancialContract.FinancialEntry.COLUMN_EXPENCE, data.getExpence());
+        cv.put(FinancialContract.FinancialEntry.COLUMN_EXPENCE, data.getExpense());
         cv.put(FinancialContract.FinancialEntry.COLUMN_INCOME, data.getIncome());
         cv.put(FinancialContract.FinancialEntry.COLUMN_TIMESTAMP, longDateDB);
         cv.put(FinancialContract.FinancialEntry.COLUMN_MONTH, longMonthDB);

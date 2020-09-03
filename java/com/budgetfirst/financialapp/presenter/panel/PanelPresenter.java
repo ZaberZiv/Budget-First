@@ -11,9 +11,14 @@ import com.budgetfirst.financialapp.model.ModelNumberPanel;
 public class PanelPresenter implements PanelContract.Presenter {
 
     private ModelNumberPanel mNumberPanel;
+    private PanelContract.View mView;
 
     public PanelPresenter() {
+    }
+
+    public PanelPresenter(PanelContract.View view) {
         mNumberPanel = new ModelNumberPanel();
+        mView = view;
     }
 
     @Override
@@ -22,29 +27,28 @@ public class PanelPresenter implements PanelContract.Presenter {
     }
 
     @Override
-    public String putPeriod(String numbers, TextView text) {
+    public String putPeriod(String numbers) {
         numbers = mNumberPanel.periodNP(numbers);
-        text.setText(numbers);
+        mView.setTextInView(numbers);
         return numbers;
     }
 
     @Override
-    public String deleteCharFromPanel(String numbers, TextView text) {
+    public String deleteCharFromPanel(String numbers) {
         numbers = mNumberPanel.deleteOneCharNP(numbers);
-        checkIfNumIsNull(numbers, text);
+        checkIfNumIsNull(numbers);
         return numbers;
     }
 
-    public void checkIfNumIsNull(String numbers, TextView text) {
+    public void checkIfNumIsNull(String numbers) {
         if (numbers.length() == 0) {
-            text.setText("");
+            mView.setTextInView("");
         } else {
-            text.setText(customFormat(Double.parseDouble(numbers)));
+            mView.setTextInView(customFormat(Double.parseDouble(numbers)));
         }
     }
 
     // Formats the numbers (double type) which displayed on the screen
-    @Override
     public String customFormat(double value) {
         return UtilConverter.customStringFormat(value);
     }

@@ -96,7 +96,7 @@ public class MultiBarChartPresenter implements OnChartValueSelectedListener {
 
         for (int i = 0; i < list.size(); i++) {
             income += list.get(i).getIncome();
-            expense += list.get(i).getExpence()*-1;
+            expense += list.get(i).getExpense()*-1;
         }
 
         values1.add(new BarEntry(0, income));

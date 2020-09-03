@@ -26,7 +26,7 @@ import com.budgetfirst.financialapp.presenter.data.DatabasePresenter;
 import com.budgetfirst.financialapp.presenter.locker.LockerActivity;
 import com.budgetfirst.financialapp.presenter.locker.LockerPresenter;
 
-public class PanelFragment extends Fragment implements View.OnClickListener {
+public class PanelFragment extends Fragment implements View.OnClickListener, PanelContract.View {
 
     private static final String TAG = "PanelFragment";
 
@@ -51,7 +51,7 @@ public class PanelFragment extends Fragment implements View.OnClickListener {
         binding = FragmentPanelBinding.inflate(inflater, container, false);
 
         mDatabase = new FinancialDBHelper(getContext()).getWritableDatabase();
-        mPanelPresenter = new PanelPresenter();
+        mPanelPresenter = new PanelPresenter(this);
         LockerPresenter mLockerPresenter = new LockerPresenter(mDatabase);
 
         setViewsByBinding();
@@ -86,27 +86,16 @@ public class PanelFragment extends Fragment implements View.OnClickListener {
         mDeleteChar = binding.delete;
         mTrashcan = binding.cleanDatabase;
 
-        Button one = binding.one;
-        Button two = binding.two;
-        Button three = binding.three;
-        Button four = binding.four;
-        Button five = binding.five;
-        Button six = binding.six;
-        Button seven = binding.seven;
-        Button eight = binding.eight;
-        Button nine = binding.nine;
-        Button zero = binding.zero;
-
-        listenerForButtons(one);
-        listenerForButtons(two);
-        listenerForButtons(three);
-        listenerForButtons(four);
-        listenerForButtons(five);
-        listenerForButtons(six);
-        listenerForButtons(seven);
-        listenerForButtons(eight);
-        listenerForButtons(nine);
-        listenerForButtons(zero);
+        listenerForButtons(binding.one);
+        listenerForButtons(binding.two);
+        listenerForButtons(binding.three);
+        listenerForButtons(binding.four);
+        listenerForButtons(binding.five);
+        listenerForButtons(binding.six);
+        listenerForButtons(binding.seven);
+        listenerForButtons(binding.eight);
+        listenerForButtons(binding.nine);
+        listenerForButtons(binding.zero);
 
         putThePeriodButtonListener();
         deleteCharButtonListener();
@@ -121,16 +110,21 @@ public class PanelFragment extends Fragment implements View.OnClickListener {
         mPeriod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sNumbers = mPanelPresenter.putPeriod(sNumbers, mText);
+                sNumbers = mPanelPresenter.putPeriod(sNumbers);
             }
         });
+    }
+
+    @Override
+    public void setTextInView(String text) {
+        mText.setText(text);
     }
 
     void deleteCharButtonListener() {
         mDeleteChar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sNumbers = mPanelPresenter.deleteCharFromPanel(sNumbers, mText);
+                sNumbers = mPanelPresenter.deleteCharFromPanel(sNumbers);
             }
         });
     }
@@ -266,7 +260,7 @@ public class PanelFragment extends Fragment implements View.OnClickListener {
                     sNumbers,
                     Integer.parseInt(v.getTag().toString()));
 
-            mPanelPresenter.checkIfNumIsNull(sNumbers, mText);
+            mPanelPresenter.checkIfNumIsNull(sNumbers);
         } else {
             Toast.makeText(getContext(), R.string.toast_max_number
                     , Toast.LENGTH_SHORT).show();

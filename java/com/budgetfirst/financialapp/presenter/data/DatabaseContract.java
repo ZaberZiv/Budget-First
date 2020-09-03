@@ -9,7 +9,7 @@ public interface DatabaseContract {
     }
 
     interface Presenter {
-        void saveToDatabase(double income, double expence, String date, String name);
+        void saveToDatabase(double income, double expense, String date, String name);
         void deleteFromDatabase(long id);
         boolean clearDatabase();
         Cursor getCursorForSelectedDate(

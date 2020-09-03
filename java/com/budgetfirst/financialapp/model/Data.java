@@ -4,46 +4,46 @@ public class Data {
 
     private String formatedDate;
     private String itemName;
-    private double expence;
+    private double expense;
     private double income;
     private String year;
 
     public Data() {
     }
 
-    public Data(String itemName, double expence) {
+    public Data(String itemName, double expense) {
         this.itemName = itemName;
-        this.expence = expence;
+        this.expense = expense;
     }
 
-    public Data(String itemName, double expence, String year) {
+    public Data(String itemName, double expense, String year) {
         this.itemName = itemName;
-        this.expence = expence;
+        this.expense = expense;
         this.year = year;
     }
 
-    public Data(String itemName, double income, double expence, String year) {
+    public Data(String itemName, double income, double expense, String year) {
         this.itemName = itemName;
         this.income = income;
-        this.expence = expence;
+        this.expense = expense;
         this.year = year;
     }
 
     public Data(double income, String itemName) {
-        this.expence = income;
+        this.expense = income;
         this.itemName = itemName;
     }
 
-    public Data(String itemName, double expence, double income) {
+    public Data(String itemName, double expense, double income) {
         this.itemName = itemName;
-        this.expence = expence;
+        this.expense = expense;
         this.income = income;
     }
 
-    public Data(String formatedDate, String itemName, double expence, double income) {
+    public Data(String formatedDate, String itemName, double expense, double income) {
         this.formatedDate = formatedDate;
         this.itemName = itemName;
-        this.expence = expence;
+        this.expense = expense;
         this.income = income;
     }
 
@@ -63,12 +63,12 @@ public class Data {
         this.itemName = itemName;
     }
 
-    public double getExpence() {
-        return expence;
+    public double getExpense() {
+        return expense;
     }
 
-    public void setExpence(double expence) {
-        this.expence = expence;
+    public void setExpense(double expense) {
+        this.expense = expense;
     }
 
     public double getIncome() {

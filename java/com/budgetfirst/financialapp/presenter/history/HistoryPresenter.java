@@ -18,10 +18,12 @@ public class HistoryPresenter implements HistoryContract.Presenter {
     private double income, expense;
 
     private ModelFilter modelFilter;
+    private HistoryContract.View mView;
 
-    public HistoryPresenter(SQLiteDatabase database) {
+    public HistoryPresenter(SQLiteDatabase database, HistoryContract.View view) {
         modelDatabase = new ModelDatabase(database);
         modelFilter = new ModelFilter(database);
+        mView = view;
     }
 
     @Override
@@ -38,36 +40,36 @@ public class HistoryPresenter implements HistoryContract.Presenter {
     }
 
     @Override
-    public void setExpenseTextView(TextView expenseTextView) {
+    public void setExpenseTextView() {
         if (expense == 0.0) {
-            expenseTextView.setText("0.0");
+            mView.setTextInExpenseView("0.0");
         } else {
-            expenseTextView.setText(customFormat(expense));
+            mView.setTextInExpenseView(customFormat(expense));
         }
     }
 
     @Override
-    public void setIncomeTextView(TextView incomeTextView) {
+    public void setIncomeTextView() {
         if (income == 0.0) {
-            incomeTextView.setText("0.0");
+            mView.setTextInIncomeView("0.0");
         } else {
-            incomeTextView.setText(customFormat(income));
+            mView.setTextInIncomeView(customFormat(income));
         }
     }
 
     @Override
-    public void setBalanceTextView(TextView balanceTextView) {
-        balanceTextView.setText(customFormat((income + expense)));
+    public void setBalanceTextView() {
+        mView.setTextInBalanceView(customFormat((income + expense)));
     }
 
     @Override
-    public void setTotalExpenseTextView(TextView totalExpenseTextView) {
-        totalExpenseTextView.setText(customFormat(expense));
+    public void setTotalExpenseTextView() {
+        mView.setTextInTotalExpenseView(customFormat(expense));
     }
 
     @Override
-    public void setTotalIncomeTextView(TextView totalIncomeTextView) {
-        totalIncomeTextView.setText(customFormat(income));
+    public void setTotalIncomeTextView() {
+        mView.setTextInTotalIncomeView(customFormat(income));
     }
 
     public ArrayList<String> fillArrayMonth() {
