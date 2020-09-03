@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 
 import com.budgetfirst.financialapp.R;
 import com.budgetfirst.financialapp.databinding.FragmentChartBinding;
+import com.budgetfirst.financialapp.model.DataFilter;
 import com.budgetfirst.financialapp.model.database.FinancialDBHelper;
 import com.budgetfirst.financialapp.presenter.data.DatabasePresenter;
 import com.budgetfirst.financialapp.presenter.floatingbutton.FloatingButtonContract;
@@ -199,8 +200,8 @@ public class ChartFragment extends Fragment implements ChartContract.View, View.
     }
 
     public Cursor getAllItems() {
-        return mDatabasePresenter.getCursorForSelectedDate(
-                sCheckNumber, sLongDate, sLongMonth, sLongYear);
+        return mDatabasePresenter.getCursorForSelectedDate(new DataFilter(
+                sCheckNumber, sLongDate, sLongMonth, sLongYear));
     }
 
     public void getDataWithChosenDate() {

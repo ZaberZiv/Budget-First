@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.budgetfirst.financialapp.model.Data;
+import com.budgetfirst.financialapp.model.DataFilter;
 import com.budgetfirst.financialapp.model.database.ModelDatabase;
 
 import java.util.ArrayList;
@@ -45,16 +46,15 @@ public class DatabasePresenter implements DatabaseContract.Presenter {
     }
 
     @Override
-    public Cursor getCursorForSelectedDate(
-            int checkNumber, long dateLong, long monthLong, long yearLong) {
-        return modelDatabase.getCursorForSelectedDate(checkNumber, dateLong, monthLong, yearLong);
+    public Cursor getCursorForSelectedDate(DataFilter dataFilter) {
+        return modelDatabase.getCursorForSelectedDate(dataFilter);
     }
 
-    public ArrayList<Data> getDataForMultiBarChart(int checkNumber, long dateLong, long monthLong, long yearLong) {
-        return modelDatabase.getDataForMultiBarChart(checkNumber, dateLong, monthLong, yearLong);
+    public ArrayList<Data> getDataForMultiBarChart(DataFilter dataFilter) {
+        return modelDatabase.getDataForMultiBarChart(dataFilter);
     }
 
-    public ArrayList<Data> getDataForPieChart(int checkNumber, long dateLong, long monthLong, long yearLong) {
-        return modelDatabase.getDataForPieChart(checkNumber, dateLong, monthLong, yearLong);
+    public ArrayList<Data> getDataForPieChart(DataFilter dataFilter) {
+        return modelDatabase.getDataForPieChart(dataFilter);
     }
 }

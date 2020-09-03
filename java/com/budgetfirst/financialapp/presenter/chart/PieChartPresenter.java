@@ -7,6 +7,7 @@ import android.text.SpannableString;
 import android.util.Log;
 
 import com.budgetfirst.financialapp.model.Data;
+import com.budgetfirst.financialapp.model.DataFilter;
 import com.budgetfirst.financialapp.model.database.FinancialDBHelper;
 import com.budgetfirst.financialapp.presenter.data.DatabasePresenter;
 import com.github.mikephil.charting.animation.Easing;
@@ -101,7 +102,7 @@ public class PieChartPresenter implements OnChartValueSelectedListener {
     }
 
     private HashMap<String, Double> fillEntryWithData() {
-        return combineOperations(databasePresenter.getDataForPieChart(checkNumber, dateLong, monthLong, yearLong));
+        return combineOperations(databasePresenter.getDataForPieChart(new DataFilter(checkNumber, dateLong, monthLong, yearLong)));
     }
 
     private HashMap<String, Double> combineOperations(ArrayList<Data> list) {

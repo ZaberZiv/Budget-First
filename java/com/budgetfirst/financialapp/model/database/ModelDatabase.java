@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.budgetfirst.financialapp.R;
 import com.budgetfirst.financialapp.model.Data;
+import com.budgetfirst.financialapp.model.DataFilter;
 import com.budgetfirst.financialapp.utils.UtilConverter;
 
 import java.util.ArrayList;
@@ -76,8 +77,12 @@ public class ModelDatabase {
         return flag;
     }
 
-    public Cursor getCursorForSelectedDate(
-            int checkNumber, long dateLong, long monthLong, long yearLong) {
+    public Cursor getCursorForSelectedDate(DataFilter dataFilter) {
+        int checkNumber = dataFilter.getCheckNumber();
+        long dateLong = dataFilter.getDateLong();
+        long monthLong = dataFilter.getMonthLong();
+        long yearLong = dataFilter.getYearLong();
+
         String selectionDay = FinancialContract.FinancialEntry.COLUMN_TIMESTAMP
                 + " = " + dateLong;
 
@@ -178,8 +183,8 @@ public class ModelDatabase {
         }
     }
 
-    public ArrayList<Data> getDataForPieChart(int checkNumber, long dateLong, long monthLong, long yearLong) {
-        Cursor cursor = getCursorForSelectedDate(checkNumber, dateLong, monthLong, yearLong);
+    public ArrayList<Data> getDataForPieChart(DataFilter dataFilter) {
+        Cursor cursor = getCursorForSelectedDate(dataFilter);
         ArrayList<Data> dataList = new ArrayList<>();
 
         int titleIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_TITLE);
@@ -203,8 +208,8 @@ public class ModelDatabase {
         return dataList;
     }
 
-    public ArrayList<Data> getDataForMultiBarChart(int checkNumber, long dateLong, long monthLong, long yearLong) {
-        Cursor cursor = getCursorForSelectedDate(checkNumber, dateLong, monthLong, yearLong);
+    public ArrayList<Data> getDataForMultiBarChart(DataFilter dataFilter) {
+        Cursor cursor = getCursorForSelectedDate(dataFilter);
         ArrayList<Data> dataList = new ArrayList<>();
 
         int titleIndex = cursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_TITLE);

@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.budgetfirst.financialapp.R;
 import com.budgetfirst.financialapp.adapter.ExpenceAdapter;
 import com.budgetfirst.financialapp.databinding.FragmentCalculationBinding;
+import com.budgetfirst.financialapp.model.DataFilter;
 import com.budgetfirst.financialapp.model.database.FinancialDBHelper;
 import com.budgetfirst.financialapp.presenter.floatingbutton.FloatingButtonContract;
 import com.budgetfirst.financialapp.presenter.floatingbutton.FloatingButtonSettings;
@@ -173,8 +174,8 @@ public class HistoryFragment extends Fragment implements HistoryContract.View, V
      * will display data for the selected period.
      */
     public Cursor getAllItems() {
-        return mDatabasePresenter.getCursorForSelectedDate(
-                sCheckNumber, sLongDate, sLongMonth, sLongYear);
+        return mDatabasePresenter.getCursorForSelectedDate(new DataFilter(
+                sCheckNumber, sLongDate, sLongMonth, sLongYear));
     }
 
     /**

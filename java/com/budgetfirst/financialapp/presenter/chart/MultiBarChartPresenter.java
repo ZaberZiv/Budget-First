@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.util.Log;
 
 import com.budgetfirst.financialapp.model.Data;
+import com.budgetfirst.financialapp.model.DataFilter;
 import com.budgetfirst.financialapp.utils.UtilConverter;
 import com.budgetfirst.financialapp.presenter.data.DatabasePresenter;
 import com.github.mikephil.charting.charts.BarChart;
@@ -44,7 +45,7 @@ public class MultiBarChartPresenter implements OnChartValueSelectedListener {
     }
 
     private void getListWithData(int checkNumber, long dateLong, long monthLong, long yearLong) {
-        list = databasePresenter.getDataForMultiBarChart(checkNumber, dateLong, monthLong, yearLong);
+        list = databasePresenter.getDataForMultiBarChart(new DataFilter(checkNumber, dateLong, monthLong, yearLong));
     }
 
     private void setMultiBarChartStyle() {

@@ -2,6 +2,8 @@ package com.budgetfirst.financialapp.presenter.data;
 
 import android.database.Cursor;
 
+import com.budgetfirst.financialapp.model.DataFilter;
+
 public interface DatabaseContract {
 
     interface View {
@@ -12,7 +14,6 @@ public interface DatabaseContract {
         void saveToDatabase(double income, double expense, String date, String name);
         void deleteFromDatabase(long id);
         boolean clearDatabase();
-        Cursor getCursorForSelectedDate(
-                int checkNumber, long dateLong, long monthLong, long yearLong);
+        Cursor getCursorForSelectedDate(DataFilter dataFilter);
     }
 }
