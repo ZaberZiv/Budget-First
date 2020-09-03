@@ -9,6 +9,7 @@ Goolgle Play Market: https://play.google.com/store/apps/details?id=com.budgetfir
  - Floating button
  - Bottom Navigation Menu
  - Fragments
+ - View binding
  - Animation
  - MPAndroidChart</b>
 
@@ -24,6 +25,7 @@ To delete item - swipe left.
 
 ![Image alt](https://github.com/ZaberZiv/Budget-First/blob/master/screenshots/Screenshot_3.png)
 ![Image alt](https://github.com/ZaberZiv/Budget-First/blob/master/screenshots/Screenshot_4.png)
+
 ![Image alt](https://github.com/ZaberZiv/Budget-First/blob/master/screenshots/Screenshot_5.png)
 ![Image alt](https://github.com/ZaberZiv/Budget-First/blob/master/screenshots/Screenshot_6.png)
 
