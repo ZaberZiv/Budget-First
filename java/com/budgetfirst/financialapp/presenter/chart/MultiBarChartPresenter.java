@@ -6,9 +6,9 @@ import android.graphics.Color;
 import android.util.Log;
 
 import com.budgetfirst.financialapp.model.Data;
-import com.budgetfirst.financialapp.model.DataFilter;
-import com.budgetfirst.financialapp.utils.UtilConverter;
+import com.budgetfirst.financialapp.model.filter.DataFilter;
 import com.budgetfirst.financialapp.presenter.data.DatabasePresenter;
+import com.budgetfirst.financialapp.utils.UtilRemoveDuplicates;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -22,7 +22,6 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class MultiBarChartPresenter implements OnChartValueSelectedListener {
 
@@ -34,18 +33,18 @@ public class MultiBarChartPresenter implements OnChartValueSelectedListener {
     private ChartContract.View view;
 
     MultiBarChartPresenter(ChartContract.View view, Context context, BarChart chart, SQLiteDatabase database) {
+        this.view = view;
         this.chart = chart;
         databasePresenter = new DatabasePresenter(database, context);
-        this.view = view;
     }
 
-    public void startMultiBarChart(int checkNumber, long dateLong, long monthLong, long yearLong) {
-        getListWithData(checkNumber, dateLong, monthLong, yearLong);
+    public void startMultiBarChart(DataFilter dataFilter) {
+        getListWithData(dataFilter);
         setMultiBarChartStyle();
     }
 
-    private void getListWithData(int checkNumber, long dateLong, long monthLong, long yearLong) {
-        list = databasePresenter.getDataForMultiBarChart(new DataFilter(checkNumber, dateLong, monthLong, yearLong));
+    private void getListWithData(DataFilter dataFilter) {
+        list = databasePresenter.getDataForMultiBarChart(dataFilter);
     }
 
     private void setMultiBarChartStyle() {
@@ -54,9 +53,7 @@ public class MultiBarChartPresenter implements OnChartValueSelectedListener {
 
         // scaling can now only be done on x- and y-axis separately
         chart.setPinchZoom(false);
-
         chart.setDrawBarShadow(false);
-
         chart.setDrawGridBackground(false);
 
         Legend l = chart.getLegend();
@@ -138,7 +135,7 @@ public class MultiBarChartPresenter implements OnChartValueSelectedListener {
             arrayList.add(data.getYear());
         }
 
-        ArrayList<Integer> intList = removeDuplicates(arrayList);
+        ArrayList<Integer> intList = UtilRemoveDuplicates.removeDuplicatesAndSortData(arrayList);
 
         if (list.size() != 0) {
             view.showViews();
@@ -155,35 +152,13 @@ public class MultiBarChartPresenter implements OnChartValueSelectedListener {
         chart.invalidate();
     }
 
-    private ArrayList<Integer> removeDuplicates(ArrayList<String> arrayList) {
-
-        for (int i = 0; i < arrayList.size() - 1; i++) {
-            for (int k = arrayList.size() - 1; k > i; k--) {
-                if (arrayList.get(i).equals(arrayList.get(k))) {
-                    arrayList.remove(k);
-                }
-            }
-        }
-
-        ArrayList<Integer> dateList = new ArrayList<>();
-        for (String sList: arrayList) {
-            dateList.add(Integer.parseInt(UtilConverter.dateFormatYear(Long.parseLong(sList))));
-        }
-
-        Collections.sort(dateList);
-
-        return dateList;
-    }
-
-
-
     @Override
     public void onValueSelected(Entry e, Highlight h) {
-        Log.i("Activity", "Selected: " + e.toString() + ", dataSet: " + h.getDataSetIndex());
+        Log.i(TAG, "Selected: " + e.toString() + ", dataSet: " + h.getDataSetIndex());
     }
 
     @Override
     public void onNothingSelected() {
-        Log.i("Activity", "Nothing selected.");
+        Log.i(TAG, "Nothing selected.");
     }
 }

@@ -1,10 +1,11 @@
-package com.budgetfirst.financialapp.model;
+package com.budgetfirst.financialapp.model.filter;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.budgetfirst.financialapp.model.database.ModelDatabase;
 import com.budgetfirst.financialapp.utils.UtilConverter;
+import com.budgetfirst.financialapp.utils.UtilRemoveDuplicates;
 
 import java.util.ArrayList;
 
@@ -37,13 +38,13 @@ public class ModelFilter {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.i(TAG, "yearList is empty, maybe after cleaning DB." + mYearList);
             }
 
             dateInStringList.add(pickMonth + " " + pickYear);
         }
 
-        removeDuplicatesForMonth(dateInStringList, mMonthList, mYearList);
+//        removeDuplicatesForMonth(dateInStringList, mMonthList, mYearList);
+        UtilRemoveDuplicates.removeDuplicatesMulti(dateInStringList, mMonthList, mYearList);
 
         return dateInStringList;
     }
@@ -61,14 +62,15 @@ public class ModelFilter {
                 pickYear = UtilConverter.dateFormatYear(Long.parseLong(mYearForYearList.get(i)));
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.i(TAG, "yearList is empty, maybe after cleaning DB." + mYearForYearList);
             }
 
             dateInStringList.add(pickYear);
         }
 
-        removeDuplicatesInArray(dateInStringList);
-        removeDuplicatesInArray(mYearForYearList);
+//        removeDuplicatesInArray(dateInStringList);
+//        removeDuplicatesInArray(mYearForYearList);
+        UtilRemoveDuplicates.removeDuplicatesInList(dateInStringList);
+        UtilRemoveDuplicates.removeDuplicatesInList(mYearForYearList);
 
         return dateInStringList;
     }
@@ -86,43 +88,44 @@ public class ModelFilter {
                 pickDate = UtilConverter.dateFormatDayMonthYear(Long.parseLong(mDateList.get(i)));
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.i(TAG, "yearList is empty, maybe after cleaning DB." + mDateList);
             }
 
             dateInStringList.add(pickDate);
         }
 
-        removeDuplicatesInArray(dateInStringList);
-        removeDuplicatesInArray(mDateList);
+//        removeDuplicatesInArray(dateInStringList);
+//        removeDuplicatesInArray(mDateList);
+        UtilRemoveDuplicates.removeDuplicatesInList(dateInStringList);
+        UtilRemoveDuplicates.removeDuplicatesInList(mDateList);
 
         return dateInStringList;
     }
 
-    private void removeDuplicatesInArray(ArrayList<String> list) {
-
-        for (int i = 0; i < list.size() - 1; i++) {
-            for (int k = list.size() - 1; k > i; k--) {
-                if (list.get(i).equals(list.get(k))) {
-                    list.remove(k);
-                }
-            }
-        }
-    }
-
-    private void removeDuplicatesForMonth(ArrayList<String> arrayList,
-                                          ArrayList<String> arrayListTwo,
-                                          ArrayList<String> arrayListThree) {
-
-        for (int i = 0; i < arrayList.size() - 1; i++) {
-            for (int k = arrayList.size() - 1; k > i; k--) {
-                if (arrayList.get(i).equals(arrayList.get(k))) {
-                    arrayList.remove(k);
-                    arrayListTwo.remove(k);
-                    arrayListThree.remove(k);
-                }
-            }
-        }
-    }
+//    private void removeDuplicatesInArray(ArrayList<String> list) {
+//
+//        for (int i = 0; i < list.size() - 1; i++) {
+//            for (int k = list.size() - 1; k > i; k--) {
+//                if (list.get(i).equals(list.get(k))) {
+//                    list.remove(k);
+//                }
+//            }
+//        }
+//    }
+//
+//    private void removeDuplicatesForMonth(ArrayList<String> arrayList,
+//                                          ArrayList<String> arrayListTwo,
+//                                          ArrayList<String> arrayListThree) {
+//
+//        for (int i = 0; i < arrayList.size() - 1; i++) {
+//            for (int k = arrayList.size() - 1; k > i; k--) {
+//                if (arrayList.get(i).equals(arrayList.get(k))) {
+//                    arrayList.remove(k);
+//                    arrayListTwo.remove(k);
+//                    arrayListThree.remove(k);
+//                }
+//            }
+//        }
+//    }
 
     public ArrayList<String> getmMonthList() {
         fillArrayMonth();

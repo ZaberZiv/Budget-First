@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.budgetfirst.financialapp.R;
 import com.budgetfirst.financialapp.adapter.ExpenseAdapter;
 import com.budgetfirst.financialapp.databinding.FragmentCalculationBinding;
-import com.budgetfirst.financialapp.model.DataFilter;
+import com.budgetfirst.financialapp.model.filter.DataFilter;
 import com.budgetfirst.financialapp.model.database.FinancialDBHelper;
 import com.budgetfirst.financialapp.presenter.floatingbutton.FloatingButtonContract;
 import com.budgetfirst.financialapp.presenter.floatingbutton.FloatingButtonSettings;
@@ -36,7 +36,7 @@ import java.util.ArrayList;
 
 public class HistoryFragment extends Fragment implements HistoryContract.View, View.OnClickListener, FloatingButtonContract.View {
 
-    private static final String TAG = "CalculationFragment";
+    private static final String TAG = "HistoryFragment";
 
     private HistoryPresenter mHistoryPresenter;
     private DatabasePresenter mDatabasePresenter;
@@ -201,7 +201,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.View, V
                 mHistoryPresenter.getAllDataFromPresenter());
 
         sIncomeTotalAllBtn = mHistoryPresenter.getIncome();
-        sExpenseTotalAllBtn = mHistoryPresenter.getExpence();
+        sExpenseTotalAllBtn = mHistoryPresenter.getExpense();
 
         mHistoryPresenter.setTotalExpenseTextView();
         mHistoryPresenter.setTotalIncomeTextView();
@@ -264,7 +264,6 @@ public class HistoryFragment extends Fragment implements HistoryContract.View, V
     }
 
     public void showListView(final ArrayList<String> listForListView) {
-
         ListView listView = new ListView(getContext());
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_list_item_1, listForListView);
@@ -324,7 +323,9 @@ public class HistoryFragment extends Fragment implements HistoryContract.View, V
         return mShowAllBtn;
     }
 
-    // Closing DataBase
+    /**
+     * Closing DataBase
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();

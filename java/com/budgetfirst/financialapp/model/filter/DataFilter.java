@@ -1,4 +1,4 @@
-package com.budgetfirst.financialapp.model;
+package com.budgetfirst.financialapp.model.filter;
 
 public class DataFilter {
 

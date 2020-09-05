@@ -2,7 +2,7 @@ package com.budgetfirst.financialapp.presenter.data;
 
 import android.database.Cursor;
 
-import com.budgetfirst.financialapp.model.DataFilter;
+import com.budgetfirst.financialapp.model.filter.DataFilter;
 
 public interface DatabaseContract {
 

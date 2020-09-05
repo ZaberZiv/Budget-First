@@ -7,11 +7,9 @@ import android.text.SpannableString;
 import android.util.Log;
 
 import com.budgetfirst.financialapp.model.Data;
-import com.budgetfirst.financialapp.model.DataFilter;
-import com.budgetfirst.financialapp.model.database.FinancialDBHelper;
+import com.budgetfirst.financialapp.model.filter.DataFilter;
 import com.budgetfirst.financialapp.presenter.data.DatabasePresenter;
 import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
@@ -33,27 +31,17 @@ public class PieChartPresenter implements OnChartValueSelectedListener {
     private static final String TAG = "PieChartPresenter";
 
     private PieChart chart;
-    private Context context;
-    private SQLiteDatabase database;
     private DatabasePresenter databasePresenter;
-
-    private int checkNumber;
-    private long dateLong, monthLong, yearLong;
-
     private ArrayList<Data> highlightList;
 
-    public PieChartPresenter(PieChart chart, SQLiteDatabase mDatabase, Context context) {
+    public PieChartPresenter(PieChart chart, SQLiteDatabase database, Context context) {
         this.chart = chart;
-        this.database = mDatabase;
-        this.context = context;
+        databasePresenter = new DatabasePresenter(database, context);
     }
 
-    public void startPieChart() {
-        database = new FinancialDBHelper(context).getWritableDatabase();
-        databasePresenter = new DatabasePresenter(database, context);
-
+    public void startPieChart(DataFilter dataFilter) {
         setChartStyle();
-        setData(fillEntryWithData());
+        setData(fillEntryWithData(dataFilter));
     }
 
     private void setChartStyle() {
@@ -92,17 +80,8 @@ public class PieChartPresenter implements OnChartValueSelectedListener {
         chart.setEntryLabelTextSize(16f);
     }
 
-    public void getDataFromActivity(int checkNumber, long dateLong, long monthLong, long yearLong) {
-        this.checkNumber = checkNumber;
-        this.dateLong = dateLong;
-        this.monthLong = monthLong;
-        this.yearLong = yearLong;
-
-        setData(fillEntryWithData());
-    }
-
-    private HashMap<String, Double> fillEntryWithData() {
-        return combineOperations(databasePresenter.getDataForPieChart(new DataFilter(checkNumber, dateLong, monthLong, yearLong)));
+    private HashMap<String, Double> fillEntryWithData(DataFilter dataFilter) {
+        return combineOperations(databasePresenter.getDataForPieChart(dataFilter));
     }
 
     private HashMap<String, Double> combineOperations(ArrayList<Data> list) {
@@ -131,9 +110,7 @@ public class PieChartPresenter implements OnChartValueSelectedListener {
         }
 
         PieDataSet dataSet = new PieDataSet(entries, "");
-
         dataSet.setDrawIcons(false);
-
         dataSet.setSliceSpace(3f);
         dataSet.setIconsOffset(new MPPointF(0, 40));
         dataSet.setSelectionShift(5f);
@@ -186,7 +163,7 @@ public class PieChartPresenter implements OnChartValueSelectedListener {
                         + ", DataSet index: " + h.getDataSetIndex());
     }
 
-    public SpannableString generateCenterSpannableText(Highlight h) {
+    private SpannableString generateCenterSpannableText(Highlight h) {
         return new SpannableString( highlightList.get((int) h.getX()).getItemName()
                 + ": " + highlightList.get((int) h.getX()).getExpense());
     }

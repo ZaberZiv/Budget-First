@@ -11,7 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.budgetfirst.financialapp.R;
 import com.budgetfirst.financialapp.model.Data;
-import com.budgetfirst.financialapp.model.DataFilter;
+import com.budgetfirst.financialapp.model.filter.DataFilter;
 import com.budgetfirst.financialapp.utils.UtilConverter;
 
 import java.util.ArrayList;

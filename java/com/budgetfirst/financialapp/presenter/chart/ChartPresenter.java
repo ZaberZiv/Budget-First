@@ -2,24 +2,26 @@ package com.budgetfirst.financialapp.presenter.chart;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.TextView;
 
-import com.budgetfirst.financialapp.model.ModelFilter;
+import com.budgetfirst.financialapp.model.filter.ModelFilter;
 import com.budgetfirst.financialapp.model.database.ModelDatabase;
 import com.budgetfirst.financialapp.utils.UtilConverter;
 
 import java.util.ArrayList;
 
-public class ChartPresenter {
+public class ChartPresenter implements ChartContract.Presenter {
+
     private static final String TAG = "ChartPresenter";
 
+    private ChartContract.View mView;
     private ModelFilter mModelFilter;
     private ModelDatabase modelDatabase;
     private double income, expense;
 
-    public ChartPresenter(SQLiteDatabase database) {
+    public ChartPresenter(SQLiteDatabase database, ChartContract.View view) {
         modelDatabase = new ModelDatabase(database);
         mModelFilter = new ModelFilter(database);
+        mView = view;
     }
 
     public ArrayList<String> fillArrayMonth() {
@@ -61,23 +63,26 @@ public class ChartPresenter {
         expense = modelDatabase.getExpence();
     }
 
-    public void setExpenseTextView(TextView expenseTextView) {
+    @Override
+    public void setExpenseTextView() {
         if (expense == 0.0) {
-            expenseTextView.setText("0.0");
+            mView.setTextInExpenseView("0.0");
         } else {
-            expenseTextView.setText(customFormat(expense));
+            mView.setTextInExpenseView(customFormat(expense));
         }
     }
 
-    public void setIncomeTextView(TextView incomeTextView) {
+    @Override
+    public void setIncomeTextView() {
         if (income == 0.0) {
-            incomeTextView.setText("0.0");
+            mView.setTextInIncomeView("0.0");
         } else {
-            incomeTextView.setText(customFormat(income));
+            mView.setTextInIncomeView(customFormat(income));
         }
     }
 
-    public void setBalanceTextView(TextView balanceTextView) {
-        balanceTextView.setText(customFormat((income + expense)));
+    @Override
+    public void setBalanceTextView() {
+        mView.setTextInBalanceView(customFormat((income + expense)));
     }
 }

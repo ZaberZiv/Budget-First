@@ -36,7 +36,7 @@ public class PanelFragment extends Fragment implements View.OnClickListener, Pan
 
     private TextView mText, mDisplayDate;
     private EditText mEditText;
-    private ImageView mImageViewAlert, mLockerImageView, mLockerLockedImageView, mTrashcan;
+    private ImageView mAlertImageView, mLockerImageView, mLockerLockedImageView, mTrashcanImageView;
     private Button mIncomeButton, mExpenseButton, mPeriod, mDeleteChar;
 
     private double mFirstIncome, mFirstExpense;
@@ -76,15 +76,15 @@ public class PanelFragment extends Fragment implements View.OnClickListener, Pan
         mEditText = binding.editText;
         mDisplayDate = binding.textView4;
 
-        mImageViewAlert = binding.imageViewTop;
+        mAlertImageView = binding.imageViewTop;
         mLockerImageView = binding.locker;
         mLockerLockedImageView = binding.lockerLocked;
+        mTrashcanImageView = binding.cleanDatabase;
 
         mIncomeButton = binding.plus;
         mExpenseButton = binding.minus;
         mPeriod = binding.period;
         mDeleteChar = binding.delete;
-        mTrashcan = binding.cleanDatabase;
 
         listenerForButtons(binding.one);
         listenerForButtons(binding.two);
@@ -130,7 +130,7 @@ public class PanelFragment extends Fragment implements View.OnClickListener, Pan
     }
 
     void cleanDatabaseButtonListener() {
-        mTrashcan.setOnClickListener(new View.OnClickListener() {
+        mTrashcanImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DatabasePresenter presenter = new DatabasePresenter(mDatabase, getContext());
@@ -215,7 +215,7 @@ public class PanelFragment extends Fragment implements View.OnClickListener, Pan
             Toast.makeText(getContext(),
                     R.string.toast_add_numbers, Toast.LENGTH_SHORT).show();
             if (sNumbers.isEmpty()) {
-                mImageViewAlert.setVisibility(View.VISIBLE);
+                mAlertImageView.setVisibility(View.VISIBLE);
             }
             return 0.0;
         }
@@ -253,7 +253,7 @@ public class PanelFragment extends Fragment implements View.OnClickListener, Pan
 
     @Override
     public void onClick(View v) {
-        mImageViewAlert.setVisibility(View.GONE);
+        mAlertImageView.setVisibility(View.GONE);
 
         if (sNumbers.length() < 10) {
             sNumbers = mPanelPresenter.addNumbersToThePanel(

@@ -21,7 +21,7 @@ import androidx.fragment.app.Fragment;
 
 import com.budgetfirst.financialapp.R;
 import com.budgetfirst.financialapp.databinding.FragmentChartBinding;
-import com.budgetfirst.financialapp.model.DataFilter;
+import com.budgetfirst.financialapp.model.filter.DataFilter;
 import com.budgetfirst.financialapp.model.database.FinancialDBHelper;
 import com.budgetfirst.financialapp.presenter.data.DatabasePresenter;
 import com.budgetfirst.financialapp.presenter.floatingbutton.FloatingButtonContract;
@@ -65,14 +65,13 @@ public class ChartFragment extends Fragment implements ChartContract.View, View.
         View view = binding.getRoot();
 
         mDatabase = new FinancialDBHelper(getContext()).getWritableDatabase();
-        mChartPresenter = new ChartPresenter(mDatabase);
+        mChartPresenter = new ChartPresenter(mDatabase, this);
         mDatabasePresenter = new DatabasePresenter(mDatabase, getContext());
         fbs = new FloatingButtonSettings(this);
 
         setViewsByBinding();
 
         mPieChartPresenter = new PieChartPresenter(mChart, mDatabase, getContext());
-        mPieChartPresenter.startPieChart();
         mMultiBarChartPresenter = new MultiBarChartPresenter(this, getContext(), mMultiBarChart, mDatabase);
 
         getDataWithChosenDate();
@@ -142,6 +141,7 @@ public class ChartFragment extends Fragment implements ChartContract.View, View.
             default:
                 sCheckNumber = 0;
                 mDateBreakdownTextView.setText(R.string.btn_total);
+                showCurrentSum(getAllItems());
                 getDataWithChosenDate();
                 break;
         }
@@ -192,11 +192,12 @@ public class ChartFragment extends Fragment implements ChartContract.View, View.
         });
     }
 
+    // This method shows Income, Expense and Balance numbers
     public void showCurrentSum(Cursor cursor) {
         mChartPresenter.getDataToSetTextViewsPresenter(cursor);
-        mChartPresenter.setExpenseTextView(mExpenseTextView);
-        mChartPresenter.setIncomeTextView(mIncomeTextView);
-        mChartPresenter.setBalanceTextView(mBalanceTextView);
+        mChartPresenter.setExpenseTextView();
+        mChartPresenter.setIncomeTextView();
+        mChartPresenter.setBalanceTextView();
     }
 
     public Cursor getAllItems() {
@@ -205,8 +206,8 @@ public class ChartFragment extends Fragment implements ChartContract.View, View.
     }
 
     public void getDataWithChosenDate() {
-        mPieChartPresenter.getDataFromActivity(sCheckNumber, sLongDate, sLongMonth, sLongYear);
-        mMultiBarChartPresenter.startMultiBarChart(sCheckNumber, sLongDate, sLongMonth, sLongYear);
+        mPieChartPresenter.startPieChart(new DataFilter(sCheckNumber, sLongDate, sLongMonth, sLongYear));
+        mMultiBarChartPresenter.startMultiBarChart(new DataFilter(sCheckNumber, sLongDate, sLongMonth, sLongYear));
     }
 
     @Override
@@ -229,6 +230,21 @@ public class ChartFragment extends Fragment implements ChartContract.View, View.
         mYearBtn.setVisibility(View.VISIBLE);
         mShowAllBtn.setVisibility(View.VISIBLE);
         mScrollView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setTextInExpenseView(String text) {
+        mExpenseTextView.setText(text);
+    }
+
+    @Override
+    public void setTextInIncomeView(String text) {
+        mIncomeTextView.setText(text);
+    }
+
+    @Override
+    public void setTextInBalanceView(String text) {
+        mBalanceTextView.setText(text);
     }
 
     // Closing DataBase

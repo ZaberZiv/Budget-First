@@ -2,9 +2,8 @@ package com.budgetfirst.financialapp.presenter.history;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.TextView;
 
-import com.budgetfirst.financialapp.model.ModelFilter;
+import com.budgetfirst.financialapp.model.filter.ModelFilter;
 import com.budgetfirst.financialapp.utils.UtilConverter;
 import com.budgetfirst.financialapp.model.database.ModelDatabase;
 
@@ -93,7 +92,7 @@ public class HistoryPresenter implements HistoryContract.Presenter {
         return income;
     }
 
-    public double getExpence() {
+    public double getExpense() {
         return expense;
     }
 

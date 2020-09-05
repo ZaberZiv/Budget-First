@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.budgetfirst.financialapp.model.Data;
-import com.budgetfirst.financialapp.model.DataFilter;
+import com.budgetfirst.financialapp.model.filter.DataFilter;
 import com.budgetfirst.financialapp.model.database.ModelDatabase;
 
 import java.util.ArrayList;
