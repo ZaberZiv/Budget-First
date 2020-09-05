@@ -61,10 +61,11 @@ public class MultiBarChartPresenter implements OnChartValueSelectedListener {
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
         l.setDrawInside(true);
-        l.setYOffset(0f);
-        l.setXOffset(10f);
+        l.setYOffset(8f);
+        l.setXOffset(25f);
         l.setYEntrySpace(0f);
-        l.setTextSize(8f);
+        l.setTextSize(12f);
+        l.setFormSize(10f);
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setGranularity(1f);
@@ -119,6 +120,9 @@ public class MultiBarChartPresenter implements OnChartValueSelectedListener {
             set1.setColor(Color.rgb(24, 204, 147));
             set2 = new BarDataSet(values2, "Expense");
             set2.setColor(Color.rgb(216, 81, 130));
+
+            set1.setValueTextSize(12f);
+            set2.setValueTextSize(12f);
 
             BarData data = new BarData(set1, set2);
             data.setValueFormatter(new LargeValueFormatter());
