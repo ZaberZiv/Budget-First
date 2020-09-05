@@ -42,7 +42,7 @@ public class SplashScreenActivity extends Activity {
 
         if (arguments != null) {
             code = arguments.getInt("code");
-            Log.i("getExtraData", "code: " + code);
+            Log.i(TAG, "code: " + code);
         }
 
         if (code != lockerPresenter.getCodeForLocker()) {

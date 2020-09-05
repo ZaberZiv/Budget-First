@@ -17,28 +17,26 @@ import com.budgetfirst.financialapp.model.database.FinancialContract;
 import com.budgetfirst.financialapp.presenter.panel.PanelPresenter;
 import com.budgetfirst.financialapp.utils.UtilConverter;
 
-import java.text.SimpleDateFormat;
-
-public class ExpenceAdapter extends RecyclerView.Adapter<ExpenceAdapter.ExpenceViewHolder> {
+public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder> {
 
     private Context mContext;
     private Cursor mCursor;
     private PanelPresenter mPanelPresenter;
 
-    public ExpenceAdapter(Context context, Cursor cursor) {
+    public ExpenseAdapter(Context context, Cursor cursor) {
         mContext = context;
         mCursor = cursor;
         mPanelPresenter = new PanelPresenter();
     }
 
-    public static class ExpenceViewHolder extends RecyclerView.ViewHolder {
+    public static class ExpenseViewHolder extends RecyclerView.ViewHolder {
         public TextView mTextView1;
         public TextView mTextView2;
         public TextView mTextView3;
         public TextView mTextViewDate;
         public ImageView mDeleteImage;
 
-        public ExpenceViewHolder(@NonNull View itemView) {
+        public ExpenseViewHolder(@NonNull View itemView) {
             super(itemView);
             mTextView1 = itemView.findViewById(R.id.txtView1);
             mTextView2 = itemView.findViewById(R.id.txtView2);
@@ -51,20 +49,20 @@ public class ExpenceAdapter extends RecyclerView.Adapter<ExpenceAdapter.ExpenceV
 
     @NonNull
     @Override
-    public ExpenceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ExpenseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.list_items, parent, false);
-        return new ExpenceViewHolder(view);
+        return new ExpenseViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ExpenceViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ExpenseViewHolder holder, int position) {
         if (!mCursor.moveToPosition(position)) {
             return;
         }
 
         String title = mCursor.getString(mCursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_TITLE));
-        double expence = mCursor.getDouble(mCursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_EXPENCE));
+        double expense = mCursor.getDouble(mCursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_EXPENCE));
         double income = mCursor.getDouble(mCursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_INCOME));
         long id = mCursor.getLong(mCursor.getColumnIndex(FinancialContract.FinancialEntry._ID));
         long date = mCursor.getLong(mCursor.getColumnIndex(FinancialContract.FinancialEntry.COLUMN_TIMESTAMP));
@@ -72,15 +70,15 @@ public class ExpenceAdapter extends RecyclerView.Adapter<ExpenceAdapter.ExpenceV
         holder.mTextView1.setTextColor(ContextCompat.getColor(mContext, R.color.colorExpence));
         holder.mTextView3.setTextColor(ContextCompat.getColor(mContext, R.color.colorIncome));
 
-        if (expence == 0.0) {
+        if (expense == 0.0) {
             holder.mTextView1.setText("");
         } else {
-            holder.mTextView1.setText(mPanelPresenter.customFormat(expence));
+            holder.mTextView1.setText(mPanelPresenter.customFormat(expense));
         }
         if (income == 0.0) {
             holder.mTextView3.setText("");
         } else {
-            holder.mTextView3.setText(mPanelPresenter.customFormat( income));
+            holder.mTextView3.setText(mPanelPresenter.customFormat(income));
         }
 
         holder.mTextView2.setText(title);

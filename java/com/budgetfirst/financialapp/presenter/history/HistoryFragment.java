@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.budgetfirst.financialapp.R;
-import com.budgetfirst.financialapp.adapter.ExpenceAdapter;
+import com.budgetfirst.financialapp.adapter.ExpenseAdapter;
 import com.budgetfirst.financialapp.databinding.FragmentCalculationBinding;
 import com.budgetfirst.financialapp.model.DataFilter;
 import com.budgetfirst.financialapp.model.database.FinancialDBHelper;
@@ -41,7 +41,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.View, V
     private HistoryPresenter mHistoryPresenter;
     private DatabasePresenter mDatabasePresenter;
 
-    private ExpenceAdapter mAdapter;
+    private ExpenseAdapter mAdapter;
     private SQLiteDatabase mDatabase;
     private RecyclerView mRecyclerView;
 
@@ -152,7 +152,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.View, V
 
     public void doRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new ExpenceAdapter(getContext(), getAllItems());
+        mAdapter = new ExpenseAdapter(getContext(), getAllItems());
         mRecyclerView.setAdapter(mAdapter);
     }
 
