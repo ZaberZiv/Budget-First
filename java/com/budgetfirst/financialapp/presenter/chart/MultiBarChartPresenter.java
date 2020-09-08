@@ -29,7 +29,6 @@ public class MultiBarChartPresenter implements OnChartValueSelectedListener {
 
     private BarChart chart;
     private DatabasePresenter databasePresenter;
-    private ArrayList<Data> list;
     private ChartContract.View view;
 
     MultiBarChartPresenter(ChartContract.View view, Context context, BarChart chart, SQLiteDatabase database) {
@@ -39,15 +38,22 @@ public class MultiBarChartPresenter implements OnChartValueSelectedListener {
     }
 
     public void startMultiBarChart(DataFilter dataFilter) {
-        getListWithData(dataFilter);
-        setMultiBarChartStyle();
+        setMultiBarChartStyle(getListWithData(dataFilter));
     }
 
-    private void getListWithData(DataFilter dataFilter) {
-        list = databasePresenter.getDataForMultiBarChart(dataFilter);
+    private ArrayList<Data> getListWithData(DataFilter dataFilter) {
+        return databasePresenter.getDataForMultiBarChart(dataFilter);
     }
 
-    private void setMultiBarChartStyle() {
+    private void setMultiBarChartStyle(ArrayList<Data> list) {
+
+        if (!list.isEmpty()) {
+            view.showViews();
+        } else {
+            view.hideViews();
+            return;
+        }
+
         chart.setOnChartValueSelectedListener(this);
         chart.getDescription().setEnabled(false);
 
@@ -79,10 +85,10 @@ public class MultiBarChartPresenter implements OnChartValueSelectedListener {
 
         chart.getAxisRight().setEnabled(false);
 
-        setDataOn();
+        setDataOn(list);
     }
 
-    private void setDataOn() {
+    private void setDataOn(ArrayList<Data> list) {
         float groupSpace = 0.16f;
         float barSpace = 0.06f; // x4 DataSet
         float barWidth = 0.4f; // x4 DataSet
@@ -95,7 +101,7 @@ public class MultiBarChartPresenter implements OnChartValueSelectedListener {
 
         for (int i = 0; i < list.size(); i++) {
             income += list.get(i).getIncome();
-            expense += list.get(i).getExpense()*-1;
+            expense += list.get(i).getExpense() * -1;
         }
 
         values1.add(new BarEntry(0, income));
@@ -141,17 +147,11 @@ public class MultiBarChartPresenter implements OnChartValueSelectedListener {
 
         ArrayList<Integer> intList = UtilRemoveDuplicates.removeDuplicatesAndSortData(arrayList);
 
-        if (list.size() != 0) {
-            view.showViews();
-            chart.getXAxis().setAxisMinimum(intList.get(0));
-            // barData.getGroupWith(...) is a helper that calculates the width each group needs based on the provided parameters
-            chart.getXAxis().setAxisMaximum(intList.get(0)
-                    + chart.getBarData().getGroupWidth(groupSpace, barSpace));
-            chart.groupBars(intList.get(0), groupSpace, barSpace);
-
-        } else {
-            view.hideViews();
-        }
+        chart.getXAxis().setAxisMinimum(intList.get(0));
+        // barData.getGroupWith(...) is a helper that calculates the width each group needs based on the provided parameters
+        chart.getXAxis().setAxisMaximum(intList.get(0)
+                + chart.getBarData().getGroupWidth(groupSpace, barSpace));
+        chart.groupBars(intList.get(0), groupSpace, barSpace);
 
         chart.invalidate();
     }
