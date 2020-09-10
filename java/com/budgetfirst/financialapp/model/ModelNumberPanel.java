@@ -21,12 +21,12 @@ public class ModelNumberPanel {
         return numbers;
     }
 
-    private String checkPeriod(String numbers, int s) {
+    private String checkPeriod(String numbers, int tag) {
         String[] list = numbers.split("\\.");
         if (list.length == 1) {
-            numbers = inputStr.append(s).toString();
+            numbers = inputStr.append(tag).toString();
         } else if (list[1].length() < 2) {
-            numbers = inputStr.append(s).toString();
+            numbers = inputStr.append(tag).toString();
         }
         return numbers;
     }
