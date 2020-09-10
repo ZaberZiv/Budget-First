@@ -6,24 +6,27 @@ public class ModelNumberPanel {
 
     public String addNumbersNP(String numbers, int tag) {
         inputStr = new StringBuilder(numbers);
-        String[] array = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
-        if (!numbers.contains("0.") || numbers.contains("0.") && numbers.length() < 4) {
-            for (String s : array) {
-                if (tag == Integer.parseInt(s)) {
-                    if (tag == 0) {
-                        if (numbers.isEmpty()) {
-                            numbers = inputStr.append("0").toString();
-                        } else if (numbers.contains("0.") && !numbers.equals("0.0")) {
-                            numbers = inputStr.append("0").toString();
-                        } else if (!numbers.equals("0")) {
-                            numbers = inputStr.append("0").toString();
-                        }
-                    } else {
-                        numbers = inputStr.append(s).toString();
-                    }
-                }
+        if (tag == 0) {
+            if (numbers.contains(".")) {
+                numbers = checkPeriod(numbers, 0);
+            } else if (numbers.isEmpty() || !numbers.equals("0")) {
+                numbers = inputStr.append("0").toString();
             }
+        } else if (numbers.contains(".")) {
+            numbers = checkPeriod(numbers, tag);
+        } else {
+            numbers = inputStr.append(tag).toString();
+        }
+        return numbers;
+    }
+
+    private String checkPeriod(String numbers, int s) {
+        String[] list = numbers.split("\\.");
+        if (list.length == 1) {
+            numbers = inputStr.append(s).toString();
+        } else if (list[1].length() < 2) {
+            numbers = inputStr.append(s).toString();
         }
         return numbers;
     }
