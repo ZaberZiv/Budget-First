@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 
 public class UtilConverter {
 
-    private static final String TAG = "Converter";
+    private static final String TAG = "UtilConverter";
 
     public static long convertStringToLongDate(String dateInString) {
         long longDate = 0;

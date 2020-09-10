@@ -11,6 +11,8 @@ import java.util.Date;
 
 public class UtilCalendar {
 
+    private static final String TAG = "UtilCalendar";
+
     public static void getCalendarModule(DatePickerDialog.OnDateSetListener dateSetListener, Context context) {
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);

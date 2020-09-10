@@ -5,6 +5,8 @@ import java.util.Collections;
 
 public class UtilRemoveDuplicates {
 
+    private static final String TAG = "UtilRemoveDuplicates";
+
     public static void removeDuplicatesInList(ArrayList<String> list) {
 
         for (int i = 0; i < list.size() - 1; i++) {

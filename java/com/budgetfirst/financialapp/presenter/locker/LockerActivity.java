@@ -26,7 +26,7 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
 public class LockerActivity extends AppCompatActivity {
 
-    public static final String TAG = "LockerActivity";
+    private static final String TAG = "LockerActivity";
 
     private LockerPresenter mLockerPresenter;
 
@@ -279,10 +279,7 @@ public class LockerActivity extends AppCompatActivity {
 
     private void startActivityWithExtra(boolean extraFlag) {
         Intent intent = new Intent(this, FragmentActivity.class);
-        if (extraFlag) {
-            intent.putExtra("code", Integer.parseInt(sPinCode));
-        }
-
+        if (extraFlag) intent.putExtra("code", Integer.parseInt(sPinCode));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         hideKeyBoard();

@@ -20,6 +20,7 @@
 
         <activity
             android:name=".presenter.base.FragmentActivity"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"/>
 
         <activity
