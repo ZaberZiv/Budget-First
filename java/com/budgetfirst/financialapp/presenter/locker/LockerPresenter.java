@@ -20,11 +20,11 @@ public class LockerPresenter {
         return modelDatabase.getCodeForLocker() != 0;
     }
 
-    public void saveCodeForLockerInDatabase(int code) {
+    void saveCodeForLockerInDatabase(int code) {
         modelDatabase.saveCodeForLockerInDatabase(code);
     }
 
-    public void deleteCodeForLockerFromDatabase(int code) {
+    void deleteCodeForLockerFromDatabase(int code) {
         modelDatabase.deleteCodeForLockerFromDatabase(code);
     }
 }

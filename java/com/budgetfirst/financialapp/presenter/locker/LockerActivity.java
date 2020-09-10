@@ -22,8 +22,6 @@ import com.budgetfirst.financialapp.model.database.FinancialDBHelper;
 import com.budgetfirst.financialapp.presenter.base.FragmentActivity;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-
 public class LockerActivity extends AppCompatActivity {
 
     private static final String TAG = "LockerActivity";
@@ -59,7 +57,7 @@ public class LockerActivity extends AppCompatActivity {
 
     }
 
-    public void setViewsByBinding() {
+    private void setViewsByBinding() {
         ActivityLockerBinding binding = ActivityLockerBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
@@ -81,7 +79,7 @@ public class LockerActivity extends AppCompatActivity {
         mFourthTextView = binding.fourthTextView;
     }
 
-    public void setListenersForEditText() {
+    private void setListenersForEditText() {
         disableInput(mSecondEnteredNumber);
         disableInput(mThirdEnteredNumber);
         disableInput(mFourthEnteredNumber);
@@ -92,18 +90,18 @@ public class LockerActivity extends AppCompatActivity {
         editTextChangedListener(mFourthEnteredNumber, null, mFourthTextView);
     }
 
-    public void showKeyBoard() {
+    private void showKeyBoard() {
         mFirstEnteredNumber.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
-    public void hideKeyBoard() {
+    private void hideKeyBoard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
 
-    public void isPinIsAlreadyExist() {
+    private void isPinIsAlreadyExist() {
         if (!mLockerPresenter.isCodeForLockerInDatabase()) {
             mMainTextView.setText(R.string.locker_save_pin);
         } else {
@@ -223,7 +221,7 @@ public class LockerActivity extends AppCompatActivity {
         });
     }
 
-    void disableInput(EditText editText) {
+    private void disableInput(EditText editText) {
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -232,7 +230,7 @@ public class LockerActivity extends AppCompatActivity {
         });
     }
 
-    void unableInput(EditText editText) {
+    private void unableInput(EditText editText) {
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -260,7 +258,7 @@ public class LockerActivity extends AppCompatActivity {
         mFirstEnteredNumber.requestFocus();
     }
 
-    public void skipButtonListener(TextView textView) {
+    private void skipButtonListener(TextView textView) {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -285,7 +283,7 @@ public class LockerActivity extends AppCompatActivity {
         hideKeyBoard();
     }
 
-    public void clearTextInEditText() {
+    private void clearTextInEditText() {
         sPinCode = "";
 
         mFirstEnteredNumber.getText().clear();

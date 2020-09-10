@@ -54,7 +54,7 @@ public class SplashScreenActivity extends Activity {
 
     void startNewActivity(Class clazz) {
         Intent intent = new Intent(this, clazz);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         SplashScreenActivity.this.startActivity(intent);
         SplashScreenActivity.this.finish();
     }
