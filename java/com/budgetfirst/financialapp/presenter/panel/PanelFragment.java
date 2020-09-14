@@ -47,8 +47,11 @@ public class PanelFragment extends Fragment implements View.OnClickListener, Pan
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         binding = FragmentPanelBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
         mDatabase = new FinancialDBHelper(getContext()).getWritableDatabase();
         mPanelPresenter = new PanelPresenter(this);
@@ -67,7 +70,6 @@ public class PanelFragment extends Fragment implements View.OnClickListener, Pan
         lockerOpenedButtonListener();
         lockerLockedButtonListener();
 
-        View view = binding.getRoot();
         return view;
     }
 
@@ -194,7 +196,8 @@ public class PanelFragment extends Fragment implements View.OnClickListener, Pan
 
     // Checking if both name and numbers were entered
     public double checkOfEnteredNameAndNumbers(int plusOrMinus) {
-        if (sNumbers.length() > 0 && mEditText.getText().toString().trim().toUpperCase().length() > 0) {
+        if (sNumbers.length() > 0
+                && mEditText.getText().toString().trim().toUpperCase().length() > 0) {
             double counter = Double.parseDouble(sNumbers);
 
             // If NO: show toast
@@ -265,6 +268,14 @@ public class PanelFragment extends Fragment implements View.OnClickListener, Pan
             Toast.makeText(getContext(), R.string.toast_max_number
                     , Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!sNumbers.isEmpty()) mText.setText(
+                mPanelPresenter.customFormat(Double.parseDouble(sNumbers))
+        );
     }
 
     // Closing DataBase when the app destroys

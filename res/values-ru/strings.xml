@@ -4,6 +4,10 @@
     <string name="splash_screen">Budget First создал Zaberman</string>
     <string name="logo">Лого</string>
 
+    <string name="panel">Набор</string>
+    <string name="history">История</string>
+    <string name="charts">Графики</string>
+
     <string name="edit_text">Добавьте описание</string>
     <string name="total_income">Общий Доход</string>
     <string name="total_expense">Общий Расход</string>

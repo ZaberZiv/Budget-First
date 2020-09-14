@@ -3,6 +3,10 @@
     <string name="splash_screen">Budget First made by Zaberman</string>
     <string name="logo">Logo</string>
 
+    <string name="panel">Panel</string>
+    <string name="history">History</string>
+    <string name="charts">Charts</string>
+
     <string name="edit_text">Insert the description</string>
     <string name="total_income">Total Income</string>
     <string name="total_expense">Total Expense</string>
